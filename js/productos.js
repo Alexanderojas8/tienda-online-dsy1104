@@ -25,32 +25,45 @@ const productos = [
     }
 ];
 
+
+/* =========================
+   LISTADO DE PRODUCTOS
+   ========================= */
+
 const contenedorProductos = document.getElementById("lista-productos");
 
-productos.forEach(function(producto) {
+if (contenedorProductos) {
 
-    const tarjeta = document.createElement("article");
+    productos.forEach(function(producto) {
 
-    tarjeta.classList.add("producto");
+        const tarjeta = document.createElement("article");
 
-    tarjeta.innerHTML = `
-        <img src="${producto.imagen}" alt="${producto.nombre}">
+        tarjeta.classList.add("producto");
 
-        <h3>${producto.nombre}</h3>
+        tarjeta.innerHTML = `
+            <img src="${producto.imagen}" alt="${producto.nombre}">
 
-        <p>$${producto.precio.toLocaleString("es-CL")}</p>
+            <h3>${producto.nombre}</h3>
 
-        <a href="producto-detalle.html?id=${producto.id}">
-            Ver detalle
-        </a>
+            <p>$${producto.precio.toLocaleString("es-CL")}</p>
 
-        <button onclick="agregarAlCarrito(${producto.id})">
-            Añadir al carrito
-        </button>
-    `;
+            <a href="producto-detalle.html?id=${producto.id}">
+                Ver detalle
+            </a>
 
-    contenedorProductos.appendChild(tarjeta);
-});
+            <button onclick="agregarAlCarrito(${producto.id})">
+                Añadir al carrito
+            </button>
+        `;
+
+        contenedorProductos.appendChild(tarjeta);
+    });
+}
+
+
+/* =========================
+   FUNCIÓN CARRITO TEMPORAL
+   ========================= */
 
 function agregarAlCarrito(idProducto) {
 
@@ -59,4 +72,58 @@ function agregarAlCarrito(idProducto) {
     });
 
     console.log("Producto seleccionado:", productoEncontrado);
+}
+
+
+/* =========================
+   DETALLE DEL PRODUCTO
+   ========================= */
+
+const contenedorDetalle = document.getElementById("contenido-detalle");
+
+if (contenedorDetalle) {
+
+    const parametros = new URLSearchParams(window.location.search);
+
+    const idProducto = Number(parametros.get("id"));
+
+    const productoSeleccionado = productos.find(function(producto) {
+        return producto.id === idProducto;
+    });
+
+    if (productoSeleccionado) {
+
+        contenedorDetalle.innerHTML = `
+            <img
+                src="${productoSeleccionado.imagen}"
+                alt="${productoSeleccionado.nombre}"
+            >
+
+            <div>
+                <h2>${productoSeleccionado.nombre}</h2>
+
+                <p>
+                    Producto disponible en nuestra tienda online.
+                </p>
+
+                <h3>
+                    $${productoSeleccionado.precio.toLocaleString("es-CL")}
+                </h3>
+
+                <button onclick="agregarAlCarrito(${productoSeleccionado.id})">
+                    Añadir al carrito
+                </button>
+            </div>
+        `;
+
+    } else {
+
+        contenedorDetalle.innerHTML = `
+            <h2>Producto no encontrado</h2>
+
+            <p>
+                El producto solicitado no existe.
+            </p>
+        `;
+    }
 }

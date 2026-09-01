@@ -156,4 +156,57 @@ footer {
 .producto a {
     background-color: #ddd;
     color: #222;
+}   
+
+/* =========================
+   DETALLE DEL PRODUCTO
+   ========================= */
+
+.detalle-producto {
+    padding: 30px;
+}
+
+.detalle-producto > a {
+    margin-bottom: 25px;
+}
+
+#contenido-detalle {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#contenido-detalle img {
+    width: 350px;
+    max-width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+#contenido-detalle h2 {
+    margin-bottom: 15px;
+}
+
+#contenido-detalle h3 {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+#contenido-detalle button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #222;
+    color: white;
+    cursor: pointer;
+}
+
+@media (max-width: 700px) {
+
+    #contenido-detalle {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
