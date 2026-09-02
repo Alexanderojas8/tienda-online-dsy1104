@@ -71,7 +71,30 @@ function agregarAlCarrito(idProducto) {
         return producto.id === idProducto;
     });
 
-    console.log("Producto seleccionado:", productoEncontrado);
+    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+    const productoEnCarrito = carrito.find(function(producto) {
+        return producto.id === idProducto;
+    });
+
+    if (productoEnCarrito) {
+
+        productoEnCarrito.cantidad += 1;
+
+    } else {
+
+        carrito.push({
+            id: productoEncontrado.id,
+            nombre: productoEncontrado.nombre,
+            precio: productoEncontrado.precio,
+            imagen: productoEncontrado.imagen,
+            cantidad: 1
+        });
+    }
+
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+
+    alert("Producto añadido al carrito");
 }
 
 
