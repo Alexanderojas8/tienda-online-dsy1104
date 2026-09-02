@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Administrar Productos - Tienda Online</title>
+
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Administración</h1>
+
+        <nav>
+            <a href="index.html">Inicio Admin</a>
+            <a href="productos.html">Productos</a>
+            <a href="../index.html">Volver a la tienda</a>
+        </nav>
+    </header>
+
+    <main>
+
+        <section>
+
+            <div class="admin-encabezado">
+                <div>
+                    <h2>Administrar productos</h2>
+                    <p>Listado de productos registrados en la tienda.</p>
+                </div>
+
+                <a href="producto-nuevo.html">
+                    + Nuevo producto
+                </a>
+            </div>
+
+            <div class="tabla-contenedor">
+
+                <table class="tabla-admin">
+
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tabla-productos">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Tienda Online DSY1104</p>
+    </footer>
+
+    <script src="../js/admin-productos.js"></script>
+
+</body>
+
+</html>

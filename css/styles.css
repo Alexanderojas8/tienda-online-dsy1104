@@ -257,3 +257,152 @@ footer {
 
     font-size: 20px;
 }
+
+/* =========================
+   PANEL DE ADMINISTRACIÓN
+   ========================= */
+
+.admin-opciones {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.admin-opciones a {
+    background-color: #222;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.admin-opciones a:hover {
+    background-color: #444;
+}
+
+/* =========================
+   ADMINISTRACIÓN PRODUCTOS
+   ========================= */
+
+.admin-encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.admin-encabezado a {
+    background-color: #222;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.tabla-contenedor {
+    overflow-x: auto;
+}
+
+.tabla-admin {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-admin th,
+.tabla-admin td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.tabla-admin th {
+    background-color: #222;
+    color: white;
+}
+
+.tabla-admin tbody tr:nth-child(even) {
+    background-color: #f5f5f5;
+}
+
+.tabla-admin td a {
+    padding: 7px 12px;
+    background-color: #ddd;
+    color: #222;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+@media (max-width: 700px) {
+
+    .admin-encabezado {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* =========================
+   FORMULARIOS ADMIN
+   ========================= */
+
+#form-producto {
+    max-width: 700px;
+    margin-top: 25px;
+}
+
+.campo-formulario {
+    margin-bottom: 20px;
+}
+
+.campo-formulario label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: bold;
+}
+
+.campo-formulario input,
+.campo-formulario textarea,
+.campo-formulario select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+}
+
+.campo-formulario textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.error {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+    color: #c62828;
+}
+
+.botones-formulario {
+    display: flex;
+    gap: 10px;
+}
+
+.botones-formulario button,
+.botones-formulario a {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.botones-formulario button {
+    background-color: #222;
+    color: white;
+}
+
+.botones-formulario a {
+    background-color: #ddd;
+    color: #222;
+}

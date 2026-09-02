@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nuevo Producto - Administración</title>
+
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Administración</h1>
+
+        <nav>
+            <a href="index.html">Inicio Admin</a>
+            <a href="productos.html">Productos</a>
+            <a href="../index.html">Volver a la tienda</a>
+        </nav>
+    </header>
+
+    <main>
+
+        <section>
+
+            <h2>Crear nuevo producto</h2>
+
+            <p>Completa los datos del producto.</p>
+
+            <form id="form-producto">
+
+                <div class="campo-formulario">
+                    <label for="codigo">Código:</label>
+                    <input type="text" id="codigo" name="codigo">
+                    <small class="error" id="error-codigo"></small>
+                </div>
+
+                <div class="campo-formulario">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre">
+                    <small class="error" id="error-nombre"></small>
+                </div>
+
+                <div class="campo-formulario">
+                    <label for="descripcion">Descripción:</label>
+                    <textarea id="descripcion" name="descripcion"></textarea>
+                    <small class="error" id="error-descripcion"></small>
+                </div>
+
+                <div class="campo-formulario">
+                    <label for="precio">Precio:</label>
+                    <input type="number" id="precio" name="precio">
+                    <small class="error" id="error-precio"></small>
+                </div>
+
+                <div class="campo-formulario">
+                    <label for="stock">Stock:</label>
+                    <input type="number" id="stock" name="stock">
+                    <small class="error" id="error-stock"></small>
+                </div>
+
+                <div class="campo-formulario">
+                    <label for="stock-critico">Stock crítico:</label>
+                    <input type="number" id="stock-critico" name="stock-critico">
+                    <small class="error" id="error-stock-critico"></small>
+                </div>
+
+                <div class="campo-formulario">
+                    <label for="categoria">Categoría:</label>
+
+                    <select id="categoria" name="categoria">
+                        <option value="">Seleccione una categoría</option>
+                        <option value="Perifericos">Periféricos</option>
+                        <option value="Audio">Audio</option>
+                        <option value="Monitores">Monitores</option>
+                    </select>
+
+                    <small class="error" id="error-categoria"></small>
+                </div>
+
+                <div class="campo-formulario">
+                    <label for="imagen">URL de imagen:</label>
+                    <input type="text" id="imagen" name="imagen">
+                </div>
+
+                <div class="botones-formulario">
+                    <button type="submit">
+                        Guardar producto
+                    </button>
+
+                    <a href="productos.html">
+                        Cancelar
+                    </a>
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Tienda Online DSY1104</p>
+    </footer>
+
+    <script src="../js/admin-productos.js"></script>
+
+</body>
+
+</html>
