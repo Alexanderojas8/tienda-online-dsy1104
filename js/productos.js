@@ -3,25 +3,25 @@ const productos = [
         id: 1,
         nombre: "Mouse Gamer",
         precio: 19990,
-        imagen: "https://via.placeholder.com/250x180?text=Mouse+Gamer"
+        imagen: "img/mouse.jpg.png"
     },
     {
         id: 2,
         nombre: "Teclado Mecánico",
         precio: 39990,
-        imagen: "https://via.placeholder.com/250x180?text=Teclado"
+        imagen: "img/teclado.jpg.png"
     },
     {
         id: 3,
         nombre: "Audífonos Gamer",
         precio: 29990,
-        imagen: "https://via.placeholder.com/250x180?text=Audifonos"
+        imagen: "img/audifonos.jpg.png"
     },
     {
         id: 4,
         nombre: "Monitor Gaming",
         precio: 149990,
-        imagen: "https://via.placeholder.com/250x180?text=Monitor"
+        imagen: "img/monitor.jpg.png"
     }
 ];
 
