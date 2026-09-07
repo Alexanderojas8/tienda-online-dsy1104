@@ -1,0 +1,47 @@
+[
+    {
+        "id": 1,
+        "codigo": "PROD001",
+        "nombre": "Mouse Gamer",
+        "descripcion": "Mouse gamer de alta precisión",
+        "precio": 19990,
+        "stock": 15,
+        "categoria": "Periféricos"
+    },
+    {
+        "id": 2,
+        "codigo": "PROD002",
+        "nombre": "Teclado Mecánico",
+        "descripcion": "Teclado mecánico para gaming",
+        "precio": 39990,
+        "stock": 10,
+        "categoria": "Periféricos"
+    },
+    {
+        "id": 3,
+        "codigo": "PROD003",
+        "nombre": "Audífonos Gamer",
+        "descripcion": "Audífonos gamer con micrófono",
+        "precio": 29990,
+        "stock": 20,
+        "categoria": "Audio"
+    },
+    {
+        "id": 4,
+        "codigo": "PROD004",
+        "nombre": "Monitor Gaming",
+        "descripcion": "Monitor gaming de alta resolución",
+        "precio": 149990,
+        "stock": 5,
+        "categoria": "Monitores"
+    },
+    {
+        "id": 5,
+        "codigo": "PROD005",
+        "nombre": "Webcam Full HD",
+        "descripcion": "Webcam para videollamadas",
+        "precio": 34990,
+        "stock": 8,
+        "categoria": "Accesorios"
+    }
+]
