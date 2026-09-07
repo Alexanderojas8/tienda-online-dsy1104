@@ -1,38 +1,81 @@
-const productos = [
-    {
-        id: 1,
-        nombre: "Mouse Gamer",
-        precio: 19990,
-        imagen: "img/mouse.jpg.png"
-    },
-    {
-        id: 2,
-        nombre: "Teclado Mecánico",
-        precio: 39990,
-        imagen: "img/teclado.jpg.png"
-    },
-    {
-        id: 3,
-        nombre: "Audífonos Gamer",
-        precio: 29990,
-        imagen: "img/audifonos.jpg.png"
-    },
-    {
-        id: 4,
-        nombre: "Monitor Gaming",
-        precio: 149990,
-        imagen: "img/monitor.jpg.png"
+/* =========================
+   CONFIGURACIÓN DE LA API
+   ========================= */
+
+const API_URL = "http://localhost:3000/api/productos";
+
+let productos = [];
+
+
+/* =========================
+   CARGAR PRODUCTOS DESDE BACKEND
+   ========================= */
+
+async function cargarProductos() {
+
+    try {
+
+        const respuesta = await fetch(API_URL);
+
+        if (!respuesta.ok) {
+            throw new Error("No se pudieron obtener los productos");
+        }
+
+        productos = await respuesta.json();
+
+        // Asignar imágenes según ID
+        productos = productos.map(function(producto) {
+
+            const imagenes = {
+                1: "img/mouse.jpg.png",
+                2: "img/teclado.jpg.png",
+                3: "img/audifonos.jpg.png",
+                4: "img/monitor.jpg.png",
+            };
+
+            producto.imagen =
+                producto.imagen ||
+                imagenes[producto.id] ||
+                "img/sin-imagen.png";
+
+            return producto;
+        });
+
+        mostrarProductos();
+        mostrarDetalleProducto();
+
+    } catch (error) {
+
+        console.error("Error al cargar productos:", error);
+
+        const contenedor = document.getElementById("lista-productos");
+
+        if (contenedor) {
+            contenedor.innerHTML = `
+                <p>
+                    No fue posible cargar los productos.
+                    Verifica que el servidor esté encendido.
+                </p>
+            `;
+        }
     }
-];
+}
 
 
 /* =========================
    LISTADO DE PRODUCTOS
    ========================= */
 
-const contenedorProductos = document.getElementById("lista-productos");
+function mostrarProductos() {
 
-if (contenedorProductos) {
+    const contenedorProductos =
+        document.getElementById("lista-productos");
+
+    if (!contenedorProductos) {
+        return;
+    }
+
+    contenedorProductos.innerHTML = "";
 
     productos.forEach(function(producto) {
 
@@ -41,11 +84,16 @@ if (contenedorProductos) {
         tarjeta.classList.add("producto");
 
         tarjeta.innerHTML = `
-            <img src="${producto.imagen}" alt="${producto.nombre}">
+            <img
+                src="${producto.imagen}"
+                alt="${producto.nombre}"
+            >
 
             <h3>${producto.nombre}</h3>
 
-            <p>$${producto.precio.toLocaleString("es-CL")}</p>
+            <p>
+                $${producto.precio.toLocaleString("es-CL")}
+            </p>
 
             <a href="producto-detalle.html?id=${producto.id}">
                 Ver detalle
@@ -62,20 +110,30 @@ if (contenedorProductos) {
 
 
 /* =========================
-   FUNCIÓN CARRITO TEMPORAL
+   CARRITO
    ========================= */
 
 function agregarAlCarrito(idProducto) {
 
-    const productoEncontrado = productos.find(function(producto) {
-        return producto.id === idProducto;
-    });
+    const productoEncontrado =
+        productos.find(function(producto) {
+            return producto.id === idProducto;
+        });
 
-    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+    if (!productoEncontrado) {
 
-    const productoEnCarrito = carrito.find(function(producto) {
-        return producto.id === idProducto;
-    });
+        alert("Producto no encontrado");
+
+        return;
+    }
+
+    let carrito =
+        JSON.parse(localStorage.getItem("carrito")) || [];
+
+    const productoEnCarrito =
+        carrito.find(function(producto) {
+            return producto.id === idProducto;
+        });
 
     if (productoEnCarrito) {
 
@@ -92,7 +150,10 @@ function agregarAlCarrito(idProducto) {
         });
     }
 
-    localStorage.setItem("carrito", JSON.stringify(carrito));
+    localStorage.setItem(
+        "carrito",
+        JSON.stringify(carrito)
+    );
 
     alert("Producto añadido al carrito");
 }
@@ -102,17 +163,25 @@ function agregarAlCarrito(idProducto) {
    DETALLE DEL PRODUCTO
    ========================= */
 
-const contenedorDetalle = document.getElementById("contenido-detalle");
+function mostrarDetalleProducto() {
 
-if (contenedorDetalle) {
+    const contenedorDetalle =
+        document.getElementById("contenido-detalle");
 
-    const parametros = new URLSearchParams(window.location.search);
+    if (!contenedorDetalle) {
+        return;
+    }
 
-    const idProducto = Number(parametros.get("id"));
+    const parametros =
+        new URLSearchParams(window.location.search);
 
-    const productoSeleccionado = productos.find(function(producto) {
-        return producto.id === idProducto;
-    });
+    const idProducto =
+        Number(parametros.get("id"));
+
+    const productoSeleccionado =
+        productos.find(function(producto) {
+            return producto.id === idProducto;
+        });
 
     if (productoSeleccionado) {
 
@@ -123,10 +192,24 @@ if (contenedorDetalle) {
             >
 
             <div>
-                <h2>${productoSeleccionado.nombre}</h2>
+
+                <h2>
+                    ${productoSeleccionado.nombre}
+                </h2>
 
                 <p>
-                    Producto disponible en nuestra tienda online.
+                    ${productoSeleccionado.descripcion ||
+                    "Producto disponible en nuestra tienda online."}
+                </p>
+
+                <p>
+                    <strong>Categoría:</strong>
+                    ${productoSeleccionado.categoria || "Sin categoría"}
+                </p>
+
+                <p>
+                    <strong>Stock:</strong>
+                    ${productoSeleccionado.stock}
                 </p>
 
                 <h3>
@@ -136,6 +219,7 @@ if (contenedorDetalle) {
                 <button onclick="agregarAlCarrito(${productoSeleccionado.id})">
                     Añadir al carrito
                 </button>
+
             </div>
         `;
 
@@ -150,3 +234,10 @@ if (contenedorDetalle) {
         `;
     }
 }
+
+
+/* =========================
+   INICIAR
+   ========================= */
+
+cargarProductos();

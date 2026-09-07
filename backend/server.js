@@ -1,9 +1,12 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
+const cors = require("cors");
 
 const app = express();
 const PORT = 3000;
+
+app.use(cors());
 
 // Permite recibir información en formato JSON
 app.use(express.json());
