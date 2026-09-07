@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Administrar usuarios - Tienda Online</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- CSS propio -->
+    <link rel="stylesheet" href="../css/styles.css">
+
+    <style>
+
+        body.admin-page {
+            background:
+                radial-gradient(
+                    circle at 50% 0%,
+                    rgba(59, 130, 246, 0.08),
+                    transparent 35%
+                ),
+                #f4f6fb;
+        }
+
+        .admin-hero {
+            position: relative;
+            overflow: hidden;
+
+            padding: 40px;
+
+            border-radius: 20px;
+
+            color: white;
+
+            background:
+                radial-gradient(
+                    circle at 85% 20%,
+                    rgba(168, 85, 247, 0.22),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 10% 90%,
+                    rgba(34, 211, 238, 0.15),
+                    transparent 32%
+                ),
+                linear-gradient(
+                    135deg,
+                    #07111f,
+                    #0f172a,
+                    #111d42
+                );
+
+            border:
+                1px solid rgba(34, 211, 238, 0.22);
+
+            box-shadow:
+                0 15px 35px rgba(15, 23, 42, 0.16);
+        }
+
+        .admin-hero::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 8%;
+
+            width: 84%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #22d3ee,
+                    #3b82f6,
+                    #a855f7,
+                    #d946ef,
+                    transparent
+                );
+
+            box-shadow:
+                0 0 10px rgba(34, 211, 238, 0.60);
+        }
+
+        .admin-hero h1 {
+            color: white !important;
+            font-weight: 800;
+        }
+
+        .admin-hero p {
+            color: #cbd5e1;
+            margin-bottom: 0;
+        }
+
+        .tabla-panel {
+            background: white;
+
+            border-radius: 18px;
+
+            border:
+                1px solid rgba(59, 130, 246, 0.16);
+
+            box-shadow:
+                0 10px 28px rgba(15, 23, 42, 0.08);
+
+            overflow: hidden;
+        }
+
+        .tabla-panel::before {
+            content: "";
+
+            display: block;
+
+            height: 3px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #22d3ee,
+                    #3b82f6,
+                    #a855f7,
+                    #d946ef
+                );
+        }
+
+        .table thead th {
+            background:
+                linear-gradient(
+                    135deg,
+                    #07111f,
+                    #172554
+                ) !important;
+
+            color: white !important;
+
+            border-color: #1e293b !important;
+
+            white-space: nowrap;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .table tbody tr:hover {
+            background:
+                rgba(34, 211, 238, 0.05);
+        }
+
+        .btn-admin-principal {
+            border: none;
+
+            color: white;
+
+            font-weight: 700;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #7c3aed
+                );
+
+            box-shadow:
+                0 6px 18px rgba(37, 99, 235, 0.20);
+        }
+
+        .btn-admin-principal:hover {
+            color: white;
+
+            box-shadow:
+                0 0 8px rgba(34, 211, 238, 0.45),
+                0 0 18px rgba(124, 58, 237, 0.22);
+
+            transform: translateY(-1px);
+        }
+
+        .admin-footer {
+            position: relative;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #07111f,
+                    #0f172a,
+                    #111827
+                ) !important;
+        }
+
+        .admin-footer::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 3px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #22d3ee,
+                    #3b82f6,
+                    #a855f7,
+                    #d946ef
+                );
+
+            box-shadow:
+                0 0 10px rgba(34, 211, 238, 0.55);
+        }
+
+    </style>
+
+</head>
+
+
+<body class="admin-page">
+
+
+    <!-- =====================================
+         NAVBAR
+    ====================================== -->
+
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-neon">
+
+        <div class="container">
+
+            <a
+                class="navbar-brand fw-bold"
+                href="../index.html">
+
+                <span class="logo-tienda">
+                    Tienda <span>Online</span>
+                </span>
+
+            </a>
+
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarAdmin">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <div
+                class="collapse navbar-collapse"
+                id="navbarAdmin">
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="index.html">
+
+                            Inicio Admin
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="productos.html">
+
+                            Productos
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link active"
+                            href="usuarios.html">
+
+                            Usuarios
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="../index.html">
+
+                            Volver a la tienda
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =====================================
+         CONTENIDO
+    ====================================== -->
+
+    <main class="container py-5">
+
+
+        <!-- HERO -->
+        <section class="admin-hero mb-4">
+
+            <span class="badge bg-primary mb-3">
+                ADMINISTRACIÓN
+            </span>
+
+            <h1 class="mb-3">
+                Gestión de usuarios
+            </h1>
+
+            <p>
+                Revisa, crea y edita los usuarios registrados
+                en la tienda.
+            </p>
+
+        </section>
+
+
+        <!-- TABLA -->
+        <section class="tabla-panel">
+
+            <div class="p-4">
+
+                <div
+                    class="d-flex flex-wrap
+                           justify-content-between
+                           align-items-center
+                           gap-3 mb-4">
+
+                    <div>
+
+                        <h2 class="fw-bold mb-1">
+                            Usuarios registrados
+                        </h2>
+
+                        <p class="text-muted mb-0">
+                            Usuarios almacenados actualmente.
+                        </p>
+
+                    </div>
+
+
+                    <a
+                        href="usuario-nuevo.html"
+                        class="btn btn-admin-principal">
+
+                        + Nuevo usuario
+
+                    </a>
+
+                </div>
+
+
+                <div class="table-responsive">
+
+                    <table
+                        class="table table-hover align-middle">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Nombre
+                                </th>
+
+                                <th>
+                                    RUN
+                                </th>
+
+                                <th>
+                                    Correo
+                                </th>
+
+                                <th>
+                                    Región
+                                </th>
+
+                                <th>
+                                    Comuna
+                                </th>
+
+                                <th>
+                                    Rol
+                                </th>
+
+                                <th class="text-center">
+                                    Acción
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="tabla-usuarios">
+
+                            <!-- JavaScript carga usuarios aquí -->
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div
+                    id="sin-usuarios"
+                    class="alert alert-light border text-center d-none mt-3">
+
+                    No hay usuarios registrados.
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================
+         FOOTER
+    ====================================== -->
+
+    <footer
+        class="admin-footer text-white text-center py-4 mt-5">
+
+        <p class="mb-0">
+            © 2026 Tienda Online DSY1104
+        </p>
+
+    </footer>
+
+
+    <!-- Bootstrap -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+
+    <!-- =====================================
+         LISTAR USUARIOS
+    ====================================== -->
+
+    <script>
+
+        const tablaUsuarios =
+            document.getElementById(
+                "tabla-usuarios"
+            );
+
+
+        const mensajeSinUsuarios =
+            document.getElementById(
+                "sin-usuarios"
+            );
+
+
+        function cargarUsuarios() {
+
+
+            const usuarios =
+                JSON.parse(
+                    localStorage.getItem(
+                        "usuarios"
+                    )
+                ) || [];
+
+
+            tablaUsuarios.innerHTML = "";
+
+
+            if (usuarios.length === 0) {
+
+                mensajeSinUsuarios.classList.remove(
+                    "d-none"
+                );
+
+                return;
+
+            }
+
+
+            mensajeSinUsuarios.classList.add(
+                "d-none"
+            );
+
+
+            usuarios.forEach(
+                function (usuario, index) {
+
+
+                    /*
+                        Algunos usuarios antiguos
+                        tienen "apellidos".
+
+                        Los nuevos utilizan
+                        "apellido".
+
+                        Esto permite mostrar ambos.
+                    */
+
+                    const apellido =
+                        usuario.apellido ||
+                        usuario.apellidos ||
+                        "";
+
+
+                    const fila =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    fila.innerHTML = `
+
+                        <td>
+
+                            <strong>
+
+                                ${usuario.nombre || ""}
+                                ${apellido}
+
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            ${usuario.run || ""}
+
+                        </td>
+
+
+                        <td>
+
+                            ${usuario.correo || ""}
+
+                        </td>
+
+
+                        <td>
+
+                            ${usuario.region || ""}
+
+                        </td>
+
+
+                        <td>
+
+                            ${usuario.comuna || ""}
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="badge bg-secondary">
+
+                                ${usuario.rol || "cliente"}
+
+                            </span>
+
+                        </td>
+
+
+                        <td class="text-center">
+
+                            <a
+                                href="usuario-editar.html?id=${index}"
+                                class="btn btn-sm btn-outline-primary">
+
+                                Editar
+
+                            </a>
+
+                        </td>
+
+                    `;
+
+
+                    tablaUsuarios.appendChild(
+                        fila
+                    );
+
+                }
+            );
+
+        }
+
+
+        cargarUsuarios();
+
+    </script>
+
+
+</body>
+
+</html>

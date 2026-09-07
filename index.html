@@ -1,58 +1,2582 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Tienda Online DSY1104</title>
 
+    <!-- BOOTSTRAP CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- CSS DEL PROYECTO -->
     <link rel="stylesheet" href="css/styles.css">
+
+
+    <!-- =====================================
+         ESTILOS DEL HOME
+    ====================================== -->
+
+    <style>
+
+        /* =====================================
+           HOME
+        ===================================== */
+
+        body {
+            background-color: #f4f5f7;
+        }
+
+
+        /* =====================================
+           CARRUSEL
+        ===================================== */
+
+        .contenedor-carrusel {
+            max-width: 1180px;
+            margin: 35px auto 0;
+            padding: 0 15px;
+        }
+
+        #carouselExampleCaptions {
+            position: relative;
+
+            border-radius: 18px;
+            overflow: hidden;
+
+            background-color: white;
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        #carouselExampleCaptions .carousel-item {
+            height: 440px;
+            background-color: white;
+        }
+
+        #carouselExampleCaptions .carousel-item img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: contain;
+
+            background-color: white;
+        }
+
+        #carouselExampleCaptions .carousel-caption {
+
+            left: 8%;
+            right: auto;
+            bottom: 35px;
+
+            width: min(520px, 80%);
+
+            text-align: left;
+
+            background:
+                rgba(7, 17, 31, 0.90);
+
+            backdrop-filter:
+                blur(7px);
+
+            padding:
+                22px 25px;
+
+            border-radius:
+                14px;
+
+            border:
+                1px solid
+                rgba(34, 211, 238, 0.25);
+
+            box-shadow:
+                0 0 14px
+                rgba(34, 211, 238, 0.12);
+        }
+
+        #carouselExampleCaptions .carousel-caption h5 {
+            font-size:
+                1.7rem;
+
+            font-weight:
+                700;
+
+            margin-bottom:
+                8px;
+        }
+
+        #carouselExampleCaptions .carousel-caption p {
+            margin-bottom:
+                0;
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            width:
+                8%;
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+
+            background-color:
+                rgba(7, 17, 31, 0.80);
+
+            border:
+                1px solid
+                rgba(34, 211, 238, 0.30);
+
+            border-radius:
+                50%;
+
+            padding:
+                20px;
+
+            background-size:
+                45%;
+        }
+
+
+        /* =====================================
+           BIENVENIDA
+        ===================================== */
+
+        .seccion-bienvenida {
+            color:
+                white;
+
+            border-radius:
+                18px;
+
+            padding:
+                50px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(0, 0, 0, 0.10);
+        }
+
+        .seccion-bienvenida h2 {
+            font-size:
+                2.3rem;
+
+            font-weight:
+                700;
+        }
+
+        .seccion-bienvenida p {
+            color:
+                #d4d4d4;
+
+            font-size:
+                1.08rem;
+
+            max-width:
+                650px;
+        }
+
+
+        /* =====================================
+           BENEFICIOS
+        ===================================== */
+
+        .beneficio {
+
+            background-color:
+                white;
+
+            border:
+                1px solid
+                rgba(59, 130, 246, 0.14);
+
+            border-radius:
+                16px;
+
+            height:
+                100%;
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                border-color 0.25s ease;
+        }
+
+        .beneficio:hover {
+
+            transform:
+                translateY(-5px);
+
+            border-color:
+                #22d3ee;
+
+            box-shadow:
+                0 10px 28px
+                rgba(0, 0, 0, 0.10),
+
+                0 0 12px
+                rgba(34, 211, 238, 0.20);
+        }
+
+        .beneficio-icono {
+
+            width:
+                58px;
+
+            height:
+                58px;
+
+            border-radius:
+                14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #7c3aed
+                );
+
+            color:
+                white;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            font-size:
+                26px;
+
+            margin-bottom:
+                18px;
+
+            box-shadow:
+                0 0 12px
+                rgba(34, 211, 238, 0.24);
+        }
+
+
+        /* =====================================
+           TÍTULOS
+        ===================================== */
+
+        .titulo-seccion {
+            font-weight:
+                700;
+        }
+
+
+        /* =====================================
+           CATEGORÍAS
+        ===================================== */
+
+        .seccion-categorias {
+            background-color:
+                transparent;
+        }
+
+        .barra-categorias {
+
+            width:
+                5px;
+
+            height:
+                42px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #22d3ee,
+                    #3b82f6,
+                    #a855f7
+                );
+
+            border-radius:
+                10px;
+
+            margin-right:
+                14px;
+
+            flex-shrink:
+                0;
+
+            box-shadow:
+                0 0 8px
+                rgba(34, 211, 238, 0.55);
+        }
+
+
+        .categoria-card {
+
+            position:
+                relative;
+
+            display:
+                block;
+
+            width:
+                100%;
+
+            height:
+                250px;
+
+            overflow:
+                hidden;
+
+            border-radius:
+                16px;
+
+            text-decoration:
+                none;
+
+            background-color:
+                #222;
+
+            border:
+                1px solid
+                rgba(59, 130, 246, 0.18);
+
+            box-shadow:
+                0 5px 18px
+                rgba(0, 0, 0, 0.10);
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                border-color 0.25s ease;
+        }
+
+
+        .categoria-grande {
+            height:
+                250px;
+        }
+
+
+        .categoria-card:hover {
+
+            transform:
+                translateY(-5px);
+
+            border-color:
+                #22d3ee;
+
+            box-shadow:
+                0 12px 28px
+                rgba(0, 0, 0, 0.16),
+
+                0 0 12px
+                rgba(34, 211, 238, 0.24),
+
+                0 0 22px
+                rgba(168, 85, 247, 0.10);
+        }
+
+
+        .categoria-card img {
+
+            width:
+                100%;
+
+            height:
+                100%;
+
+            object-fit:
+                cover;
+
+            transition:
+                transform 0.35s ease;
+        }
+
+
+        .categoria-card:hover img {
+
+            transform:
+                scale(1.07);
+        }
+
+
+        .categoria-card::after {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            inset:
+                0;
+
+            background:
+                linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0.88) 0%,
+                    rgba(0, 0, 0, 0.40) 55%,
+                    rgba(0, 0, 0, 0.05) 100%
+                );
+
+            z-index:
+                1;
+        }
+
+
+        .categoria-overlay {
+
+            position:
+                absolute;
+
+            left:
+                20px;
+
+            right:
+                20px;
+
+            bottom:
+                18px;
+
+            z-index:
+                2;
+
+            color:
+                white;
+        }
+
+
+        .categoria-overlay h3 {
+
+            font-size:
+                1.65rem;
+
+            font-weight:
+                700;
+
+            margin-bottom:
+                8px;
+
+            color:
+                white;
+        }
+
+
+        .categoria-overlay h4 {
+
+            font-size:
+                1.10rem;
+
+            font-weight:
+                700;
+
+            margin-bottom:
+                7px;
+
+            color:
+                white;
+        }
+
+
+        .categoria-etiqueta {
+
+            display:
+                block;
+
+            margin-bottom:
+                6px;
+
+            font-size:
+                0.78rem;
+
+            font-weight:
+                700;
+
+            text-transform:
+                uppercase;
+
+            color:
+                rgba(255, 255, 255, 0.75);
+        }
+
+
+        .categoria-link {
+
+            font-size:
+                0.92rem;
+
+            color:
+                white;
+
+            font-weight:
+                500;
+        }
+
+
+        /* =====================================
+           PRODUCTOS DESTACADOS
+        ===================================== */
+
+        .producto-home {
+
+            border:
+                1px solid
+                rgba(59, 130, 246, 0.14);
+
+            border-radius:
+                16px;
+
+            overflow:
+                hidden;
+
+            height:
+                100%;
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                border-color 0.25s ease;
+        }
+
+        .producto-home:hover {
+
+            transform:
+                translateY(-5px);
+
+            border-color:
+                #22d3ee;
+
+            box-shadow:
+                0 10px 25px
+                rgba(0, 0, 0, 0.12),
+
+                0 0 12px
+                rgba(34, 211, 238, 0.22);
+        }
+
+        .producto-home img {
+
+            height:
+                220px;
+
+            object-fit:
+                contain;
+
+            background-color:
+                white;
+
+            padding:
+                15px;
+        }
+
+
+        /* =====================================
+           CTA FINAL
+        ===================================== */
+
+        .cta-final {
+
+            background-color:
+                white;
+
+            border:
+                1px solid
+                rgba(59, 130, 246, 0.16);
+
+            border-radius:
+                18px;
+
+            padding:
+                40px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.07);
+        }
+
+
+        /* =====================================
+           FOOTER
+        ===================================== */
+
+        .footer-home {
+
+            position:
+                relative;
+
+            margin-top:
+                70px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #07111f,
+                    #0f172a,
+                    #111827
+                ) !important;
+        }
+
+        .footer-home::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            top:
+                0;
+
+            left:
+                0;
+
+            width:
+                100%;
+
+            height:
+                3px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #22d3ee,
+                    #3b82f6,
+                    #a855f7,
+                    #d946ef
+                );
+
+            box-shadow:
+                0 0 10px
+                rgba(34, 211, 238, 0.55);
+        }
+
+        .footer-home h4,
+        .footer-home h5,
+        .footer-home h6 {
+
+            color:
+                white;
+        }
+
+        .footer-home a {
+
+            transition:
+                0.2s;
+        }
+
+        .footer-home a:hover {
+
+            color:
+                #67e8f9 !important;
+        }
+
+        .footer-contacto p {
+
+            line-height:
+                1.7;
+        }
+
+
+        /* =====================================
+           RESPONSIVE
+        ===================================== */
+
+        @media (max-width: 768px) {
+
+            #carouselExampleCaptions .carousel-item {
+
+                height:
+                    300px;
+            }
+
+            .contenedor-carrusel {
+
+                margin-top:
+                    20px;
+            }
+
+            .seccion-bienvenida {
+
+                padding:
+                    30px 25px;
+            }
+
+            .seccion-bienvenida h2 {
+
+                font-size:
+                    1.8rem;
+            }
+
+            #carouselExampleCaptions .carousel-caption {
+
+                display:
+                    block !important;
+
+                left:
+                    20px;
+
+                right:
+                    20px;
+
+                bottom:
+                    20px;
+
+                width:
+                    auto;
+
+                padding:
+                    12px 15px;
+            }
+
+            #carouselExampleCaptions .carousel-caption h5 {
+
+                font-size:
+                    1.1rem;
+            }
+
+            #carouselExampleCaptions .carousel-caption p {
+
+                font-size:
+                    0.85rem;
+            }
+
+            .categoria-card,
+            .categoria-grande {
+
+                height:
+                    210px;
+            }
+
+        }
+
+
+        @media (max-width: 480px) {
+
+            #carouselExampleCaptions .carousel-item {
+
+                height:
+                    240px;
+            }
+
+            #carouselExampleCaptions .carousel-caption p {
+
+                display:
+                    none;
+            }
+
+            .seccion-bienvenida {
+
+                text-align:
+                    center;
+            }
+
+            .categoria-card,
+            .categoria-grande {
+
+                height:
+                    180px;
+            }
+
+            .categoria-overlay {
+
+                left:
+                    14px;
+
+                right:
+                    14px;
+
+                bottom:
+                    14px;
+            }
+
+            .categoria-overlay h3 {
+
+                font-size:
+                    1.25rem;
+            }
+
+            .categoria-overlay h4 {
+
+                font-size:
+                    0.95rem;
+            }
+
+            .categoria-link {
+
+                font-size:
+                    0.80rem;
+            }
+
+        }
+
+    </style>
+
 </head>
 
-<body>
 
-    <header>
-        <h1>Tienda Online</h1>
+<body class="home-page">
 
-        <nav>
-            <a href="index.html">Inicio</a>
-            <a href="productos.html">Productos</a>
-            <a href="nosotros.html">Nosotros</a>
-            <a href="blog.html">Blog</a>
-            <a href="contacto.html">Contacto</a>
-            <a href="carrito.html">Carrito</a>
-        </nav>
-    </header>
 
-    <main>
+    <!-- =====================================
+         NAVBAR NEÓN
+    ====================================== -->
 
-        <section>
-            <h2>Bienvenido a nuestra tienda</h2>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-neon">
 
-            <p>
-                Encuentra productos de calidad al mejor precio.
-            </p>
+        <div class="container">
 
-            <a href="productos.html">
-                Ver productos
+
+            <!-- LOGO -->
+            <a
+                class="navbar-brand fw-bold"
+                href="index.html">
+
+                <span class="logo-tienda">
+
+                    Tienda <span>Online</span>
+
+                </span>
+
             </a>
+
+
+            <!-- BOTÓN MÓVIL -->
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarPrincipal"
+                aria-controls="navbarPrincipal"
+                aria-expanded="false"
+                aria-label="Abrir navegación">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+
+            <!-- CONTENIDO -->
+            <div
+                class="collapse navbar-collapse"
+                id="navbarPrincipal">
+
+
+                <!-- MENÚ -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+
+                    <!-- INICIO ACTIVO -->
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link active"
+                            href="index.html">
+
+                            Inicio
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="productos.html">
+
+                            Productos
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="nosotros.html">
+
+                            Nosotros
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="blog.html">
+
+                            Blog
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="contacto.html">
+
+                            Contacto
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="carrito.html">
+
+                            Carrito
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+
+                <!-- ZONA DERECHA -->
+                <div
+                    class="d-flex flex-wrap
+                           align-items-center gap-2
+                           mt-3 mt-lg-0">
+
+
+                    <!-- CARRITO -->
+                    <a
+                        href="carrito.html"
+                        class="btn carrito-navbar">
+
+                        🛒 Ver carrito
+
+                        <span
+                            id="contador-carrito"
+                            class="badge contador-navbar">
+
+                            0
+
+                        </span>
+
+                    </a>
+
+
+                    <!-- USUARIO -->
+                    <div
+                        id="zona-usuario"
+                        class="d-flex align-items-center gap-2">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =====================================
+         CARRUSEL
+    ====================================== -->
+
+    <div class="contenedor-carrusel">
+
+        <div
+            id="carouselExampleCaptions"
+            class="carousel slide carousel-fade"
+            data-bs-ride="carousel"
+            data-bs-interval="3500">
+
+
+            <!-- INDICADORES -->
+            <div class="carousel-indicators">
+
+                <button
+                    type="button"
+                    data-bs-target="#carouselExampleCaptions"
+                    data-bs-slide-to="0"
+                    class="active"
+                    aria-current="true"
+                    aria-label="Slide 1">
+                </button>
+
+
+                <button
+                    type="button"
+                    data-bs-target="#carouselExampleCaptions"
+                    data-bs-slide-to="1"
+                    aria-label="Slide 2">
+                </button>
+
+
+                <button
+                    type="button"
+                    data-bs-target="#carouselExampleCaptions"
+                    data-bs-slide-to="2"
+                    aria-label="Slide 3">
+                </button>
+
+            </div>
+
+
+            <div class="carousel-inner">
+
+
+                <!-- SLIDE 1 -->
+                <div class="carousel-item active">
+
+                    <img
+                        src="img/carrusel/Carrusel/MonitorGamer.jpg"
+                        class="d-block w-100"
+                        alt="Monitor Gamer">
+
+
+                    <div class="carousel-caption">
+
+                        <span class="badge bg-danger mb-2">
+                            GAMING
+                        </span>
+
+                        <h5>
+                            Monitores Gamer
+                        </h5>
+
+                        <p>
+                            Disfruta una experiencia más fluida,
+                            inmersiva y preparada para tus partidas.
+                        </p>
+
+                        <a
+                            href="productos.html?categoria=Monitores"
+                            class="btn btn-light btn-sm mt-2">
+
+                            Ver monitores
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SLIDE 2 -->
+                <div class="carousel-item">
+
+                    <img
+                        src="img/carrusel/Carrusel/LaptopGamer.webp"
+                        class="d-block w-100"
+                        alt="Laptop Gamer">
+
+
+                    <div class="carousel-caption">
+
+                        <span class="badge bg-danger mb-2">
+                            POTENCIA PORTÁTIL
+                        </span>
+
+                        <h5>
+                            Laptop Gamer
+                        </h5>
+
+                        <p>
+                            Rendimiento para jugar, estudiar
+                            y trabajar donde quieras.
+                        </p>
+
+                        <a
+                            href="productos.html?categoria=Laptop%20Gamer"
+                            class="btn btn-light btn-sm mt-2">
+
+                            Ver laptops
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SLIDE 3 -->
+                <div class="carousel-item">
+
+                    <img
+                        src="img/carrusel/Carrusel/PcGamer.webp"
+                        class="d-block w-100"
+                        alt="PC Gamer">
+
+
+                    <div class="carousel-caption">
+
+                        <span class="badge bg-danger mb-2">
+                            ALTO RENDIMIENTO
+                        </span>
+
+                        <h5>
+                            PC Gamer
+                        </h5>
+
+                        <p>
+                            Equipos preparados para jugar,
+                            trabajar y llevar tu setup a otro nivel.
+                        </p>
+
+                        <a
+                            href="productos.html?categoria=PC%20Gamer"
+                            class="btn btn-light btn-sm mt-2">
+
+                            Ver PC Gamer
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ANTERIOR -->
+            <button
+                class="carousel-control-prev"
+                type="button"
+                data-bs-target="#carouselExampleCaptions"
+                data-bs-slide="prev">
+
+                <span
+                    class="carousel-control-prev-icon"
+                    aria-hidden="true">
+                </span>
+
+                <span class="visually-hidden">
+                    Anterior
+                </span>
+
+            </button>
+
+
+            <!-- SIGUIENTE -->
+            <button
+                class="carousel-control-next"
+                type="button"
+                data-bs-target="#carouselExampleCaptions"
+                data-bs-slide="next">
+
+                <span
+                    class="carousel-control-next-icon"
+                    aria-hidden="true">
+                </span>
+
+                <span class="visually-hidden">
+                    Siguiente
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================
+         CONTENIDO PRINCIPAL
+    ====================================== -->
+
+    <main class="container py-5">
+
+
+        <!-- =====================================
+             HERO TECNOLÓGICO
+        ====================================== -->
+
+        <section class="seccion-bienvenida hero-tech mb-5">
+
+            <div class="hero-tech-grid"></div>
+
+            <div class="hero-tech-glow hero-tech-glow-1"></div>
+            <div class="hero-tech-glow hero-tech-glow-2"></div>
+
+
+            <div
+                class="row align-items-center
+                       position-relative
+                       hero-tech-contenido">
+
+
+                <div class="col-lg-7">
+
+
+                    <span class="hero-tech-badge">
+
+                        ⚡ Tienda Online DSY1104
+
+                    </span>
+
+
+                    <h2 class="hero-tech-titulo">
+
+                        Potencia tu setup.
+
+                        <span>
+                            Eleva tu experiencia.
+                        </span>
+
+                    </h2>
+
+
+                    <p class="hero-tech-texto">
+
+                        Explora tecnología gamer,
+                        periféricos y equipos preparados
+                        para estudiar, trabajar y jugar
+                        al máximo nivel.
+
+                    </p>
+
+
+                    <div class="d-flex flex-wrap gap-3 mt-4">
+
+                        <a
+                            href="productos.html"
+                            class="btn hero-tech-btn-principal btn-lg">
+
+                            Explorar productos
+
+                        </a>
+
+
+                        <a
+                            href="nosotros.html"
+                            class="btn hero-tech-btn-secundario btn-lg">
+
+                            Conócenos
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="hero-tech-datos mt-4">
+
+                        <span>
+                            ⚡ Equipos Gamer
+                        </span>
+
+                        <span>
+                            ◉ Accesorios RGB
+                        </span>
+
+                        <span>
+                            ◆ Tecnología
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="col-lg-5
+                           d-none d-lg-flex
+                           justify-content-center">
+
+
+                    <div class="hero-tech-visual">
+
+
+                        <div class="hero-chip">
+
+                            <div class="chip-linea chip-linea-1"></div>
+                            <div class="chip-linea chip-linea-2"></div>
+                            <div class="chip-linea chip-linea-3"></div>
+                            <div class="chip-linea chip-linea-4"></div>
+
+
+                            <div class="chip-centro">
+
+                                <span>
+                                    DSY
+                                </span>
+
+                                <strong>
+                                    TECH
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </section>
 
-        <section>
-            <h2>Productos destacados</h2>
 
-            <div id="productos-destacados">
-                <p>Próximamente mostraremos nuestros productos destacados.</p>
+
+        <!-- =====================================
+             BENEFICIOS
+        ====================================== -->
+
+        <section class="mb-5">
+
+            <div class="text-center mb-4">
+
+                <h2 class="titulo-seccion">
+
+                    ¿Por qué comprar con nosotros?
+
+                </h2>
+
+                <p class="text-muted">
+
+                    Diseñamos una experiencia
+                    de compra sencilla y segura.
+
+                </p>
+
             </div>
+
+
+            <div class="row g-4">
+
+
+                <div class="col-12 col-md-4">
+
+                    <div class="card beneficio">
+
+                        <div class="card-body p-4">
+
+                            <div class="beneficio-icono">
+                                ✓
+                            </div>
+
+                            <h4 class="fw-bold">
+                                Compra sencilla
+                            </h4>
+
+                            <p class="text-muted mb-0">
+                                Agrega productos a tu carrito
+                                y administra tus compras fácilmente.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="col-12 col-md-4">
+
+                    <div class="card beneficio">
+
+                        <div class="card-body p-4">
+
+                            <div class="beneficio-icono">
+                                ★
+                            </div>
+
+                            <h4 class="fw-bold">
+                                Productos destacados
+                            </h4>
+
+                            <p class="text-muted mb-0">
+                                Encuentra accesorios y productos
+                                tecnológicos seleccionados.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="col-12 col-md-4">
+
+                    <div class="card beneficio">
+
+                        <div class="card-body p-4">
+
+                            <div class="beneficio-icono">
+                                ☰
+                            </div>
+
+                            <h4 class="fw-bold">
+                                Sitio responsable
+                            </h4>
+
+                            <p class="text-muted mb-0">
+                                Navega cómodamente desde computador,
+                                tablet o teléfono.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             CATEGORÍAS
+        ====================================== -->
+
+        <section class="mb-5 seccion-categorias">
+
+
+            <div class="d-flex align-items-center mb-4">
+
+                <div class="barra-categorias"></div>
+
+                <div>
+
+                    <h2 class="titulo-seccion mb-1">
+
+                        Explorar categorías
+
+                    </h2>
+
+                    <p class="text-muted mb-0">
+
+                        Encuentra rápidamente todo lo
+                        que necesitas para completar tu setup.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="row g-3">
+
+
+                <!-- PC GAMER -->
+                <div class="col-12 col-lg-6">
+
+                    <a
+                        href="productos.html?categoria=PC%20Gamer"
+                        class="categoria-card categoria-grande">
+
+
+                        <img
+                            src="img/carrusel/Carrusel/PcGamer.webp"
+                            alt="PC Gamer">
+
+
+                        <div class="categoria-overlay">
+
+                            <span class="categoria-etiqueta">
+
+                                Categoría destacada
+
+                            </span>
+
+                            <h3>
+                                PC Gamer
+                            </h3>
+
+                            <span class="categoria-link">
+
+                                Ver productos →
+
+                            </span>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- TECLADOS -->
+                <div class="col-12 col-sm-6 col-lg-3">
+
+                    <a
+                        href="productos.html?categoria=Teclados"
+                        class="categoria-card">
+
+
+                        <img
+                            src="img/carrusel/Carrusel/TecladoGamer.webp"
+                            alt="Teclados Gamer">
+
+
+                        <div class="categoria-overlay">
+
+                            <h4>
+                                Teclados Gamer
+                            </h4>
+
+                            <span class="categoria-link">
+                                Ver →
+                            </span>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- MOUSE -->
+                <div class="col-12 col-sm-6 col-lg-3">
+
+                    <a
+                        href="productos.html?categoria=Mouse"
+                        class="categoria-card">
+
+
+                        <img
+                            src="img/carrusel/Carrusel/Mouse1.jpg"
+                            alt="Mouse Gamer">
+
+
+                        <div class="categoria-overlay">
+
+                            <h4>
+                                Mouse Gamer
+                            </h4>
+
+                            <span class="categoria-link">
+                                Ver →
+                            </span>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- AUDÍFONOS -->
+                <div class="col-12 col-sm-6 col-lg-3">
+
+                    <a
+                        href="productos.html?categoria=Aud%C3%ADfonos"
+                        class="categoria-card">
+
+
+                        <img
+                            src="img/carrusel/Carrusel/Audifonos Gamer.webp"
+                            alt="Audífonos Gamer">
+
+
+                        <div class="categoria-overlay">
+
+                            <h4>
+                                Audífonos Gamer
+                            </h4>
+
+                            <span class="categoria-link">
+                                Ver →
+                            </span>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- LAPTOP -->
+                <div class="col-12 col-sm-6 col-lg-3">
+
+                    <a
+                        href="productos.html?categoria=Laptop%20Gamer"
+                        class="categoria-card">
+
+
+                        <img
+                            src="img/carrusel/Carrusel/LaptopGamer.webp"
+                            alt="Laptop Gamer">
+
+
+                        <div class="categoria-overlay">
+
+                            <h4>
+                                Laptop Gamer
+                            </h4>
+
+                            <span class="categoria-link">
+                                Ver →
+                            </span>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- MONITORES -->
+                <div class="col-12 col-sm-6 col-lg-3">
+
+                    <a
+                        href="productos.html?categoria=Monitores"
+                        class="categoria-card">
+
+
+                        <img
+                            src="img/carrusel/Carrusel/MonitorGamer.jpg"
+                            alt="Monitores Gamer">
+
+
+                        <div class="categoria-overlay">
+
+                            <h4>
+                                Monitores Gamer
+                            </h4>
+
+                            <span class="categoria-link">
+                                Ver →
+                            </span>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- SILLAS -->
+                <div class="col-12 col-sm-6 col-lg-3">
+
+                    <a
+                        href="productos.html?categoria=Sillas%20Gamer"
+                        class="categoria-card">
+
+
+                        <img
+                            src="img/carrusel/Carrusel/SillaGamer.png"
+                            alt="Sillas Gamer">
+
+
+                        <div class="categoria-overlay">
+
+                            <h4>
+                                Sillas Gamer
+                            </h4>
+
+                            <span class="categoria-link">
+                                Ver →
+                            </span>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- SETUP -->
+                <div class="col-12 col-sm-6 col-lg-3">
+
+                    <a
+                        href="productos.html"
+                        class="categoria-card">
+
+
+                        <img
+                            src="img/carrusel/Carrusel/PcGaymer2.webp"
+                            alt="Setup Gamer">
+
+
+                        <div class="categoria-overlay">
+
+                            <h4>
+                                Setup Gamer
+                            </h4>
+
+                            <span class="categoria-link">
+                                Ver →
+                            </span>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="text-end mt-4">
+
+                <a
+                    href="productos.html"
+                    class="btn btn-outline-dark">
+
+                    Ver todas las categorías →
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             PRODUCTOS DESTACADOS
+        ====================================== -->
+
+        <section class="mb-5">
+
+
+            <div
+                class="d-flex flex-wrap
+                       justify-content-between
+                       align-items-center gap-3 mb-4">
+
+
+                <div>
+
+                    <h2 class="titulo-seccion mb-1">
+
+                        Productos destacados
+
+                    </h2>
+
+                    <p class="text-muted mb-0">
+
+                        Algunas opciones que puedes
+                        encontrar en la tienda.
+
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="productos.html"
+                    class="btn btn-outline-dark">
+
+                    Ver catálogo completo
+
+                </a>
+
+            </div>
+
+
+
+            <div class="row g-4">
+
+
+                <!-- MOUSE -->
+                <div class="col-12 col-md-4">
+
+                    <div class="card producto-home shadow-sm">
+
+
+                        <img
+                            src="img/carrusel/Carrusel/Mouse1.jpg"
+                            class="card-img-top"
+                            alt="Mouse Gamer">
+
+
+                        <div class="card-body">
+
+                            <h5 class="card-title fw-bold">
+
+                                Mouse Gamer
+
+                            </h5>
+
+                            <p class="card-text text-muted">
+
+                                Precisión y comodidad
+                                para tus partidas.
+
+                            </p>
+
+                            <a
+                                href="productos.html?categoria=Mouse"
+                                class="btn btn-dark">
+
+                                Ver producto
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- TECLADO -->
+                <div class="col-12 col-md-4">
+
+                    <div class="card producto-home shadow-sm">
+
+
+                        <img
+                            src="img/carrusel/Carrusel/TecladoGamer.webp"
+                            class="card-img-top"
+                            alt="Teclado Gamer">
+
+
+                        <div class="card-body">
+
+                            <h5 class="card-title fw-bold">
+
+                                Teclado Gamer
+
+                            </h5>
+
+                            <p class="card-text text-muted">
+
+                                Respuesta rápida e iluminación
+                                para completar tu setup.
+
+                            </p>
+
+                            <a
+                                href="productos.html?categoria=Teclados"
+                                class="btn btn-dark">
+
+                                Ver producto
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- AUDÍFONOS -->
+                <div class="col-12 col-md-4">
+
+                    <div class="card producto-home shadow-sm">
+
+
+                        <img
+                            src="img/carrusel/Carrusel/Audifonos Gamer.webp"
+                            class="card-img-top"
+                            alt="Audífonos Gamer">
+
+
+                        <div class="card-body">
+
+                            <h5 class="card-title fw-bold">
+
+                                Audífonos Gamer
+
+                            </h5>
+
+                            <p class="card-text text-muted">
+
+                                Sonido envolvente y micrófono
+                                para tus partidas.
+
+                            </p>
+
+                            <a
+                                href="productos.html?categoria=Aud%C3%ADfonos"
+                                class="btn btn-dark">
+
+                                Ver producto
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             CTA
+        ====================================== -->
+
+        <section class="cta-final text-center">
+
+            <h2 class="fw-bold">
+
+                ¿Necesitas ayuda?
+
+            </h2>
+
+            <p class="text-muted">
+
+                Si tienes preguntas sobre nuestros productos,
+                puedes enviarnos un mensaje.
+
+            </p>
+
+            <a
+                href="contacto.html"
+                class="btn btn-dark btn-lg">
+
+                Contactar
+
+            </a>
+
         </section>
 
     </main>
 
-    <footer>
-        <p>
-            © 2026 Tienda Online DSY1104
-        </p>
+
+
+    <!-- =====================================
+         FOOTER PROFESIONAL
+    ====================================== -->
+
+    <footer class="footer-home bg-dark text-white pt-5 pb-3">
+
+        <div class="container">
+
+
+            <div class="row g-4">
+
+
+                <!-- TIENDA -->
+                <div class="col-12 col-md-6 col-lg-3">
+
+                    <h4 class="fw-bold mb-3">
+
+                        Tienda Online
+
+                    </h4>
+
+                    <p class="text-white-50">
+
+                        Tu tienda de tecnología y accesorios.
+                        Encuentra productos para estudiar,
+                        trabajar y disfrutar.
+
+                    </p>
+
+                    <p class="text-white-50 mb-1">
+
+                        Proyecto académico DSY1104
+
+                    </p>
+
+                    <p class="text-white-50">
+
+                        Desarrollo Fullstack II
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- NAVEGACIÓN -->
+                <div class="col-6 col-md-6 col-lg-2">
+
+                    <h5 class="fw-bold mb-3">
+
+                        Navegación
+
+                    </h5>
+
+                    <ul class="list-unstyled">
+
+                        <li class="mb-2">
+                            <a
+                                href="index.html"
+                                class="text-white-50 text-decoration-none">
+
+                                Inicio
+
+                            </a>
+                        </li>
+
+
+                        <li class="mb-2">
+                            <a
+                                href="productos.html"
+                                class="text-white-50 text-decoration-none">
+
+                                Productos
+
+                            </a>
+                        </li>
+
+
+                        <li class="mb-2">
+                            <a
+                                href="nosotros.html"
+                                class="text-white-50 text-decoration-none">
+
+                                Nosotros
+
+                            </a>
+                        </li>
+
+
+                        <li class="mb-2">
+                            <a
+                                href="blog.html"
+                                class="text-white-50 text-decoration-none">
+
+                                Blog
+
+                            </a>
+                        </li>
+
+
+                        <li class="mb-2">
+                            <a
+                                href="contacto.html"
+                                class="text-white-50 text-decoration-none">
+
+                                Contacto
+
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+
+                <!-- ATENCIÓN -->
+                <div class="col-6 col-md-6 col-lg-3">
+
+                    <h5 class="fw-bold mb-3">
+
+                        Atención al cliente
+
+                    </h5>
+
+                    <ul class="list-unstyled">
+
+                        <li class="mb-2">
+
+                            <a
+                                href="contacto.html"
+                                class="text-white-50 text-decoration-none">
+
+                                Centro de ayuda
+
+                            </a>
+
+                        </li>
+
+
+                        <li class="mb-2">
+
+                            <a
+                                href="carrito.html"
+                                class="text-white-50 text-decoration-none">
+
+                                Mi carrito
+
+                            </a>
+
+                        </li>
+
+
+                        <li class="mb-2">
+
+                            <a
+                                href="login.html"
+                                class="text-white-50 text-decoration-none">
+
+                                Mi cuenta
+
+                            </a>
+
+                        </li>
+
+
+                        <li class="mb-2">
+
+                            <a
+                                href="registro.html"
+                                class="text-white-50 text-decoration-none">
+
+                                Crear cuenta
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+
+                <!-- CONTACTO -->
+                <div class="col-12 col-md-6 col-lg-4 footer-contacto">
+
+                    <h5 class="fw-bold mb-3">
+
+                        Contáctanos
+
+                    </h5>
+
+
+                    <p class="text-white-50 mb-2">
+
+                        <strong class="text-white">
+                            📍 Dirección:
+                        </strong>
+
+                        Av. Vicuña Mackenna 4917,
+                        San Joaquín, Santiago
+
+                    </p>
+
+
+                    <p class="text-white-50 mb-2">
+
+                        <strong class="text-white">
+                            ☎ Teléfono:
+                        </strong>
+
+                        +56 2 2345 6789
+
+                    </p>
+
+
+                    <p class="text-white-50 mb-2">
+
+                        <strong class="text-white">
+                            ✉ Correo:
+                        </strong>
+
+                        contacto@tiendaonline.cl
+
+                    </p>
+
+
+                    <p class="text-white-50 mb-2">
+
+                        <strong class="text-white">
+                            🕒 Horario:
+                        </strong>
+
+                        Lunes a viernes
+                        de 09:00 a 18:00
+
+                    </p>
+
+
+                    <p class="text-white-50 mb-0">
+
+                        Santiago, Chile
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <hr class="border-secondary my-4">
+
+
+
+            <!-- CONFIANZA Y REDES -->
+
+            <div class="row align-items-center g-4">
+
+
+                <div class="col-md-6">
+
+                    <h6 class="fw-bold mb-3">
+
+                        Compra con confianza
+
+                    </h6>
+
+
+                    <span class="badge bg-success me-1 mb-2 p-2">
+
+                        ✓ Compra segura
+
+                    </span>
+
+
+                    <span class="badge bg-secondary me-1 mb-2 p-2">
+
+                        🔒 Datos protegidos
+
+                    </span>
+
+
+                    <span class="badge bg-secondary mb-2 p-2">
+
+                        ✓ Soporte al cliente
+
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-6 text-md-end">
+
+                    <h6 class="fw-bold mb-3">
+
+                        Síguenos
+
+                    </h6>
+
+
+                    <a
+                        href="#"
+                        class="btn btn-outline-light btn-sm me-1">
+
+                        Instagram
+
+                    </a>
+
+
+                    <a
+                        href="#"
+                        class="btn btn-outline-light btn-sm me-1">
+
+                        Facebook
+
+                    </a>
+
+
+                    <a
+                        href="#"
+                        class="btn btn-outline-light btn-sm">
+
+                        X
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <hr class="border-secondary my-4">
+
+
+
+            <!-- PAGOS -->
+
+            <div class="row align-items-center g-3">
+
+
+                <div class="col-md-6">
+
+                    <h6 class="fw-bold mb-3">
+
+                        Medios de pago
+
+                    </h6>
+
+
+                    <span class="badge bg-light text-dark me-1 p-2">
+
+                        VISA
+
+                    </span>
+
+
+                    <span class="badge bg-light text-dark me-1 p-2">
+
+                        Mastercard
+
+                    </span>
+
+
+                    <span class="badge bg-light text-dark me-1 p-2">
+
+                        Débito
+
+                    </span>
+
+
+                    <span class="badge bg-light text-dark p-2">
+
+                        Transferencia
+
+                    </span>
+
+                </div>
+
+
+                <div class="col-md-6 text-md-end">
+
+                    <p class="text-white-50 mb-0">
+
+                        🔒 Pagos procesados
+                        de forma segura
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <hr class="border-secondary my-4">
+
+
+
+            <!-- COPYRIGHT -->
+
+            <div
+                class="d-flex flex-column flex-md-row
+                       justify-content-between
+                       align-items-center gap-3">
+
+
+                <p class="text-white-50 mb-0">
+
+                    © 2026 Tienda Online DSY1104.
+                    Todos los derechos reservados.
+
+                </p>
+
+
+                <div>
+
+                    <a
+                        href="terminos.html"
+                        class="text-white-50
+                               text-decoration-none me-3">
+
+                        Términos y condiciones
+
+                    </a>
+
+
+                    <a
+                        href="privacidad.html"
+                        class="text-white-50
+                               text-decoration-none me-3">
+
+                        Política de privacidad
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </footer>
 
+
+
+    <!-- =====================================
+         BOOTSTRAP
+    ====================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+
+
+    <!-- =====================================
+         USUARIO ACTIVO
+    ====================================== -->
+
+    <script>
+
+        const zonaUsuario =
+            document.getElementById(
+                "zona-usuario"
+            );
+
+
+        const usuarioActivo =
+            JSON.parse(
+                localStorage.getItem(
+                    "usuarioActivo"
+                )
+            );
+
+
+        if (usuarioActivo) {
+
+            zonaUsuario.innerHTML = `
+
+                <span class="text-white">
+
+                    Hola,
+
+                    <strong>
+                        ${usuarioActivo.nombre}
+                    </strong>
+
+                </span>
+
+
+                <button
+                    id="btnCerrarSesion"
+                    class="btn btn-outline-light btn-sm">
+
+                    Cerrar sesión
+
+                </button>
+            `;
+
+
+            document
+                .getElementById(
+                    "btnCerrarSesion"
+                )
+                .addEventListener(
+                    "click",
+                    function () {
+
+                        localStorage.removeItem(
+                            "usuarioActivo"
+                        );
+
+
+                        alert(
+                            "Sesión cerrada correctamente."
+                        );
+
+
+                        window.location.href =
+                            "login.html";
+
+                    }
+                );
+
+        } else {
+
+            zonaUsuario.innerHTML = `
+
+                <a
+                    href="login.html"
+                    class="btn btn-outline-light btn-sm">
+
+                    Iniciar sesión
+
+                </a>
+
+
+                <a
+                    href="registro.html"
+                    class="btn btn-light btn-sm">
+
+                    Crear cuenta
+
+                </a>
+            `;
+
+        }
+
+    </script>
+
+
+
+    <!-- =====================================
+         CONTADOR DEL CARRITO
+    ====================================== -->
+
+    <script>
+
+        function actualizarContadorCarrito() {
+
+            const carrito =
+                JSON.parse(
+                    localStorage.getItem(
+                        "carrito"
+                    )
+                ) || [];
+
+
+            const cantidadTotal =
+                carrito.reduce(
+                    function (
+                        total,
+                        producto
+                    ) {
+
+                        return (
+                            total +
+                            (
+                                producto.cantidad ||
+                                0
+                            )
+                        );
+
+                    },
+                    0
+                );
+
+
+            const contador =
+                document.getElementById(
+                    "contador-carrito"
+                );
+
+
+            if (contador) {
+
+                contador.textContent =
+                    cantidadTotal;
+
+            }
+
+        }
+
+
+        actualizarContadorCarrito();
+
+    </script>
+
+
 </body>
+
 </html>
