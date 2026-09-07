@@ -7,94 +7,904 @@
 
     <title>Nuevo Producto - Administración</title>
 
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- CSS propio -->
     <link rel="stylesheet" href="../css/styles.css">
+
+    <style>
+
+        /* =========================================
+           PÁGINA ADMIN - NUEVO PRODUCTO
+        ========================================= */
+
+        body.admin-page {
+            background:
+                radial-gradient(
+                    circle at 50% 0%,
+                    rgba(59, 130, 246, 0.08),
+                    transparent 35%
+                ),
+                #f4f6fb;
+
+            min-height: 100vh;
+        }
+
+
+        /* =========================================
+           LOGO
+        ========================================= */
+
+        .admin-page .logo-tienda-neon {
+            display: inline-block;
+
+            font-size: 1.7rem;
+            font-weight: 800;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #22d3ee,
+                    #3b82f6,
+                    #8b5cf6,
+                    #d946ef
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+
+        /* =========================================
+           HERO
+        ========================================= */
+
+        .admin-producto-hero {
+            position: relative;
+
+            overflow: hidden;
+
+            padding: 42px 45px;
+
+            margin-bottom: 28px;
+
+            border-radius: 20px;
+
+            color: white;
+
+            border:
+                1px solid rgba(34, 211, 238, 0.22);
+
+            background:
+                radial-gradient(
+                    circle at 85% 20%,
+                    rgba(168, 85, 247, 0.22),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 10% 90%,
+                    rgba(34, 211, 238, 0.15),
+                    transparent 32%
+                ),
+                linear-gradient(
+                    135deg,
+                    #07111f,
+                    #0f172a,
+                    #111d42
+                );
+
+            box-shadow:
+                0 15px 35px rgba(15, 23, 42, 0.16);
+        }
+
+
+        .admin-producto-hero::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 8%;
+
+            width: 84%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #22d3ee,
+                    #3b82f6,
+                    #a855f7,
+                    #d946ef,
+                    transparent
+                );
+
+            box-shadow:
+                0 0 10px rgba(34, 211, 238, 0.60);
+        }
+
+
+        .admin-producto-badge {
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            padding: 7px 12px;
+
+            border-radius: 30px;
+
+            border: 1px solid #22d3ee;
+
+            background:
+                rgba(34, 211, 238, 0.08);
+
+            color: #67e8f9;
+
+            font-size: 0.78rem;
+            font-weight: 800;
+
+            letter-spacing: 0.8px;
+        }
+
+
+        .admin-producto-hero h1 {
+            color: white !important;
+
+            font-size:
+                clamp(2rem, 4vw, 3rem);
+
+            font-weight: 800;
+
+            margin-bottom: 10px;
+        }
+
+
+        .admin-producto-hero p {
+            color: #cbd5e1;
+
+            font-size: 1.02rem;
+
+            margin-bottom: 0;
+        }
+
+
+        /* =========================================
+           CONTENEDOR FORMULARIO
+        ========================================= */
+
+        .producto-form-card {
+            position: relative;
+
+            overflow: hidden;
+
+            max-width: 900px;
+
+            margin: 0 auto;
+
+            padding: 38px;
+
+            border-radius: 20px;
+
+            border:
+                1px solid rgba(59, 130, 246, 0.18);
+
+            background: white;
+
+            box-shadow:
+                0 12px 32px rgba(15, 23, 42, 0.10);
+        }
+
+
+        .producto-form-card::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 3px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #22d3ee,
+                    #3b82f6,
+                    #a855f7,
+                    #d946ef
+                );
+
+            box-shadow:
+                0 0 10px rgba(34, 211, 238, 0.55);
+        }
+
+
+        .producto-form-card h2 {
+            color: #0f172a;
+
+            font-weight: 800;
+
+            margin-bottom: 7px;
+        }
+
+
+        .producto-form-card > p {
+            color: #64748b;
+
+            margin-bottom: 30px;
+        }
+
+
+        /* =========================================
+           FORMULARIO
+        ========================================= */
+
+        #form-producto {
+            max-width: none;
+
+            margin-top: 0;
+        }
+
+
+        #form-producto .campo-formulario {
+            margin-bottom: 20px;
+        }
+
+
+        #form-producto .campo-formulario label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #334155;
+
+            font-weight: 700;
+        }
+
+
+        #form-producto input,
+        #form-producto textarea,
+        #form-producto select {
+            width: 100%;
+
+            padding: 11px 13px;
+
+            border:
+                1px solid #cbd5e1;
+
+            border-radius: 8px;
+
+            background: #ffffff;
+
+            color: #0f172a;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        #form-producto input:hover,
+        #form-producto textarea:hover,
+        #form-producto select:hover {
+            border-color:
+                #94a3b8;
+        }
+
+
+        #form-producto input:focus,
+        #form-producto textarea:focus,
+        #form-producto select:focus {
+            outline: none;
+
+            border-color:
+                #22d3ee;
+
+            box-shadow:
+                0 0 0 3px rgba(34, 211, 238, 0.10),
+                0 0 12px rgba(59, 130, 246, 0.12);
+        }
+
+
+        #form-producto textarea {
+            min-height: 130px;
+
+            resize: vertical;
+        }
+
+
+        /* =========================================
+           ERRORES
+        ========================================= */
+
+        #form-producto .error {
+            display: block;
+
+            min-height: 18px;
+
+            margin-top: 6px;
+
+            color: #dc2626;
+
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+
+        /* =========================================
+           BOTONES
+        ========================================= */
+
+        #form-producto .botones-formulario {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 10px;
+        }
+
+
+        #form-producto .botones-formulario button {
+            padding: 11px 20px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #7c3aed
+                );
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 6px 18px rgba(37, 99, 235, 0.20);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        #form-producto .botones-formulario button:hover {
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 0 8px rgba(34, 211, 238, 0.45),
+                0 0 18px rgba(124, 58, 237, 0.22);
+        }
+
+
+        #form-producto .botones-formulario a {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 10px 20px;
+
+            border:
+                1px solid #3b82f6;
+
+            border-radius: 8px;
+
+            background: white;
+
+            color:
+                #2563eb;
+
+            font-weight: 700;
+
+            text-decoration: none;
+
+            transition:
+                0.2s ease;
+        }
+
+
+        #form-producto .botones-formulario a:hover {
+            border-color:
+                #22d3ee;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #7c3aed
+                );
+
+            box-shadow:
+                0 0 8px rgba(34, 211, 238, 0.35);
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+
+        .admin-footer {
+            position: relative;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #07111f,
+                    #0f172a,
+                    #111827
+                ) !important;
+        }
+
+
+        .admin-footer::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 3px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #22d3ee,
+                    #3b82f6,
+                    #a855f7,
+                    #d946ef
+                );
+
+            box-shadow:
+                0 0 10px rgba(34, 211, 238, 0.55);
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 768px) {
+
+            .admin-producto-hero {
+                padding: 32px 24px;
+            }
+
+
+            .producto-form-card {
+                padding: 28px 22px;
+            }
+
+        }
+
+
+        @media (max-width: 480px) {
+
+            .admin-producto-hero {
+                padding: 28px 20px;
+            }
+
+
+            .producto-form-card {
+                padding: 25px 18px;
+            }
+
+
+            #form-producto .botones-formulario {
+                flex-direction: column;
+            }
+
+
+            #form-producto .botones-formulario button,
+            #form-producto .botones-formulario a {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
 </head>
 
-<body>
 
-    <header>
-        <h1>Administración</h1>
+<body class="admin-page">
 
-        <nav>
-            <a href="index.html">Inicio Admin</a>
-            <a href="productos.html">Productos</a>
-            <a href="../index.html">Volver a la tienda</a>
-        </nav>
-    </header>
 
-    <main>
+    <!-- =========================================
+         NAVBAR
+    ========================================== -->
 
-        <section>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-neon">
 
-            <h2>Crear nuevo producto</h2>
+        <div class="container">
 
-            <p>Completa los datos del producto.</p>
+
+            <!-- LOGO -->
+            <a
+                class="navbar-brand fw-bold"
+                href="../index.html">
+
+                <span class="logo-tienda-neon">
+                    Tienda Online
+                </span>
+
+            </a>
+
+
+            <!-- BOTÓN MÓVIL -->
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarAdmin"
+                aria-controls="navbarAdmin"
+                aria-expanded="false"
+                aria-label="Abrir navegación">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+
+            <!-- LINKS -->
+            <div
+                class="collapse navbar-collapse"
+                id="navbarAdmin">
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="index.html">
+
+                            Inicio Admin
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link active"
+                            href="productos.html">
+
+                            Productos
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="usuarios.html">
+
+                            Usuarios
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="../index.html">
+
+                            Volver a la tienda
+
+                        </a>
+
+                    </li>
+
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =========================================
+         CONTENIDO PRINCIPAL
+    ========================================== -->
+
+    <main class="container py-5">
+
+
+        <!-- HERO -->
+        <section class="admin-producto-hero">
+
+            <span class="admin-producto-badge">
+                ⚡ ADMINISTRACIÓN
+            </span>
+
+
+            <h1>
+                Nuevo producto
+            </h1>
+
+
+            <p>
+                Agrega un nuevo producto al catálogo de la tienda.
+            </p>
+
+        </section>
+
+
+
+        <!-- =========================================
+             FORMULARIO
+        ========================================== -->
+
+        <section class="producto-form-card">
+
+
+            <h2>
+                Crear nuevo producto
+            </h2>
+
+
+            <p>
+                Completa los datos del producto.
+            </p>
+
+
+
+            <!--
+                IMPORTANTE:
+                Se conserva exactamente el ID
+                que utiliza admin-productos.js
+            -->
 
             <form id="form-producto">
 
+
+                <!-- CÓDIGO -->
                 <div class="campo-formulario">
-                    <label for="codigo">Código:</label>
-                    <input type="text" id="codigo" name="codigo">
-                    <small class="error" id="error-codigo"></small>
+
+                    <label for="codigo">
+                        Código
+                    </label>
+
+                    <input
+                        type="text"
+                        id="codigo"
+                        name="codigo"
+                        placeholder="Ej: PROD001">
+
+                    <small
+                        class="error"
+                        id="error-codigo">
+                    </small>
+
                 </div>
 
+
+
+                <!-- NOMBRE -->
                 <div class="campo-formulario">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre">
-                    <small class="error" id="error-nombre"></small>
+
+                    <label for="nombre">
+                        Nombre
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nombre"
+                        name="nombre"
+                        placeholder="Nombre del producto">
+
+                    <small
+                        class="error"
+                        id="error-nombre">
+                    </small>
+
                 </div>
 
+
+
+                <!-- DESCRIPCIÓN -->
                 <div class="campo-formulario">
-                    <label for="descripcion">Descripción:</label>
-                    <textarea id="descripcion" name="descripcion"></textarea>
-                    <small class="error" id="error-descripcion"></small>
+
+                    <label for="descripcion">
+                        Descripción
+                    </label>
+
+                    <textarea
+                        id="descripcion"
+                        name="descripcion"
+                        placeholder="Describe las características del producto"></textarea>
+
+                    <small
+                        class="error"
+                        id="error-descripcion">
+                    </small>
+
                 </div>
 
+
+
+                <!-- PRECIO -->
                 <div class="campo-formulario">
-                    <label for="precio">Precio:</label>
-                    <input type="number" id="precio" name="precio">
-                    <small class="error" id="error-precio"></small>
+
+                    <label for="precio">
+                        Precio
+                    </label>
+
+                    <input
+                        type="number"
+                        id="precio"
+                        name="precio"
+                        placeholder="Ej: 29990">
+
+                    <small
+                        class="error"
+                        id="error-precio">
+                    </small>
+
                 </div>
 
+
+
+                <!-- STOCK -->
                 <div class="campo-formulario">
-                    <label for="stock">Stock:</label>
-                    <input type="number" id="stock" name="stock">
-                    <small class="error" id="error-stock"></small>
+
+                    <label for="stock">
+                        Stock
+                    </label>
+
+                    <input
+                        type="number"
+                        id="stock"
+                        name="stock"
+                        placeholder="Cantidad disponible">
+
+                    <small
+                        class="error"
+                        id="error-stock">
+                    </small>
+
                 </div>
 
+
+
+                <!-- STOCK CRÍTICO -->
                 <div class="campo-formulario">
-                    <label for="stock-critico">Stock crítico:</label>
-                    <input type="number" id="stock-critico" name="stock-critico">
-                    <small class="error" id="error-stock-critico"></small>
+
+                    <label for="stock-critico">
+                        Stock crítico
+                    </label>
+
+                    <input
+                        type="number"
+                        id="stock-critico"
+                        name="stock-critico"
+                        placeholder="Cantidad mínima de stock">
+
+                    <small
+                        class="error"
+                        id="error-stock-critico">
+                    </small>
+
                 </div>
 
-                <div class="campo-formulario">
-                    <label for="categoria">Categoría:</label>
 
-                    <select id="categoria" name="categoria">
-                        <option value="">Seleccione una categoría</option>
-                        <option value="Perifericos">Periféricos</option>
-                        <option value="Audio">Audio</option>
-                        <option value="Monitores">Monitores</option>
+
+                <!-- CATEGORÍA -->
+                <div class="campo-formulario">
+
+                    <label for="categoria">
+                        Categoría
+                    </label>
+
+                    <select
+                        id="categoria"
+                        name="categoria">
+
+                        <option value="">
+                            Seleccione una categoría
+                        </option>
+
+                        <option value="Perifericos">
+                            Periféricos
+                        </option>
+
+                        <option value="Audio">
+                            Audio
+                        </option>
+
+                        <option value="Monitores">
+                            Monitores
+                        </option>
+
                     </select>
 
-                    <small class="error" id="error-categoria"></small>
+                    <small
+                        class="error"
+                        id="error-categoria">
+                    </small>
+
                 </div>
 
+
+
+                <!-- IMAGEN -->
                 <div class="campo-formulario">
-                    <label for="imagen">URL de imagen:</label>
-                    <input type="text" id="imagen" name="imagen">
+
+                    <label for="imagen">
+                        URL de imagen
+                    </label>
+
+                    <input
+                        type="text"
+                        id="imagen"
+                        name="imagen"
+                        placeholder="https://ejemplo.com/producto.jpg">
+
                 </div>
+
+
+
+                <!-- =========================================
+                     BOTONES
+                ========================================== -->
 
                 <div class="botones-formulario">
+
+
                     <button type="submit">
+
                         Guardar producto
+
                     </button>
 
+
                     <a href="productos.html">
+
                         Cancelar
+
                     </a>
+
+
                 </div>
+
 
             </form>
 
@@ -102,11 +912,40 @@
 
     </main>
 
-    <footer>
-        <p>© 2026 Tienda Online DSY1104</p>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer
+        class="admin-footer text-white text-center py-4 mt-5">
+
+        <p class="mb-0">
+            © 2026 Tienda Online DSY1104
+        </p>
+
     </footer>
 
+
+
+    <!-- =========================================
+         BOOTSTRAP
+    ========================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+
+
+    <!-- =========================================
+         ADMIN PRODUCTOS
+         NO MODIFICAR
+    ========================================== -->
+
     <script src="../js/admin-productos.js"></script>
+
 
 </body>
 

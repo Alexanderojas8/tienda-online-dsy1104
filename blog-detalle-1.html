@@ -4,64 +4,384 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Cómo elegir un buen mouse gamer - Tienda Online</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- CSS propio -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
-<body>
+<body class="blog-detalle-page">
 
-    <header>
-        <h1>Tienda Online</h1>
+    <!-- =====================================
+         NAVBAR NEÓN
+    ====================================== -->
 
-        <nav>
-            <a href="index.html">Inicio</a>
-            <a href="productos.html">Productos</a>
-            <a href="nosotros.html">Nosotros</a>
-            <a href="blog.html">Blog</a>
-            <a href="contacto.html">Contacto</a>
-            <a href="carrito.html">Carrito</a>
-        </nav>
-    </header>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-neon">
 
-    <main>
+        <div class="container">
 
-        <section>
+            <!-- LOGO -->
+            <a class="navbar-brand fw-bold" href="index.html">
 
-            <a href="blog.html">← Volver al Blog</a>
+                <span class="logo-tienda">
+                    Tienda <span>Online</span>
+                </span>
 
-            <h2>¿Cómo elegir un buen mouse gamer?</h2>
+            </a>
 
-            <p>
-                Elegir un mouse gamer adecuado puede marcar una gran diferencia
-                durante una partida. No todos los jugadores necesitan las mismas
-                características, por eso es importante considerar algunos aspectos.
-            </p>
 
-            <p>
-                Uno de los puntos principales es la comodidad. El mouse debe adaptarse
-                correctamente a la mano y permitir utilizarlo durante varias horas sin
-                provocar molestias.
-            </p>
+            <!-- BOTÓN MÓVIL -->
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarPrincipal"
+                aria-controls="navbarPrincipal"
+                aria-expanded="false"
+                aria-label="Abrir navegación">
 
-            <p>
-                También es importante revisar la sensibilidad o DPI. Algunos jugadores
-                prefieren movimientos rápidos, mientras que otros necesitan mayor
-                precisión.
-            </p>
+                <span class="navbar-toggler-icon"></span>
 
-            <p>
-                Finalmente, características como botones adicionales, iluminación,
-                peso y tipo de conexión pueden influir en la elección.
-            </p>
+            </button>
 
-        </section>
+
+            <!-- CONTENIDO NAVBAR -->
+            <div
+                class="collapse navbar-collapse"
+                id="navbarPrincipal">
+
+
+                <!-- MENÚ -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="index.html">
+
+                            Inicio
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="productos.html">
+
+                            Productos
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="nosotros.html">
+
+                            Nosotros
+
+                        </a>
+
+                    </li>
+
+
+                    <!-- BLOG ACTIVO -->
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link active"
+                            href="blog.html">
+
+                            Blog
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="contacto.html">
+
+                            Contacto
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="carrito.html">
+
+                            Carrito
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+
+                <!-- CARRITO -->
+                <div class="d-flex align-items-center mt-3 mt-lg-0">
+
+                    <a
+                        href="carrito.html"
+                        class="btn carrito-navbar">
+
+                        🛒 Ver carrito
+
+                        <span
+                            id="contador-carrito"
+                            class="badge contador-navbar">
+
+                            0
+
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =====================================
+         CONTENIDO
+    ====================================== -->
+
+    <main class="container py-5">
+
+        <div class="row justify-content-center">
+
+            <div class="col-12 col-lg-9">
+
+                <!-- BOTÓN VOLVER -->
+                <div class="mb-3">
+
+                    <a
+                        href="blog.html"
+                        class="btn btn-outline-dark">
+
+                        ← Volver al Blog
+
+                    </a>
+
+                </div>
+
+
+                <!-- =====================================
+                     ARTÍCULO
+                ====================================== -->
+
+                <article class="card shadow border-0">
+
+                    <div class="card-body p-4 p-md-5">
+
+
+                        <!-- CATEGORÍA -->
+                        <span class="badge bg-dark mb-3">
+
+                            Tecnología
+
+                        </span>
+
+
+                        <!-- TÍTULO -->
+                        <h2 class="fw-bold mb-4">
+
+                            ¿Cómo elegir un buen mouse gamer?
+
+                        </h2>
+
+
+                        <p class="fs-5">
+
+                            Elegir un mouse gamer adecuado puede marcar una gran
+                            diferencia durante una partida. No todos los jugadores
+                            necesitan las mismas características, por eso es
+                            importante considerar algunos aspectos.
+
+                        </p>
+
+
+                        <hr class="my-4">
+
+
+                        <!-- COMODIDAD -->
+                        <h3 class="h4 fw-bold">
+
+                            Comodidad
+
+                        </h3>
+
+                        <p>
+
+                            Uno de los puntos principales es la comodidad.
+                            El mouse debe adaptarse correctamente a la mano y
+                            permitir utilizarlo durante varias horas sin
+                            provocar molestias.
+
+                        </p>
+
+
+                        <!-- DPI -->
+                        <h3 class="h4 fw-bold mt-4">
+
+                            Sensibilidad y DPI
+
+                        </h3>
+
+                        <p>
+
+                            También es importante revisar la sensibilidad o DPI.
+                            Algunos jugadores prefieren movimientos rápidos,
+                            mientras que otros necesitan mayor precisión.
+
+                        </p>
+
+
+                        <!-- CARACTERÍSTICAS -->
+                        <h3 class="h4 fw-bold mt-4">
+
+                            Características adicionales
+
+                        </h3>
+
+                        <p>
+
+                            Finalmente, características como botones adicionales,
+                            iluminación, peso y tipo de conexión pueden influir
+                            en la elección.
+
+                        </p>
+
+
+                        <hr class="my-4">
+
+
+                        <!-- BOTONES -->
+                        <div class="d-flex flex-wrap gap-2">
+
+                            <a
+                                href="blog.html"
+                                class="btn btn-dark">
+
+                                Ver más artículos
+
+                            </a>
+
+                            <a
+                                href="productos.html"
+                                class="btn btn-outline-dark">
+
+                                Ver productos
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </div>
 
     </main>
 
-    <footer>
-        <p>© 2026 Tienda Online DSY1104</p>
+
+    <!-- =====================================
+         FOOTER
+    ====================================== -->
+
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+
+        <p class="mb-0">
+
+            © 2026 Tienda Online DSY1104
+
+        </p>
+
     </footer>
+
+
+    <!-- Bootstrap -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+
+    <!-- =====================================
+         CONTADOR CARRITO
+    ====================================== -->
+
+    <script>
+
+        function actualizarContadorCarrito() {
+
+            const carrito =
+                JSON.parse(
+                    localStorage.getItem("carrito")
+                ) || [];
+
+
+            const cantidadTotal =
+                carrito.reduce(
+                    function (total, producto) {
+
+                        return total +
+                            (producto.cantidad || 0);
+
+                    },
+                    0
+                );
+
+
+            const contador =
+                document.getElementById(
+                    "contador-carrito"
+                );
+
+
+            if (contador) {
+
+                contador.textContent =
+                    cantidadTotal;
+
+            }
+
+        }
+
+
+        actualizarContadorCarrito();
+
+    </script>
 
 </body>
 
-</html> 
+</html>

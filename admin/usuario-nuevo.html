@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nuevo usuario - Administración</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- CSS propio -->
+    <link rel="stylesheet" href="../css/styles.css">
+
+    <style>
+
+        body.admin-page {
+            background:
+                radial-gradient(
+                    circle at 50% 0%,
+                    rgba(59, 130, 246, 0.08),
+                    transparent 35%
+                ),
+                #f4f6fb;
+        }
+
+        /* LOGO NEÓN */
+
+        .admin-page .logo-tienda-neon {
+            display: inline-block;
+
+            font-size: 1.7rem;
+            font-weight: 800;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #22d3ee,
+                    #3b82f6,
+                    #8b5cf6,
+                    #d946ef
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+
+            text-shadow: none;
+        }
+
+
+        /* HERO */
+
+        .admin-hero {
+            position: relative;
+            overflow: hidden;
+
+            padding: 42px 45px;
+
+            margin-bottom: 28px;
+
+            border-radius: 20px;
+
+            color: white;
+
+            background:
+                radial-gradient(
+                    circle at 85% 20%,
+                    rgba(168, 85, 247, 0.22),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 10% 90%,
+                    rgba(34, 211, 238, 0.15),
+                    transparent 32%
+                ),
+                linear-gradient(
+                    135deg,
+                    #07111f,
+                    #0f172a,
+                    #111d42
+                );
+
+            border:
+                1px solid rgba(34, 211, 238, 0.22);
+
+            box-shadow:
+                0 15px 35px rgba(15, 23, 42, 0.16);
+        }
+
+
+        .admin-hero::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 8%;
+
+            width: 84%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #22d3ee,
+                    #3b82f6,
+                    #a855f7,
+                    #d946ef,
+                    transparent
+                );
+
+            box-shadow:
+                0 0 10px rgba(34, 211, 238, 0.60);
+        }
+
+
+        .admin-badge {
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            padding: 7px 12px;
+
+            border-radius: 30px;
+
+            border:
+                1px solid #22d3ee;
+
+            background:
+                rgba(34, 211, 238, 0.08);
+
+            color:
+                #67e8f9;
+
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+        }
+
+
+        .admin-hero h1 {
+            color: white !important;
+
+            font-size:
+                clamp(2rem, 4vw, 3rem);
+
+            font-weight: 800;
+
+            margin-bottom: 10px;
+        }
+
+
+        .admin-hero p {
+            color: #cbd5e1;
+
+            margin-bottom: 0;
+
+            font-size: 1.02rem;
+        }
+
+
+        /* CARD FORMULARIO */
+
+        .admin-form-card {
+            position: relative;
+
+            overflow: hidden;
+
+            border:
+                1px solid rgba(59, 130, 246, 0.18) !important;
+
+            border-radius: 18px;
+
+            background: white;
+
+            box-shadow:
+                0 12px 30px rgba(15, 23, 42, 0.10) !important;
+        }
+
+
+        .admin-form-card::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 3px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #22d3ee,
+                    #3b82f6,
+                    #a855f7,
+                    #d946ef
+                );
+
+            box-shadow:
+                0 0 10px rgba(34, 211, 238, 0.55);
+        }
+
+
+        /* INPUTS */
+
+        .admin-page .form-control,
+        .admin-page .form-select {
+            min-height: 48px;
+
+            border:
+                1px solid #cbd5e1;
+
+            border-radius: 10px;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .admin-page .form-control:focus,
+        .admin-page .form-select:focus {
+            border-color:
+                #22d3ee !important;
+
+            box-shadow:
+                0 0 0 3px rgba(34, 211, 238, 0.10),
+                0 0 12px rgba(34, 211, 238, 0.18) !important;
+
+            outline: none;
+        }
+
+
+        /* BOTONES */
+
+        .btn-admin-principal {
+            border: none;
+
+            color: white;
+
+            font-weight: 700;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #7c3aed
+                );
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .btn-admin-principal:hover {
+            color: white;
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 0 8px rgba(34, 211, 238, 0.45),
+                0 0 18px rgba(124, 58, 237, 0.22);
+        }
+
+
+        .btn-admin-secundario {
+            border:
+                1px solid #3b82f6;
+
+            color:
+                #2563eb;
+
+            background:
+                white;
+
+            font-weight:
+                600;
+        }
+
+
+        .btn-admin-secundario:hover {
+            border-color:
+                #22d3ee;
+
+            color:
+                white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #7c3aed
+                );
+
+            box-shadow:
+                0 0 8px rgba(34, 211, 238, 0.35);
+        }
+
+
+        /* FOOTER */
+
+        .admin-footer {
+            position: relative;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #07111f,
+                    #0f172a,
+                    #111827
+                ) !important;
+        }
+
+
+        .admin-footer::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 3px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #22d3ee,
+                    #3b82f6,
+                    #a855f7,
+                    #d946ef
+                );
+
+            box-shadow:
+                0 0 10px rgba(34, 211, 238, 0.55);
+        }
+
+
+        @media (max-width: 768px) {
+
+            .admin-hero {
+                padding: 32px 24px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="admin-page">
+
+
+    <!-- =====================================
+         NAVBAR NEÓN
+    ====================================== -->
+
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-neon">
+
+        <div class="container">
+
+            <!-- LOGO -->
+            <a
+                class="navbar-brand fw-bold"
+                href="../index.html">
+
+                <span class="logo-tienda-neon">
+                    Tienda Online
+                </span>
+
+            </a>
+
+
+            <!-- BOTÓN MÓVIL -->
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarAdmin"
+                aria-controls="navbarAdmin"
+                aria-expanded="false"
+                aria-label="Abrir navegación">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+
+            <!-- MENÚ -->
+            <div
+                class="collapse navbar-collapse"
+                id="navbarAdmin">
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="index.html">
+
+                            Inicio Admin
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="productos.html">
+
+                            Productos
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link active"
+                            href="usuarios.html">
+
+                            Usuarios
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="../index.html">
+
+                            Volver a la tienda
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =====================================
+         CONTENIDO
+    ====================================== -->
+
+    <main class="container py-5">
+
+
+        <!-- HERO -->
+
+        <section class="admin-hero">
+
+            <span class="admin-badge">
+
+                ⚡ ADMINISTRACIÓN
+
+            </span>
+
+
+            <h1>
+                Crear nuevo usuario
+            </h1>
+
+
+            <p>
+                Registra un nuevo usuario en la plataforma
+                completando sus datos personales y de acceso.
+            </p>
+
+        </section>
+
+
+
+        <!-- FORMULARIO -->
+
+        <div class="row justify-content-center">
+
+            <div class="col-12 col-lg-9">
+
+                <div class="card admin-form-card">
+
+                    <div class="card-body p-4 p-md-5">
+
+
+                        <div class="mb-4">
+
+                            <h2 class="fw-bold mb-1">
+
+                                Datos del usuario
+
+                            </h2>
+
+
+                            <p class="text-muted mb-0">
+
+                                Completa todos los campos necesarios
+                                para crear el usuario.
+
+                            </p>
+
+                        </div>
+
+
+
+                        <form id="formNuevoUsuario">
+
+                            <div class="row">
+
+
+                                <!-- RUN -->
+                                <div class="col-md-6 mb-3">
+
+                                    <label
+                                        for="run"
+                                        class="form-label fw-semibold">
+
+                                        RUN
+
+                                    </label>
+
+
+                                    <input
+                                        type="text"
+                                        id="run"
+                                        class="form-control"
+                                        placeholder="Ej: 19011022K">
+
+
+                                    <div class="form-text">
+
+                                        Ingresa el RUN sin puntos ni guion.
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <!-- NOMBRE -->
+                                <div class="col-md-6 mb-3">
+
+                                    <label
+                                        for="nombre"
+                                        class="form-label fw-semibold">
+
+                                        Nombre
+
+                                    </label>
+
+
+                                    <input
+                                        type="text"
+                                        id="nombre"
+                                        class="form-control"
+                                        placeholder="Ingrese el nombre">
+
+                                </div>
+
+
+
+                                <!-- APELLIDOS -->
+                                <div class="col-md-6 mb-3">
+
+                                    <label
+                                        for="apellidos"
+                                        class="form-label fw-semibold">
+
+                                        Apellidos
+
+                                    </label>
+
+
+                                    <input
+                                        type="text"
+                                        id="apellidos"
+                                        class="form-control"
+                                        placeholder="Ingrese los apellidos">
+
+                                </div>
+
+
+
+                                <!-- CORREO -->
+                                <div class="col-md-6 mb-3">
+
+                                    <label
+                                        for="correo"
+                                        class="form-label fw-semibold">
+
+                                        Correo electrónico
+
+                                    </label>
+
+
+                                    <input
+                                        type="email"
+                                        id="correo"
+                                        class="form-control"
+                                        placeholder="ejemplo@gmail.com">
+
+                                </div>
+
+
+
+                                <!-- CONTRASEÑA -->
+                                <div class="col-md-6 mb-3">
+
+                                    <label
+                                        for="password"
+                                        class="form-label fw-semibold">
+
+                                        Contraseña
+
+                                    </label>
+
+
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        class="form-control"
+                                        placeholder="Ingrese una contraseña">
+
+
+                                    <div class="form-text">
+
+                                        Debe tener al menos 8 caracteres, una letra y un número.
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <!-- REGIÓN -->
+                                <div class="col-md-6 mb-3">
+
+                                    <label
+                                        for="region"
+                                        class="form-label fw-semibold">
+
+                                        Región
+
+                                    </label>
+
+
+                                    <select
+                                        id="region"
+                                        class="form-select">
+
+                                        <option value="">
+
+                                            Seleccione una región
+
+                                        </option>
+
+                                        <!--
+                                            Las regiones se cargan
+                                            desde usuarios.js
+                                        -->
+
+                                    </select>
+
+                                </div>
+
+
+
+                                <!-- COMUNA -->
+                                <div class="col-md-6 mb-3">
+
+                                    <label
+                                        for="comuna"
+                                        class="form-label fw-semibold">
+
+                                        Comuna
+
+                                    </label>
+
+
+                                    <select
+                                        id="comuna"
+                                        class="form-select">
+
+                                        <option value="">
+
+                                            Seleccione una comuna
+
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+
+                                <!-- DIRECCIÓN -->
+                                <div class="col-md-6 mb-4">
+
+                                    <label
+                                        for="direccion"
+                                        class="form-label fw-semibold">
+
+                                        Dirección
+
+                                    </label>
+
+
+                                    <input
+                                        type="text"
+                                        id="direccion"
+                                        class="form-control"
+                                        placeholder="Ingrese la dirección">
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- BOTONES -->
+                            <div class="d-flex flex-wrap gap-2 mt-2">
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-admin-principal px-4">
+
+                                    Guardar usuario
+
+                                </button>
+
+
+                                <a
+                                    href="usuarios.html"
+                                    class="btn btn-admin-secundario px-4">
+
+                                    Cancelar
+
+                                </a>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================
+         FOOTER
+    ====================================== -->
+
+    <footer
+        class="admin-footer text-white text-center py-4 mt-5">
+
+        <p class="mb-0">
+
+            © 2026 Tienda Online DSY1104
+
+        </p>
+
+    </footer>
+
+
+
+    <!-- =====================================
+         BOOTSTRAP
+    ====================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+
+
+    <!-- =====================================
+         USUARIOS
+         NO CAMBIAR ORDEN
+    ====================================== -->
+
+    <script src="../js/usuarios.js"></script>
+
+
+    <!-- =====================================
+         ADMIN USUARIOS
+    ====================================== -->
+
+    <script src="../js/admin-usuarios.js"></script>
+
+
+</body>
+
+</html>
