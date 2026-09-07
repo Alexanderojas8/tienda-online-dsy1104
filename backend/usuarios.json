@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "run": "19011022K",
+        "nombre": "Administrador",
+        "apellidos": "Principal",
+        "correo": "admin@duoc.cl",
+        "password": "1234",
+        "tipoUsuario": "Administrador",
+        "region": "Metropolitana",
+        "comuna": "Santiago",
+        "direccion": "Dirección de prueba"
+    },
+    {
+        "id": 2,
+        "run": "20123456K",
+        "nombre": "Cliente",
+        "apellidos": "Prueba",
+        "correo": "cliente@gmail.com",
+        "password": "1234",
+        "tipoUsuario": "Cliente",
+        "region": "Metropolitana",
+        "comuna": "La Cisterna",
+        "direccion": "Dirección cliente"
+    }
+]
