@@ -1,77 +1,49 @@
 /* =========================
-   PRODUCTOS INICIALES
+   CONFIGURACIÓN API
    ========================= */
 
-const productosIniciales = [
-    {
-        id: 1,
-        codigo: "PROD001",
-        nombre: "Mouse Gamer",
-        descripcion: "Mouse gamer con iluminación RGB.",
-        precio: 19990,
-        stock: 15,
-        stockCritico: 3,
-        categoria: "Perifericos",
-        imagen: ""
-    },
-    {
-        id: 2,
-        codigo: "PROD002",
-        nombre: "Teclado Mecánico",
-        descripcion: "Teclado mecánico para gaming.",
-        precio: 39990,
-        stock: 10,
-        stockCritico: 2,
-        categoria: "Perifericos",
-        imagen: ""
-    },
-    {
-        id: 3,
-        codigo: "PROD003",
-        nombre: "Audífonos Gamer",
-        descripcion: "Audífonos gamer con micrófono.",
-        precio: 29990,
-        stock: 20,
-        stockCritico: 5,
-        categoria: "Audio",
-        imagen: ""
-    },
-    {
-        id: 4,
-        codigo: "PROD004",
-        nombre: "Monitor Gaming",
-        descripcion: "Monitor gaming de alta resolución.",
-        precio: 149990,
-        stock: 5,
-        stockCritico: 2,
-        categoria: "Monitores",
-        imagen: ""
-    }
-];
+const API_URL = "http://localhost:3000/api/productos";
+
+let productosAdmin = [];
 
 
 /* =========================
    CARGAR PRODUCTOS
    ========================= */
 
-let productosAdmin = JSON.parse(
-    localStorage.getItem("productosAdmin")
-);
+async function cargarProductosAdmin() {
 
-if (!productosAdmin) {
+    try {
 
-    productosAdmin = productosIniciales;
+        const respuesta = await fetch(API_URL);
 
-    guardarProductos();
-}
+        if (!respuesta.ok) {
+            throw new Error("No se pudieron cargar los productos");
+        }
 
+        productosAdmin = await respuesta.json();
 
-function guardarProductos() {
+        mostrarProductos();
 
-    localStorage.setItem(
-        "productosAdmin",
-        JSON.stringify(productosAdmin)
-    );
+    } catch (error) {
+
+        console.error(
+            "Error al cargar productos:",
+            error
+        );
+
+        if (tablaProductos) {
+
+            tablaProductos.innerHTML = `
+                <tr>
+                    <td colspan="5">
+                        No fue posible cargar los productos.
+                        Verifica que el backend esté encendido.
+                    </td>
+                </tr>
+            `;
+        }
+    }
 }
 
 
@@ -85,7 +57,7 @@ const tablaProductos =
 
 if (tablaProductos) {
 
-    mostrarProductos();
+    cargarProductosAdmin();
 }
 
 
@@ -97,24 +69,34 @@ function mostrarProductos() {
 
     tablaProductos.innerHTML = "";
 
-
     productosAdmin.forEach(function(producto) {
 
-        const fila = document.createElement("tr");
+        const fila =
+            document.createElement("tr");
 
         fila.innerHTML = `
-            <td>${producto.codigo}</td>
-
-            <td>${producto.nombre}</td>
-
             <td>
-                $${producto.precio.toLocaleString("es-CL")}
+                ${producto.codigo}
             </td>
 
-            <td>${producto.stock}</td>
+            <td>
+                ${producto.nombre}
+            </td>
 
             <td>
-                <a href="producto-editar.html?id=${producto.id}">
+                $${Number(producto.precio)
+                    .toLocaleString("es-CL")}
+            </td>
+
+            <td>
+                ${producto.stock}
+            </td>
+
+            <td>
+
+                <a
+                    href="producto-editar.html?id=${producto.id}"
+                >
                     Editar
                 </a>
 
@@ -124,6 +106,7 @@ function mostrarProductos() {
                 >
                     Eliminar
                 </button>
+
             </td>
         `;
 
@@ -136,7 +119,7 @@ function mostrarProductos() {
    ELIMINAR PRODUCTO
    ========================= */
 
-function eliminarProductoAdmin(idProducto) {
+async function eliminarProductoAdmin(idProducto) {
 
     const confirmar = confirm(
         "¿Seguro que deseas eliminar este producto?"
@@ -146,18 +129,45 @@ function eliminarProductoAdmin(idProducto) {
         return;
     }
 
+    try {
 
-    productosAdmin = productosAdmin.filter(
-        function(producto) {
+        const respuesta = await fetch(
+            `${API_URL}/${idProducto}`,
+            {
+                method: "DELETE"
+            }
+        );
 
-            return producto.id !== idProducto;
+        const resultado =
+            await respuesta.json();
+
+        if (!respuesta.ok) {
+
+            alert(
+                resultado.mensaje ||
+                "No fue posible eliminar el producto."
+            );
+
+            return;
         }
-    );
 
+        alert(
+            "Producto eliminado correctamente."
+        );
 
-    guardarProductos();
+        cargarProductosAdmin();
 
-    mostrarProductos();
+    } catch (error) {
+
+        console.error(
+            "Error al eliminar producto:",
+            error
+        );
+
+        alert(
+            "No fue posible conectar con el servidor."
+        );
+    }
 }
 
 
@@ -173,7 +183,7 @@ if (formularioProducto) {
 
     formularioProducto.addEventListener(
         "submit",
-        function(event) {
+        async function(event) {
 
             event.preventDefault();
 
@@ -183,28 +193,48 @@ if (formularioProducto) {
 
 
             const codigo =
-                document.getElementById("codigo").value.trim();
+                document
+                    .getElementById("codigo")
+                    .value
+                    .trim();
 
             const nombre =
-                document.getElementById("nombre").value.trim();
+                document
+                    .getElementById("nombre")
+                    .value
+                    .trim();
 
             const descripcion =
-                document.getElementById("descripcion").value.trim();
+                document
+                    .getElementById("descripcion")
+                    .value
+                    .trim();
 
             const precio =
-                document.getElementById("precio").value;
+                document
+                    .getElementById("precio")
+                    .value;
 
             const stock =
-                document.getElementById("stock").value;
+                document
+                    .getElementById("stock")
+                    .value;
 
             const stockCritico =
-                document.getElementById("stock-critico").value;
+                document
+                    .getElementById("stock-critico")
+                    .value;
 
             const categoria =
-                document.getElementById("categoria").value;
+                document
+                    .getElementById("categoria")
+                    .value;
 
             const imagen =
-                document.getElementById("imagen").value.trim();
+                document
+                    .getElementById("imagen")
+                    .value
+                    .trim();
 
 
             /* CÓDIGO */
@@ -317,7 +347,9 @@ if (formularioProducto) {
                 stockCritico !== "" &&
                 (
                     Number(stockCritico) < 0 ||
-                    !Number.isInteger(Number(stockCritico))
+                    !Number.isInteger(
+                        Number(stockCritico)
+                    )
                 )
             ) {
 
@@ -348,21 +380,9 @@ if (formularioProducto) {
             }
 
 
-            /* CREAR PRODUCTO */
-
-            const nuevoId =
-                productosAdmin.length > 0
-                    ? Math.max(
-                        ...productosAdmin.map(
-                            producto => producto.id
-                        )
-                    ) + 1
-                    : 1;
-
+            /* PRODUCTO QUE ENVIAREMOS AL BACKEND */
 
             const nuevoProducto = {
-
-                id: nuevoId,
 
                 codigo: codigo,
 
@@ -385,16 +405,60 @@ if (formularioProducto) {
             };
 
 
-            productosAdmin.push(nuevoProducto);
+            try {
 
-            guardarProductos();
+                const respuesta = await fetch(
+                    API_URL,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify(
+                            nuevoProducto
+                        )
+                    }
+                );
 
 
-            alert("Producto creado correctamente.");
+                const resultado =
+                    await respuesta.json();
 
 
-            window.location.href =
-                "productos.html";
+                if (!respuesta.ok) {
+
+                    alert(
+                        resultado.mensaje ||
+                        "No fue posible crear el producto."
+                    );
+
+                    return;
+                }
+
+
+                alert(
+                    "Producto creado correctamente."
+                );
+
+
+                window.location.href =
+                    "productos.html";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error al crear producto:",
+                    error
+                );
+
+                alert(
+                    "No fue posible conectar con el servidor."
+                );
+            }
         }
     );
 }
@@ -405,122 +469,184 @@ if (formularioProducto) {
    ========================= */
 
 const formularioEditar =
-    document.getElementById("form-editar-producto");
+    document.getElementById(
+        "form-editar-producto"
+    );
 
 
 if (formularioEditar) {
 
+    cargarProductoParaEditar();
+}
+
+
+async function cargarProductoParaEditar() {
+
     const parametros =
-        new URLSearchParams(window.location.search);
+        new URLSearchParams(
+            window.location.search
+        );
 
     const idProducto =
         Number(parametros.get("id"));
 
 
-    const productoSeleccionado =
-        productosAdmin.find(
-            function(producto) {
+    try {
 
-                return producto.id === idProducto;
-            }
+        const respuesta = await fetch(
+            `${API_URL}/${idProducto}`
         );
 
+        if (!respuesta.ok) {
 
-    if (productoSeleccionado) {
+            formularioEditar.innerHTML = `
+                <p>
+                    El producto seleccionado
+                    no existe.
+                </p>
+
+                <a href="productos.html">
+                    Volver a productos
+                </a>
+            `;
+
+            return;
+        }
+
+
+        const productoSeleccionado =
+            await respuesta.json();
+
 
         document.getElementById(
             "editar-codigo"
-        ).value = productoSeleccionado.codigo;
+        ).value =
+            productoSeleccionado.codigo || "";
 
 
         document.getElementById(
             "editar-nombre"
-        ).value = productoSeleccionado.nombre;
+        ).value =
+            productoSeleccionado.nombre || "";
 
 
         document.getElementById(
             "editar-descripcion"
-        ).value = productoSeleccionado.descripcion;
+        ).value =
+            productoSeleccionado.descripcion || "";
 
 
         document.getElementById(
             "editar-precio"
-        ).value = productoSeleccionado.precio;
+        ).value =
+            productoSeleccionado.precio;
 
 
         document.getElementById(
             "editar-stock"
-        ).value = productoSeleccionado.stock;
+        ).value =
+            productoSeleccionado.stock;
 
 
         document.getElementById(
             "editar-stock-critico"
-        ).value = productoSeleccionado.stockCritico;
+        ).value =
+            productoSeleccionado.stockCritico || 0;
 
+
+        let categoria =
+            productoSeleccionado.categoria || "";
+
+        // Compatibilidad con producto antiguo
+        if (categoria === "Periféricos") {
+            categoria = "Perifericos";
+        }
 
         document.getElementById(
             "editar-categoria"
-        ).value = productoSeleccionado.categoria;
+        ).value =
+            categoria;
 
 
         document.getElementById(
             "editar-imagen"
-        ).value = productoSeleccionado.imagen;
+        ).value =
+            productoSeleccionado.imagen || "";
 
 
         formularioEditar.addEventListener(
             "submit",
-            function(event) {
+            async function(event) {
 
                 event.preventDefault();
 
 
                 const codigo =
-                    document.getElementById(
-                        "editar-codigo"
-                    ).value.trim();
+                    document
+                        .getElementById(
+                            "editar-codigo"
+                        )
+                        .value
+                        .trim();
 
 
                 const nombre =
-                    document.getElementById(
-                        "editar-nombre"
-                    ).value.trim();
+                    document
+                        .getElementById(
+                            "editar-nombre"
+                        )
+                        .value
+                        .trim();
 
 
                 const descripcion =
-                    document.getElementById(
-                        "editar-descripcion"
-                    ).value.trim();
+                    document
+                        .getElementById(
+                            "editar-descripcion"
+                        )
+                        .value
+                        .trim();
 
 
                 const precio =
-                    document.getElementById(
-                        "editar-precio"
-                    ).value;
+                    document
+                        .getElementById(
+                            "editar-precio"
+                        )
+                        .value;
 
 
                 const stock =
-                    document.getElementById(
-                        "editar-stock"
-                    ).value;
+                    document
+                        .getElementById(
+                            "editar-stock"
+                        )
+                        .value;
 
 
                 const stockCritico =
-                    document.getElementById(
-                        "editar-stock-critico"
-                    ).value;
+                    document
+                        .getElementById(
+                            "editar-stock-critico"
+                        )
+                        .value;
 
 
                 const categoria =
-                    document.getElementById(
-                        "editar-categoria"
-                    ).value;
+                    document
+                        .getElementById(
+                            "editar-categoria"
+                        )
+                        .value;
 
 
                 const imagen =
-                    document.getElementById(
-                        "editar-imagen"
-                    ).value.trim();
+                    document
+                        .getElementById(
+                            "editar-imagen"
+                        )
+                        .value
+                        .trim();
 
 
                 if (
@@ -532,7 +658,9 @@ if (formularioEditar) {
                     Number(precio) < 0 ||
                     stock === "" ||
                     Number(stock) < 0 ||
-                    !Number.isInteger(Number(stock)) ||
+                    !Number.isInteger(
+                        Number(stock)
+                    ) ||
                     (
                         stockCritico !== "" &&
                         (
@@ -553,56 +681,99 @@ if (formularioEditar) {
                 }
 
 
-                productoSeleccionado.codigo =
-                    codigo;
+                const productoActualizado = {
 
-                productoSeleccionado.nombre =
-                    nombre;
+                    codigo: codigo,
 
-                productoSeleccionado.descripcion =
-                    descripcion;
+                    nombre: nombre,
 
-                productoSeleccionado.precio =
-                    Number(precio);
+                    descripcion: descripcion,
 
-                productoSeleccionado.stock =
-                    Number(stock);
+                    precio: Number(precio),
 
-                productoSeleccionado.stockCritico =
-                    stockCritico === ""
-                        ? 0
-                        : Number(stockCritico);
+                    stock: Number(stock),
 
-                productoSeleccionado.categoria =
-                    categoria;
+                    stockCritico:
+                        stockCritico === ""
+                            ? 0
+                            : Number(stockCritico),
 
-                productoSeleccionado.imagen =
-                    imagen;
+                    categoria: categoria,
+
+                    imagen: imagen
+                };
 
 
-                guardarProductos();
+                try {
+
+                    const respuesta = await fetch(
+                        `${API_URL}/${idProducto}`,
+                        {
+                            method: "PUT",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify(
+                                productoActualizado
+                            )
+                        }
+                    );
 
 
-                alert(
-                    "Producto actualizado correctamente."
-                );
+                    const resultado =
+                        await respuesta.json();
 
 
-                window.location.href =
-                    "productos.html";
+                    if (!respuesta.ok) {
+
+                        alert(
+                            resultado.mensaje ||
+                            "No fue posible actualizar el producto."
+                        );
+
+                        return;
+                    }
+
+
+                    alert(
+                        "Producto actualizado correctamente."
+                    );
+
+
+                    window.location.href =
+                        "productos.html";
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Error al actualizar producto:",
+                        error
+                    );
+
+                    alert(
+                        "No fue posible conectar con el servidor."
+                    );
+                }
             }
         );
 
-    } else {
+
+    } catch (error) {
+
+        console.error(
+            "Error al cargar producto:",
+            error
+        );
 
         formularioEditar.innerHTML = `
             <p>
-                El producto seleccionado no existe.
+                No fue posible conectarse
+                con el servidor.
             </p>
-
-            <a href="productos.html">
-                Volver a productos
-            </a>
         `;
     }
 }
@@ -612,14 +783,20 @@ if (formularioEditar) {
    ERRORES
    ========================= */
 
-function mostrarError(idElemento, mensaje) {
+function mostrarError(
+    idElemento,
+    mensaje
+) {
 
     const elemento =
-        document.getElementById(idElemento);
+        document.getElementById(
+            idElemento
+        );
 
     if (elemento) {
 
-        elemento.textContent = mensaje;
+        elemento.textContent =
+            mensaje;
     }
 }
 
@@ -627,10 +804,14 @@ function mostrarError(idElemento, mensaje) {
 function limpiarErrores() {
 
     const errores =
-        document.querySelectorAll(".error");
+        document.querySelectorAll(
+            ".error"
+        );
 
-    errores.forEach(function(error) {
+    errores.forEach(
+        function(error) {
 
-        error.textContent = "";
-    });
+            error.textContent = "";
+        }
+    );
 }
