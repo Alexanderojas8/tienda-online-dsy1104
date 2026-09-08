@@ -1,6 +1,9 @@
 // ==========================================================
-// ADMINISTRACIÓN DE USUARIOS
+// ADMINISTRACIÓN DE USUARIOS CON BACKEND
 // ==========================================================
+
+const API_USUARIOS_ADMIN =
+    "http://localhost:3000/api/usuarios";
 
 
 // ==========================================================
@@ -10,170 +13,98 @@
 const regionesComunas = {
 
     "Arica y Parinacota": [
-        "Arica",
-        "Camarones",
-        "Putre",
-        "General Lagos"
+        "Arica", "Camarones", "Putre", "General Lagos"
     ],
 
     "Tarapacá": [
-        "Iquique",
-        "Alto Hospicio",
-        "Pozo Almonte",
-        "Pica"
+        "Iquique", "Alto Hospicio", "Pozo Almonte", "Pica"
     ],
 
     "Antofagasta": [
-        "Antofagasta",
-        "Calama",
-        "Tocopilla",
-        "Mejillones"
+        "Antofagasta", "Calama", "Tocopilla", "Mejillones"
     ],
 
     "Atacama": [
-        "Copiapó",
-        "Caldera",
-        "Vallenar",
-        "Chañaral"
+        "Copiapó", "Caldera", "Vallenar", "Chañaral"
     ],
 
     "Coquimbo": [
-        "La Serena",
-        "Coquimbo",
-        "Ovalle",
-        "Illapel"
+        "La Serena", "Coquimbo", "Ovalle", "Illapel"
     ],
 
     "Valparaíso": [
-        "Valparaíso",
-        "Viña del Mar",
-        "Quilpué",
-        "Villa Alemana",
-        "Concón",
-        "San Antonio"
+        "Valparaíso", "Viña del Mar", "Quilpué",
+        "Villa Alemana", "Concón", "San Antonio"
     ],
 
     "Metropolitana de Santiago": [
-        "Santiago",
-        "San Joaquín",
-        "La Florida",
-        "La Cisterna",
-        "Maipú",
-        "Puente Alto",
-        "Providencia",
-        "Ñuñoa",
-        "Las Condes",
-        "Quilicura"
+        "Santiago", "San Joaquín", "La Florida",
+        "La Cisterna", "Maipú", "Puente Alto",
+        "Providencia", "Ñuñoa", "Las Condes", "Quilicura"
     ],
 
     "O'Higgins": [
-        "Rancagua",
-        "Machalí",
-        "Rengo",
-        "San Fernando",
-        "Santa Cruz"
+        "Rancagua", "Machalí", "Rengo",
+        "San Fernando", "Santa Cruz"
     ],
 
     "Maule": [
-        "Talca",
-        "Curicó",
-        "Linares",
-        "Cauquenes",
-        "Constitución"
+        "Talca", "Curicó", "Linares",
+        "Cauquenes", "Constitución"
     ],
 
     "Ñuble": [
-        "Chillán",
-        "Chillán Viejo",
-        "Bulnes",
-        "San Carlos"
+        "Chillán", "Chillán Viejo", "Bulnes", "San Carlos"
     ],
 
     "Biobío": [
-        "Concepción",
-        "Talcahuano",
-        "San Pedro de la Paz",
-        "Chiguayante",
-        "Coronel",
-        "Los Ángeles"
+        "Concepción", "Talcahuano", "San Pedro de la Paz",
+        "Chiguayante", "Coronel", "Los Ángeles"
     ],
 
     "La Araucanía": [
-        "Temuco",
-        "Padre Las Casas",
-        "Villarrica",
-        "Pucón",
-        "Angol"
+        "Temuco", "Padre Las Casas",
+        "Villarrica", "Pucón", "Angol"
     ],
 
     "Los Ríos": [
-        "Valdivia",
-        "La Unión",
-        "Río Bueno",
-        "Panguipulli"
+        "Valdivia", "La Unión", "Río Bueno", "Panguipulli"
     ],
 
     "Los Lagos": [
-        "Puerto Montt",
-        "Osorno",
-        "Puerto Varas",
-        "Castro",
-        "Ancud"
+        "Puerto Montt", "Osorno", "Puerto Varas",
+        "Castro", "Ancud"
     ],
 
     "Aysén": [
-        "Coyhaique",
-        "Puerto Aysén",
-        "Chile Chico",
-        "Cochrane"
+        "Coyhaique", "Puerto Aysén",
+        "Chile Chico", "Cochrane"
     ],
 
     "Magallanes y Antártica Chilena": [
-        "Punta Arenas",
-        "Puerto Natales",
-        "Porvenir",
-        "San Gregorio"
+        "Punta Arenas", "Puerto Natales",
+        "Porvenir", "San Gregorio"
     ]
 };
 
 
 // ==========================================================
-// CONVERTIR REGIONES ANTIGUAS
+// FUNCIONES AUXILIARES
 // ==========================================================
 
 function normalizarRegion(region) {
 
-    if (!region) {
-        return "";
-    }
-
     const equivalencias = {
-
-        metropolitana:
-            "Metropolitana de Santiago",
-
-        valparaiso:
-            "Valparaíso",
-
-        ohiggins:
-            "O'Higgins",
-
-        maule:
-            "Maule",
-
-        biobio:
-            "Biobío"
-
+        metropolitana: "Metropolitana de Santiago",
+        valparaiso: "Valparaíso",
+        ohiggins: "O'Higgins",
+        maule: "Maule",
+        biobio: "Biobío"
     };
 
-
-    return equivalencias[region] || region;
+    return equivalencias[region] || region || "";
 }
 
-
-// ==========================================================
-// NORMALIZAR RUN
-// ==========================================================
 
 function normalizarRunAdmin(run) {
 
@@ -185,461 +116,289 @@ function normalizarRunAdmin(run) {
 }
 
 
-// ==========================================================
-// VALIDAR CORREO
-// ==========================================================
-
 function validarCorreoAdmin(correo) {
 
-    const expresion =
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    return expresion.test(correo);
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        .test(correo);
 }
 
-
-// ==========================================================
-// VALIDAR CONTRASEÑA
-// ==========================================================
 
 function validarPasswordAdmin(password) {
 
-    // Mínimo 8 caracteres,
-    // al menos una letra y un número.
-
-    const expresion =
-        /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
-
-    return expresion.test(password);
+    return /^(?=.*[A-Za-z])(?=.*\d).{8,}$/
+        .test(password);
 }
 
 
 // ==========================================================
-// CARGAR REGIONES
+// REGIONES
 // ==========================================================
 
 function cargarRegiones(selectRegion) {
 
-    if (!selectRegion) {
-        return;
-    }
+    if (!selectRegion) return;
 
+    selectRegion.innerHTML =
+        '<option value="">Seleccione una región</option>';
 
-    selectRegion.innerHTML = `
-        <option value="">
-            Seleccione una región
-        </option>
-    `;
-
-
-    Object.keys(
-        regionesComunas
-    ).forEach(
-        function (nombreRegion) {
+    Object.keys(regionesComunas)
+        .forEach(function (region) {
 
             const opcion =
-                document.createElement(
-                    "option"
-                );
+                document.createElement("option");
 
-            opcion.value =
-                nombreRegion;
+            opcion.value = region;
+            opcion.textContent = region;
 
-            opcion.textContent =
-                nombreRegion;
-
-            selectRegion.appendChild(
-                opcion
-            );
-        }
-    );
+            selectRegion.appendChild(opcion);
+        });
 }
 
-
-// ==========================================================
-// CARGAR COMUNAS
-// ==========================================================
 
 function cargarComunas(
     selectComuna,
-    nombreRegion,
-    comunaSeleccionada = ""
+    region,
+    seleccionada = ""
 ) {
 
-    if (!selectComuna) {
-        return;
-    }
+    if (!selectComuna) return;
 
-
-    selectComuna.innerHTML = `
-        <option value="">
-            Seleccione una comuna
-        </option>
-    `;
-
+    selectComuna.innerHTML =
+        '<option value="">Seleccione una comuna</option>';
 
     const regionNormalizada =
-        normalizarRegion(
-            nombreRegion
-        );
-
+        normalizarRegion(region);
 
     if (
         !regionNormalizada ||
-        !regionesComunas[
-            regionNormalizada
-        ]
+        !regionesComunas[regionNormalizada]
     ) {
 
         selectComuna.disabled = true;
-
         return;
     }
-
 
     selectComuna.disabled = false;
 
-
-    regionesComunas[
-        regionNormalizada
-    ].forEach(
-        function (nombreComuna) {
+    regionesComunas[regionNormalizada]
+        .forEach(function (comuna) {
 
             const opcion =
-                document.createElement(
-                    "option"
-                );
+                document.createElement("option");
 
+            opcion.value = comuna;
+            opcion.textContent = comuna;
 
-            opcion.value =
-                nombreComuna;
-
-            opcion.textContent =
-                nombreComuna;
-
-
-            if (
-                nombreComuna ===
-                comunaSeleccionada
-            ) {
-
-                opcion.selected =
-                    true;
+            if (comuna === seleccionada) {
+                opcion.selected = true;
             }
 
-
-            selectComuna.appendChild(
-                opcion
-            );
-        }
-    );
+            selectComuna.appendChild(opcion);
+        });
 }
 
 
 // ==========================================================
-// OBTENER USUARIOS
+// LISTAR USUARIOS DESDE BACKEND
 // ==========================================================
 
-function obtenerUsuarios() {
-
-    return (
-        JSON.parse(
-            localStorage.getItem(
-                "usuarios"
-            )
-        ) || []
-    );
-}
-
-
-// ==========================================================
-// GUARDAR USUARIOS
-// ==========================================================
-
-function guardarUsuarios(
-    usuarios
-) {
-
-    localStorage.setItem(
-        "usuarios",
-        JSON.stringify(
-            usuarios
-        )
-    );
-}
-
-
-// ==========================================================
-// LISTAR USUARIOS
-// ==========================================================
-
-function listarUsuariosAdmin() {
-
-    // Compatible con ambos nombres utilizados anteriormente.
+async function listarUsuariosAdmin() {
 
     const tablaUsuarios =
-        document.getElementById(
-            "tabla-usuarios"
-        ) ||
-        document.getElementById(
-            "tablaUsuarios"
-        );
+        document.getElementById("tabla-usuarios") ||
+        document.getElementById("tablaUsuarios");
 
+    if (!tablaUsuarios) return;
 
-    if (!tablaUsuarios) {
-        return;
-    }
+    try {
 
+        const respuesta =
+            await fetch(API_USUARIOS_ADMIN);
 
-    const usuarios =
-        obtenerUsuarios();
-
-
-    tablaUsuarios.innerHTML = "";
-
-
-    const sinUsuarios =
-        document.getElementById(
-            "sin-usuarios"
-        );
-
-
-    if (
-        usuarios.length === 0
-    ) {
-
-        if (sinUsuarios) {
-
-            sinUsuarios
-                .classList
-                .remove("d-none");
-
-        } else {
-
-            tablaUsuarios.innerHTML = `
-
-                <tr>
-
-                    <td
-                        colspan="7"
-                        class="text-center text-muted py-4">
-
-                        No hay usuarios registrados.
-
-                    </td>
-
-                </tr>
-            `;
+        if (!respuesta.ok) {
+            throw new Error("Error al obtener usuarios");
         }
 
-        return;
-    }
+        const usuarios =
+            await respuesta.json();
 
+        tablaUsuarios.innerHTML = "";
 
-    if (sinUsuarios) {
+        const sinUsuarios =
+            document.getElementById("sin-usuarios");
 
-        sinUsuarios
-            .classList
-            .add("d-none");
-    }
+        if (usuarios.length === 0) {
 
+            if (sinUsuarios) {
 
-    usuarios.forEach(
-        function (
-            usuario,
-            index
-        ) {
+                sinUsuarios.classList.remove("d-none");
+
+            } else {
+
+                tablaUsuarios.innerHTML = `
+                    <tr>
+                        <td colspan="7"
+                            class="text-center text-muted py-4">
+                            No hay usuarios registrados.
+                        </td>
+                    </tr>
+                `;
+            }
+
+            return;
+        }
+
+        if (sinUsuarios) {
+            sinUsuarios.classList.add("d-none");
+        }
+
+        usuarios.forEach(function (usuario) {
 
             const fila =
-                document.createElement(
-                    "tr"
-                );
+                document.createElement("tr");
 
-
-            // Usuarios antiguos:
-            // apellidos
-            //
-            // Usuarios nuevos:
-            // apellido
-
-            const apellido =
-                usuario.apellido ||
+            const apellidos =
                 usuario.apellidos ||
+                usuario.apellido ||
                 "";
 
-
             const region =
-                normalizarRegion(
-                    usuario.region
-                );
+                normalizarRegion(usuario.region);
 
+            const rol =
+                usuario.tipoUsuario ||
+                usuario.rol ||
+                "Cliente";
 
             fila.innerHTML = `
-
                 <td>
-
                     <strong>
-                        ${usuario.nombre || ""}
-                        ${apellido}
+                        ${usuario.nombre || ""} ${apellidos}
                     </strong>
-
                 </td>
 
+                <td>${usuario.run || ""}</td>
+
+                <td>${usuario.correo || ""}</td>
+
+                <td>${region}</td>
+
+                <td>${usuario.comuna || ""}</td>
 
                 <td>
-                    ${usuario.run || ""}
-                </td>
-
-
-                <td>
-                    ${usuario.correo || ""}
-                </td>
-
-
-                <td>
-                    ${region}
-                </td>
-
-
-                <td>
-                    ${usuario.comuna || ""}
-                </td>
-
-
-                <td>
-
                     <span class="badge bg-secondary">
-
-                        ${usuario.rol || "cliente"}
-
+                        ${rol}
                     </span>
-
                 </td>
-
 
                 <td class="text-center">
-
-                    <div
-                        class="d-flex flex-wrap
-                               justify-content-center
-                               gap-2">
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
 
                         <a
-                            href="usuario-editar.html?id=${index}"
+                            href="usuario-editar.html?id=${usuario.id}"
                             class="btn btn-sm btn-outline-primary">
-
                             Editar
-
                         </a>
-
 
                         <button
                             type="button"
                             class="btn btn-sm btn-danger"
-                            onclick="eliminarUsuario(${index})">
-
+                            onclick="eliminarUsuario(${usuario.id})">
                             Eliminar
-
                         </button>
 
                     </div>
-
                 </td>
             `;
 
+            tablaUsuarios.appendChild(fila);
+        });
 
-            tablaUsuarios.appendChild(
-                fila
-            );
-        }
-    );
+    } catch (error) {
+
+        console.error(error);
+
+        tablaUsuarios.innerHTML = `
+            <tr>
+                <td colspan="7"
+                    class="text-center text-danger py-4">
+                    No se pudo conectar con el servidor.
+                </td>
+            </tr>
+        `;
+    }
 }
 
 
 // ==========================================================
-// ELIMINAR USUARIO
+// ELIMINAR USUARIO EN BACKEND
 // ==========================================================
 
-function eliminarUsuario(index) {
+async function eliminarUsuario(id) {
 
     const confirmar =
         confirm(
             "¿Estás seguro de que deseas eliminar este usuario?"
         );
 
+    if (!confirmar) return;
 
-    if (!confirmar) {
-        return;
-    }
+    try {
 
+        const respuesta =
+            await fetch(
+                `${API_USUARIOS_ADMIN}/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
 
-    const usuarios =
-        obtenerUsuarios();
+        const datos =
+            await respuesta.json();
 
+        if (!respuesta.ok) {
 
-    if (
-        index < 0 ||
-        index >= usuarios.length
-    ) {
+            alert(
+                datos.mensaje ||
+                "No se pudo eliminar el usuario."
+            );
+
+            return;
+        }
 
         alert(
-            "Usuario no encontrado."
+            "Usuario eliminado correctamente."
         );
 
-        return;
+        listarUsuariosAdmin();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "No se pudo conectar con el servidor."
+        );
     }
-
-
-    usuarios.splice(
-        index,
-        1
-    );
-
-
-    guardarUsuarios(
-        usuarios
-    );
-
-
-    alert(
-        "Usuario eliminado correctamente."
-    );
-
-
-    listarUsuariosAdmin();
 }
 
 
 // ==========================================================
-// NUEVO USUARIO
-// REGIÓN Y COMUNA
+// NUEVO USUARIO - REGIÓN Y COMUNA
 // ==========================================================
 
 const regionNuevo =
-    document.getElementById(
-        "region"
-    );
-
+    document.getElementById("region");
 
 const comunaNueva =
-    document.getElementById(
-        "comuna"
-    );
+    document.getElementById("comuna");
 
 
-if (
-    regionNuevo &&
-    comunaNueva
-) {
+if (regionNuevo && comunaNueva) {
 
-    cargarRegiones(
-        regionNuevo
-    );
+    cargarRegiones(regionNuevo);
 
-
-    comunaNueva.disabled =
-        true;
-
+    comunaNueva.disabled = true;
 
     regionNuevo.addEventListener(
         "change",
@@ -655,97 +414,54 @@ if (
 
 
 // ==========================================================
-// CREAR NUEVO USUARIO
+// CREAR USUARIO EN BACKEND
 // ==========================================================
 
 const formNuevoUsuario =
-    document.getElementById(
-        "formNuevoUsuario"
-    );
+    document.getElementById("formNuevoUsuario");
 
 
 if (formNuevoUsuario) {
 
     formNuevoUsuario.addEventListener(
         "submit",
-        function (event) {
+        async function (event) {
 
             event.preventDefault();
 
-
             const run =
-                document
-                    .getElementById(
-                        "run"
-                    )
-                    .value
-                    .trim();
-
+                document.getElementById("run")
+                    .value.trim();
 
             const nombre =
-                document
-                    .getElementById(
-                        "nombre"
-                    )
-                    .value
-                    .trim();
-
+                document.getElementById("nombre")
+                    .value.trim();
 
             const apellidos =
-                document
-                    .getElementById(
-                        "apellidos"
-                    )
-                    .value
-                    .trim();
-
+                document.getElementById("apellidos")
+                    .value.trim();
 
             const correo =
-                document
-                    .getElementById(
-                        "correo"
-                    )
-                    .value
-                    .trim()
+                document.getElementById("correo")
+                    .value.trim()
                     .toLowerCase();
 
-
             const password =
-                document
-                    .getElementById(
-                        "password"
-                    )
+                document.getElementById("password")
                     .value;
-
 
             const region =
-                document
-                    .getElementById(
-                        "region"
-                    )
+                document.getElementById("region")
                     .value;
-
 
             const comuna =
-                document
-                    .getElementById(
-                        "comuna"
-                    )
+                document.getElementById("comuna")
                     .value;
 
-
             const direccion =
-                document
-                    .getElementById(
-                        "direccion"
-                    )
-                    .value
-                    .trim();
+                document.getElementById("direccion")
+                    .value.trim();
 
-
-            // ==============================================
-            // CAMPOS OBLIGATORIOS
-            // ==============================================
 
             if (
                 !run ||
@@ -766,13 +482,8 @@ if (formNuevoUsuario) {
             }
 
 
-            // ==============================================
-            // RUN
-            // ==============================================
-
             if (
-                typeof validarRun ===
-                    "function" &&
+                typeof validarRun === "function" &&
                 !validarRun(run)
             ) {
 
@@ -783,10 +494,6 @@ if (formNuevoUsuario) {
                 return;
             }
 
-
-            // ==============================================
-            // NOMBRE
-            // ==============================================
 
             if (
                 nombre.length < 2 ||
@@ -801,10 +508,6 @@ if (formNuevoUsuario) {
             }
 
 
-            // ==============================================
-            // APELLIDOS
-            // ==============================================
-
             if (
                 apellidos.length < 2 ||
                 apellidos.length > 50
@@ -818,15 +521,7 @@ if (formNuevoUsuario) {
             }
 
 
-            // ==============================================
-            // CORREO
-            // ==============================================
-
-            if (
-                !validarCorreoAdmin(
-                    correo
-                )
-            ) {
+            if (!validarCorreoAdmin(correo)) {
 
                 alert(
                     "Ingresa un correo electrónico válido."
@@ -836,15 +531,7 @@ if (formNuevoUsuario) {
             }
 
 
-            // ==============================================
-            // CONTRASEÑA
-            // ==============================================
-
-            if (
-                !validarPasswordAdmin(
-                    password
-                )
-            ) {
+            if (!validarPasswordAdmin(password)) {
 
                 alert(
                     "La contraseña debe tener al menos 8 caracteres, una letra y un número."
@@ -854,90 +541,15 @@ if (formNuevoUsuario) {
             }
 
 
-            const usuarios =
-                obtenerUsuarios();
-
-
-            const runNormalizado =
-                normalizarRunAdmin(
-                    run
-                );
-
-
-            // ==============================================
-            // RUN DUPLICADO
-            // ==============================================
-
-            const runExiste =
-                usuarios.some(
-                    function (usuario) {
-
-                        return (
-                            normalizarRunAdmin(
-                                usuario.run
-                            ) ===
-                            runNormalizado
-                        );
-                    }
-                );
-
-
-            if (runExiste) {
-
-                alert(
-                    "Ya existe un usuario con ese RUN."
-                );
-
-                return;
-            }
-
-
-            // ==============================================
-            // CORREO DUPLICADO
-            // ==============================================
-
-            const correoExiste =
-                usuarios.some(
-                    function (usuario) {
-
-                        return (
-                            (
-                                usuario.correo ||
-                                ""
-                            )
-                                .toLowerCase() ===
-                            correo
-                        );
-                    }
-                );
-
-
-            if (correoExiste) {
-
-                alert(
-                    "Ya existe un usuario con ese correo."
-                );
-
-                return;
-            }
-
-
-            // ==============================================
-            // CREAR USUARIO
-            // ==============================================
-
             const nuevoUsuario = {
 
-                id:
-                    Date.now(),
-
                 run:
-                    runNormalizado,
+                    normalizarRunAdmin(run),
 
                 nombre:
                     nombre,
 
-                apellido:
+                apellidos:
                     apellidos,
 
                 correo:
@@ -946,6 +558,9 @@ if (formNuevoUsuario) {
                 password:
                     password,
 
+                tipoUsuario:
+                    "Cliente",
+
                 region:
                     region,
 
@@ -953,43 +568,74 @@ if (formNuevoUsuario) {
                     comuna,
 
                 direccion:
-                    direccion,
-
-                rol:
-                    "cliente"
+                    direccion
             };
 
 
-            usuarios.push(
-                nuevoUsuario
-            );
+            try {
+
+                const respuesta =
+                    await fetch(
+                        API_USUARIOS_ADMIN,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    nuevoUsuario
+                                )
+                        }
+                    );
 
 
-            guardarUsuarios(
-                usuarios
-            );
+                const datos =
+                    await respuesta.json();
 
 
-            alert(
-                "Usuario creado correctamente."
-            );
+                if (!respuesta.ok) {
+
+                    alert(
+                        datos.mensaje ||
+                        "No se pudo crear el usuario."
+                    );
+
+                    return;
+                }
 
 
-            window.location.href =
-                "usuarios.html";
+                alert(
+                    "Usuario creado correctamente."
+                );
+
+
+                window.location.href =
+                    "usuarios.html";
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "No se pudo conectar con el servidor."
+                );
+            }
         }
     );
 }
 
 
 // ==========================================================
-// EDITAR USUARIO
+// EDITAR USUARIO DESDE BACKEND
 // ==========================================================
 
 const formEditarUsuario =
-    document.getElementById(
-        "formEditarUsuario"
-    );
+    document.getElementById("formEditarUsuario");
 
 
 if (formEditarUsuario) {
@@ -999,536 +645,358 @@ if (formEditarUsuario) {
             window.location.search
         );
 
+    const idUsuario =
+        parametros.get("id");
 
-    const indexUsuario =
-        Number(
-            parametros.get("id")
-        );
 
+    async function cargarUsuarioEditar() {
 
-    const usuarios =
-        obtenerUsuarios();
+        if (!idUsuario) {
 
+            alert("Usuario no encontrado.");
 
-    // ======================================================
-    // VALIDAR ÍNDICE
-    // ======================================================
+            window.location.href =
+                "usuarios.html";
 
-    if (
-        !Number.isInteger(
-            indexUsuario
-        ) ||
-        indexUsuario < 0 ||
-        indexUsuario >=
-            usuarios.length
-    ) {
+            return;
+        }
 
-        alert(
-            "Usuario no encontrado."
-        );
 
+        try {
 
-        window.location.href =
-            "usuarios.html";
-
-    } else {
-
-
-        const usuario =
-            usuarios[
-                indexUsuario
-            ];
-
-
-        // ==================================================
-        // ELEMENTOS DEL FORMULARIO
-        // ==================================================
-
-        const runEditar =
-            document.getElementById(
-                "runEditar"
-            );
-
-
-        const nombreEditar =
-            document.getElementById(
-                "nombreEditar"
-            );
-
-
-        const apellidosEditar =
-            document.getElementById(
-                "apellidosEditar"
-            );
-
-
-        const correoEditar =
-            document.getElementById(
-                "correoEditar"
-            );
-
-
-        const passwordEditar =
-            document.getElementById(
-                "passwordEditar"
-            );
-
-
-        const regionEditar =
-            document.getElementById(
-                "regionEditar"
-            );
-
-
-        const comunaEditar =
-            document.getElementById(
-                "comunaEditar"
-            );
-
-
-        const direccionEditar =
-            document.getElementById(
-                "direccionEditar"
-            );
-
-
-        // ==================================================
-        // CARGAR DATOS DEL USUARIO
-        // ==================================================
-
-        runEditar.value =
-            usuario.run || "";
-
-
-        nombreEditar.value =
-            usuario.nombre || "";
-
-
-        apellidosEditar.value =
-            usuario.apellido ||
-            usuario.apellidos ||
-            "";
-
-
-        correoEditar.value =
-            usuario.correo || "";
-
-
-        passwordEditar.value =
-            usuario.password || "";
-
-
-        direccionEditar.value =
-            usuario.direccion || "";
-
-
-        // ==================================================
-        // CARGAR REGIONES
-        // ==================================================
-
-        cargarRegiones(
-            regionEditar
-        );
-
-
-        const regionUsuario =
-            normalizarRegion(
-                usuario.region
-            );
-
-
-        regionEditar.value =
-            regionUsuario;
-
-
-        // ==================================================
-        // CARGAR COMUNA ACTUAL
-        // ==================================================
-
-        cargarComunas(
-            comunaEditar,
-            regionUsuario,
-            usuario.comuna || ""
-        );
-
-
-        // ==================================================
-        // CAMBIAR COMUNAS AL CAMBIAR REGIÓN
-        // ==================================================
-
-        regionEditar.addEventListener(
-            "change",
-            function () {
-
-                cargarComunas(
-                    comunaEditar,
-                    regionEditar.value
-                );
-            }
-        );
-
-
-        // ==================================================
-        // GUARDAR CAMBIOS
-        // ==================================================
-
-        formEditarUsuario.addEventListener(
-            "submit",
-            function (event) {
-
-                event.preventDefault();
-
-
-                const run =
-                    runEditar
-                        .value
-                        .trim();
-
-
-                const nombre =
-                    nombreEditar
-                        .value
-                        .trim();
-
-
-                const apellidos =
-                    apellidosEditar
-                        .value
-                        .trim();
-
-
-                const correo =
-                    correoEditar
-                        .value
-                        .trim()
-                        .toLowerCase();
-
-
-                const password =
-                    passwordEditar
-                        .value;
-
-
-                const region =
-                    regionEditar
-                        .value;
-
-
-                const comuna =
-                    comunaEditar
-                        .value;
-
-
-                const direccion =
-                    direccionEditar
-                        .value
-                        .trim();
-
-
-                // ==========================================
-                // CAMPOS OBLIGATORIOS
-                // ==========================================
-
-                if (
-                    !run ||
-                    !nombre ||
-                    !apellidos ||
-                    !correo ||
-                    !password ||
-                    !region ||
-                    !comuna ||
-                    !direccion
-                ) {
-
-                    alert(
-                        "Debes completar todos los campos."
-                    );
-
-                    return;
-                }
-
-
-                // ==========================================
-                // RUN
-                // ==========================================
-
-                if (
-                    typeof validarRun ===
-                        "function" &&
-                    !validarRun(run)
-                ) {
-
-                    alert(
-                        "El RUN ingresado no es válido."
-                    );
-
-                    return;
-                }
-
-
-                // ==========================================
-                // NOMBRE
-                // ==========================================
-
-                if (
-                    nombre.length < 2 ||
-                    nombre.length > 50
-                ) {
-
-                    alert(
-                        "El nombre debe tener entre 2 y 50 caracteres."
-                    );
-
-                    return;
-                }
-
-
-                // ==========================================
-                // APELLIDOS
-                // ==========================================
-
-                if (
-                    apellidos.length < 2 ||
-                    apellidos.length > 50
-                ) {
-
-                    alert(
-                        "Los apellidos deben tener entre 2 y 50 caracteres."
-                    );
-
-                    return;
-                }
-
-
-                // ==========================================
-                // CORREO
-                // ==========================================
-
-                if (
-                    !validarCorreoAdmin(
-                        correo
-                    )
-                ) {
-
-                    alert(
-                        "Ingresa un correo electrónico válido."
-                    );
-
-                    return;
-                }
-
-
-                // ==========================================
-                // CONTRASEÑA
-                // ==========================================
-
-                if (
-                    !validarPasswordAdmin(
-                        password
-                    )
-                ) {
-
-                    alert(
-                        "La contraseña debe tener al menos 8 caracteres, una letra y un número."
-                    );
-
-                    return;
-                }
-
-
-                const runNormalizado =
-                    normalizarRunAdmin(
-                        run
-                    );
-
-
-                // ==========================================
-                // RUN DUPLICADO
-                // ==========================================
-
-                const runExiste =
-                    usuarios.some(
-                        function (
-                            otroUsuario,
-                            index
-                        ) {
-
-                            return (
-                                index !==
-                                    indexUsuario &&
-                                normalizarRunAdmin(
-                                    otroUsuario.run
-                                ) ===
-                                    runNormalizado
-                            );
-                        }
-                    );
-
-
-                if (runExiste) {
-
-                    alert(
-                        "Ya existe otro usuario con ese RUN."
-                    );
-
-                    return;
-                }
-
-
-                // ==========================================
-                // CORREO DUPLICADO
-                // ==========================================
-
-                const correoExiste =
-                    usuarios.some(
-                        function (
-                            otroUsuario,
-                            index
-                        ) {
-
-                            return (
-                                index !==
-                                    indexUsuario &&
-                                (
-                                    otroUsuario.correo ||
-                                    ""
-                                )
-                                    .toLowerCase() ===
-                                    correo
-                            );
-                        }
-                    );
-
-
-                if (correoExiste) {
-
-                    alert(
-                        "Ya existe otro usuario con ese correo."
-                    );
-
-                    return;
-                }
-
-
-                // ==========================================
-                // ACTUALIZAR USUARIO
-                // ==========================================
-
-                const usuarioActualizado = {
-
-                    id:
-                        usuario.id ||
-                        Date.now(),
-
-                    run:
-                        runNormalizado,
-
-                    nombre:
-                        nombre,
-
-                    apellido:
-                        apellidos,
-
-                    correo:
-                        correo,
-
-                    password:
-                        password,
-
-                    region:
-                        region,
-
-                    comuna:
-                        comuna,
-
-                    direccion:
-                        direccion,
-
-                    rol:
-                        usuario.rol ||
-                        "cliente"
-                };
-
-
-                usuarios[
-                    indexUsuario
-                ] =
-                    usuarioActualizado;
-
-
-                guardarUsuarios(
-                    usuarios
+            const respuesta =
+                await fetch(
+                    `${API_USUARIOS_ADMIN}/${idUsuario}`
                 );
 
 
-                // ==========================================
-                // ACTUALIZAR USUARIO ACTIVO
-                // ==========================================
+            if (!respuesta.ok) {
 
-                const usuarioActivo =
-                    JSON.parse(
-                        localStorage.getItem(
-                            "usuarioActivo"
-                        )
-                    );
-
-
-                if (usuarioActivo) {
-
-                    const mismoUsuario =
-                        (
-                            usuarioActivo.id &&
-                            usuario.id &&
-                            usuarioActivo.id ===
-                                usuario.id
-                        ) ||
-                        (
-                            usuarioActivo.correo ===
-                            usuario.correo
-                        );
-
-
-                    if (mismoUsuario) {
-
-                        const nuevoUsuarioActivo = {
-
-                            id:
-                                usuarioActualizado.id,
-
-                            nombre:
-                                usuarioActualizado.nombre,
-
-                            apellido:
-                                usuarioActualizado.apellido,
-
-                            correo:
-                                usuarioActualizado.correo,
-
-                            rol:
-                                usuarioActualizado.rol
-                        };
-
-
-                        localStorage.setItem(
-                            "usuarioActivo",
-                            JSON.stringify(
-                                nuevoUsuarioActivo
-                            )
-                        );
-                    }
-                }
-
-
-                alert(
-                    "Usuario actualizado correctamente."
-                );
-
+                alert("Usuario no encontrado.");
 
                 window.location.href =
                     "usuarios.html";
+
+                return;
             }
-        );
+
+
+            const usuario =
+                await respuesta.json();
+
+
+            const runEditar =
+                document.getElementById("runEditar");
+
+            const nombreEditar =
+                document.getElementById("nombreEditar");
+
+            const apellidosEditar =
+                document.getElementById("apellidosEditar");
+
+            const correoEditar =
+                document.getElementById("correoEditar");
+
+            const passwordEditar =
+                document.getElementById("passwordEditar");
+
+            const regionEditar =
+                document.getElementById("regionEditar");
+
+            const comunaEditar =
+                document.getElementById("comunaEditar");
+
+            const direccionEditar =
+                document.getElementById("direccionEditar");
+
+
+            runEditar.value =
+                usuario.run || "";
+
+            nombreEditar.value =
+                usuario.nombre || "";
+
+            apellidosEditar.value =
+                usuario.apellidos ||
+                usuario.apellido ||
+                "";
+
+            correoEditar.value =
+                usuario.correo || "";
+
+            passwordEditar.value =
+                usuario.password || "";
+
+            direccionEditar.value =
+                usuario.direccion || "";
+
+
+            cargarRegiones(regionEditar);
+
+
+            const regionUsuario =
+                normalizarRegion(
+                    usuario.region
+                );
+
+
+            regionEditar.value =
+                regionUsuario;
+
+
+            cargarComunas(
+                comunaEditar,
+                regionUsuario,
+                usuario.comuna || ""
+            );
+
+
+            regionEditar.addEventListener(
+                "change",
+                function () {
+
+                    cargarComunas(
+                        comunaEditar,
+                        regionEditar.value
+                    );
+                }
+            );
+
+
+            formEditarUsuario.addEventListener(
+                "submit",
+                async function (event) {
+
+                    event.preventDefault();
+
+
+                    const run =
+                        runEditar.value.trim();
+
+                    const nombre =
+                        nombreEditar.value.trim();
+
+                    const apellidos =
+                        apellidosEditar.value.trim();
+
+                    const correo =
+                        correoEditar.value
+                            .trim()
+                            .toLowerCase();
+
+                    const password =
+                        passwordEditar.value;
+
+                    const region =
+                        regionEditar.value;
+
+                    const comuna =
+                        comunaEditar.value;
+
+                    const direccion =
+                        direccionEditar.value.trim();
+
+
+                    if (
+                        !run ||
+                        !nombre ||
+                        !apellidos ||
+                        !correo ||
+                        !password ||
+                        !region ||
+                        !comuna ||
+                        !direccion
+                    ) {
+
+                        alert(
+                            "Debes completar todos los campos."
+                        );
+
+                        return;
+                    }
+
+
+                    if (
+                        typeof validarRun === "function" &&
+                        !validarRun(run)
+                    ) {
+
+                        alert(
+                            "El RUN ingresado no es válido."
+                        );
+
+                        return;
+                    }
+
+
+                    if (!validarCorreoAdmin(correo)) {
+
+                        alert(
+                            "Ingresa un correo electrónico válido."
+                        );
+
+                        return;
+                    }
+
+
+                    if (!validarPasswordAdmin(password)) {
+
+                        alert(
+                            "La contraseña debe tener al menos 8 caracteres, una letra y un número."
+                        );
+
+                        return;
+                    }
+
+
+                    const usuarioActualizado = {
+
+                        run:
+                            normalizarRunAdmin(run),
+
+                        nombre:
+                            nombre,
+
+                        apellidos:
+                            apellidos,
+
+                        correo:
+                            correo,
+
+                        password:
+                            password,
+
+                        tipoUsuario:
+                            usuario.tipoUsuario ||
+                            "Cliente",
+
+                        region:
+                            region,
+
+                        comuna:
+                            comuna,
+
+                        direccion:
+                            direccion
+                    };
+
+
+                    try {
+
+                        const respuestaActualizar =
+                            await fetch(
+                                `${API_USUARIOS_ADMIN}/${idUsuario}`,
+                                {
+                                    method: "PUT",
+
+                                    headers: {
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+
+                                    body:
+                                        JSON.stringify(
+                                            usuarioActualizado
+                                        )
+                                }
+                            );
+
+
+                        const datos =
+                            await respuestaActualizar.json();
+
+
+                        if (!respuestaActualizar.ok) {
+
+                            alert(
+                                datos.mensaje ||
+                                "No se pudo actualizar el usuario."
+                            );
+
+                            return;
+                        }
+
+
+                        // Actualizar sesión si se editó
+                        // al usuario actualmente conectado.
+
+                        const usuarioActivo =
+                            JSON.parse(
+                                localStorage.getItem(
+                                    "usuarioActivo"
+                                )
+                            );
+
+
+                        if (
+                            usuarioActivo &&
+                            String(usuarioActivo.id) ===
+                            String(idUsuario)
+                        ) {
+
+                            localStorage.setItem(
+                                "usuarioActivo",
+                                JSON.stringify({
+                                    id:
+                                        datos.id ||
+                                        usuario.id,
+
+                                    nombre:
+                                        nombre,
+
+                                    apellido:
+                                        apellidos,
+
+                                    correo:
+                                        correo,
+
+                                    rol:
+                                        (
+                                            usuarioActualizado
+                                                .tipoUsuario
+                                                .toLowerCase() ===
+                                            "administrador"
+                                        )
+                                            ? "admin"
+                                            : "cliente"
+                                })
+                            );
+                        }
+
+
+                        alert(
+                            "Usuario actualizado correctamente."
+                        );
+
+
+                        window.location.href =
+                            "usuarios.html";
+
+
+                    } catch (error) {
+
+                        console.error(error);
+
+                        alert(
+                            "No se pudo conectar con el servidor."
+                        );
+                    }
+                }
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "No se pudo conectar con el servidor."
+            );
+        }
     }
+
+
+    cargarUsuarioEditar();
 }
 
 
