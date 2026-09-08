@@ -58,85 +58,6 @@ const comunasPorRegion = {
 };
 
 
-/* =========================================================
-   CREAR ADMINISTRADOR INICIAL
-   ========================================================= */
-
-/*
-    IMPORTANTE:
-    Esto es solamente para el proyecto académico.
-
-    En un sistema real, un administrador NO debería
-    crearse con una contraseña escrita directamente
-    en JavaScript.
-*/
-
-function asegurarAdministrador() {
-
-    const usuarios =
-        JSON.parse(
-            localStorage.getItem("usuarios")
-        ) || [];
-
-
-    const administradorExiste =
-        usuarios.some(
-            function (usuario) {
-
-                return (
-                    usuario.correo &&
-                    usuario.correo.toLowerCase() ===
-                    "admin@duoc.cl"
-                );
-            }
-        );
-
-
-    if (!administradorExiste) {
-
-        const administrador = {
-
-            id: "admin-principal",
-
-            nombre: "Administrador",
-
-            apellido: "Tienda",
-
-            run: "111111111",
-
-            correo: "admin@duoc.cl",
-
-            password: "Admin123",
-
-            region: "metropolitana",
-
-            comuna: "Santiago",
-
-            direccion: "Administración",
-
-            rol: "admin"
-        };
-
-
-        usuarios.push(
-            administrador
-        );
-
-
-        localStorage.setItem(
-            "usuarios",
-            JSON.stringify(usuarios)
-        );
-    }
-}
-
-
-/*
-    Se ejecuta automáticamente
-    cuando usuarios.js se carga.
-*/
-
-asegurarAdministrador();
 
 
 /* =========================================================
@@ -454,7 +375,15 @@ if (inputRun) {
 
 
 /* =========================================================
-   REGISTRO
+   API USUARIOS
+   ========================================================= */
+
+const API_USUARIOS =
+    "http://localhost:3000/api/usuarios";
+
+
+/* =========================================================
+   REGISTRO CON BACKEND
    ========================================================= */
 
 const formRegistro =
@@ -467,14 +396,10 @@ if (formRegistro) {
 
     formRegistro.addEventListener(
         "submit",
-        function (evento) {
+        async function (evento) {
 
             evento.preventDefault();
 
-
-            /* =====================================
-               CAMPOS
-            ====================================== */
 
             const nombre =
                 document
@@ -545,10 +470,6 @@ if (formRegistro) {
                     .value;
 
 
-            /* =====================================
-               ELEMENTOS DE ERROR
-            ====================================== */
-
             const errorNombre =
                 document.getElementById(
                     "error-registro-nombre"
@@ -609,22 +530,13 @@ if (formRegistro) {
                 );
 
 
-            /* LIMPIAR MENSAJES */
-
             errorNombre.textContent = "";
-
             errorApellido.textContent = "";
-
             errorRun.textContent = "";
-
             errorCorreo.textContent = "";
-
             errorPassword.textContent = "";
-
             errorPasswordConfirmar.textContent = "";
-
             errorRegion.textContent = "";
-
             errorComuna.textContent = "";
 
             errorGeneral.classList.add(
@@ -636,83 +548,53 @@ if (formRegistro) {
             );
 
 
-            let formularioValido =
-                true;
+            let formularioValido = true;
 
-
-            /* =====================================
-               VALIDAR NOMBRE
-            ====================================== */
 
             if (nombre.length < 2) {
 
                 errorNombre.textContent =
                     "Ingresa un nombre válido.";
 
-                formularioValido =
-                    false;
+                formularioValido = false;
             }
 
-
-            /* =====================================
-               VALIDAR APELLIDO
-            ====================================== */
 
             if (apellido.length < 2) {
 
                 errorApellido.textContent =
                     "Ingresa un apellido válido.";
 
-                formularioValido =
-                    false;
+                formularioValido = false;
             }
 
-
-            /* =====================================
-               VALIDAR RUN
-            ====================================== */
 
             if (!validarRun(run)) {
 
                 errorRun.textContent =
                     "Ingresa un RUN válido.";
 
-                formularioValido =
-                    false;
+                formularioValido = false;
             }
 
-
-            /* =====================================
-               VALIDAR CORREO
-            ====================================== */
 
             if (!validarCorreo(correo)) {
 
                 errorCorreo.textContent =
                     "Ingresa un correo válido.";
 
-                formularioValido =
-                    false;
+                formularioValido = false;
             }
 
-
-            /* =====================================
-               VALIDAR CONTRASEÑA
-            ====================================== */
 
             if (!validarPassword(password)) {
 
                 errorPassword.textContent =
                     "La contraseña debe tener al menos 8 caracteres, una letra y un número.";
 
-                formularioValido =
-                    false;
+                formularioValido = false;
             }
 
-
-            /* =====================================
-               CONFIRMAR CONTRASEÑA
-            ====================================== */
 
             if (
                 password !==
@@ -722,36 +604,25 @@ if (formRegistro) {
                 errorPasswordConfirmar.textContent =
                     "Las contraseñas no coinciden.";
 
-                formularioValido =
-                    false;
+                formularioValido = false;
             }
 
-
-            /* =====================================
-               VALIDAR REGIÓN
-            ====================================== */
 
             if (region === "") {
 
                 errorRegion.textContent =
                     "Selecciona una región.";
 
-                formularioValido =
-                    false;
+                formularioValido = false;
             }
 
-
-            /* =====================================
-               VALIDAR COMUNA
-            ====================================== */
 
             if (comuna === "") {
 
                 errorComuna.textContent =
                     "Selecciona una comuna.";
 
-                formularioValido =
-                    false;
+                formularioValido = false;
             }
 
 
@@ -764,183 +635,157 @@ if (formRegistro) {
                     "d-none"
                 );
 
-
                 return;
             }
 
 
-            /* =====================================
-               LEER USUARIOS EXISTENTES
-            ====================================== */
+            try {
 
-            const usuarios =
-                JSON.parse(
-                    localStorage.getItem(
-                        "usuarios"
-                    )
-                ) || [];
+                const respuesta =
+                    await fetch(
+                        API_USUARIOS,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    run:
+                                        run
+                                            .replace(/\./g, "")
+                                            .replace(/-/g, "")
+                                            .toUpperCase(),
+
+                                    nombre:
+                                        nombre,
+
+                                    apellidos:
+                                        apellido,
+
+                                    correo:
+                                        correo,
+
+                                    password:
+                                        password,
+
+                                    tipoUsuario:
+                                        "Cliente",
+
+                                    region:
+                                        region,
+
+                                    comuna:
+                                        comuna,
+
+                                    direccion:
+                                        ""
+                                })
+                        }
+                    );
 
 
-            /* =====================================
-               EVITAR CORREOS REPETIDOS
-            ====================================== */
+                const datos =
+                    await respuesta.json();
 
-            const correoExiste =
-                usuarios.some(
-                    function (usuario) {
 
-                        return (
-                            usuario.correo &&
-                            usuario.correo.toLowerCase() ===
-                            correo
+                if (!respuesta.ok) {
+
+                    if (
+                        datos.mensaje &&
+                        datos.mensaje
+                            .toLowerCase()
+                            .includes("correo")
+                    ) {
+
+                        errorCorreo.textContent =
+                            datos.mensaje;
+
+                    } else if (
+                        datos.mensaje &&
+                        datos.mensaje
+                            .toLowerCase()
+                            .includes("run")
+                    ) {
+
+                        errorRun.textContent =
+                            datos.mensaje;
+
+                    } else {
+
+                        errorGeneral.textContent =
+                            datos.mensaje ||
+                            "No fue posible crear la cuenta.";
+
+                        errorGeneral.classList.remove(
+                            "d-none"
                         );
                     }
+
+                    return;
+                }
+
+
+                mensajeExito.textContent =
+                    "Cuenta creada correctamente.";
+
+                mensajeExito.classList.remove(
+                    "d-none"
                 );
 
 
-            if (correoExiste) {
-
-                errorCorreo.textContent =
-                    "Este correo ya está registrado.";
-
-                return;
-            }
+                formRegistro.reset();
 
 
-            /* =====================================
-               EVITAR RUN REPETIDO
-            ====================================== */
+                if (comunaSelect) {
 
-            const runLimpio =
-                run
-                    .replace(/\./g, "")
-                    .replace(/-/g, "")
-                    .toUpperCase();
+                    comunaSelect.innerHTML = `
+                        <option value="">
+                            Primero selecciona una región
+                        </option>
+                    `;
 
-
-            const runExiste =
-                usuarios.some(
-                    function (usuario) {
-
-                        const runUsuario =
-                            (
-                                usuario.run ||
-                                ""
-                            )
-                                .replace(/\./g, "")
-                                .replace(/-/g, "")
-                                .toUpperCase();
+                    comunaSelect.disabled =
+                        true;
+                }
 
 
-                        return (
-                            runUsuario ===
-                            runLimpio
-                        );
-                    }
+                setTimeout(
+                    function () {
+
+                        window.location.href =
+                            "login.html";
+
+                    },
+                    1200
                 );
 
 
-            if (runExiste) {
+            } catch (error) {
 
-                errorRun.textContent =
-                    "Este RUN ya está registrado.";
+                console.error(
+                    "Error al registrar usuario:",
+                    error
+                );
 
-                return;
+
+                errorGeneral.textContent =
+                    "No se pudo conectar con el servidor.";
+
+                errorGeneral.classList.remove(
+                    "d-none"
+                );
             }
-
-
-            /* =====================================
-               CREAR USUARIO
-            ====================================== */
-
-            const nuevoUsuario = {
-
-                id:
-                    Date.now(),
-
-                nombre:
-                    nombre,
-
-                apellido:
-                    apellido,
-
-                run:
-                    run,
-
-                correo:
-                    correo,
-
-                password:
-                    password,
-
-                region:
-                    region,
-
-                comuna:
-                    comuna,
-
-                rol:
-                    "cliente"
-            };
-
-
-            usuarios.push(
-                nuevoUsuario
-            );
-
-
-            localStorage.setItem(
-                "usuarios",
-                JSON.stringify(
-                    usuarios
-                )
-            );
-
-
-            /* =====================================
-               ÉXITO
-            ====================================== */
-
-            mensajeExito.classList.remove(
-                "d-none"
-            );
-
-
-            formRegistro.reset();
-
-
-            comunaSelect.innerHTML = `
-
-                <option value="">
-
-                    Primero selecciona una región
-
-                </option>
-            `;
-
-
-            comunaSelect.disabled =
-                true;
-
-
-            /* IR AL LOGIN */
-
-            setTimeout(
-                function () {
-
-                    window.location.href =
-                        "login.html";
-
-                },
-                1200
-            );
         }
     );
 }
 
 
 /* =========================================================
-   LOGIN
+   LOGIN CON BACKEND
    ========================================================= */
 
 const formLogin =
@@ -953,7 +798,7 @@ if (formLogin) {
 
     formLogin.addEventListener(
         "submit",
-        function (evento) {
+        async function (evento) {
 
             evento.preventDefault();
 
@@ -995,7 +840,6 @@ if (formLogin) {
 
 
             errorCorreo.textContent = "";
-
             errorPassword.textContent = "";
 
             errorGeneral.classList.add(
@@ -1003,147 +847,168 @@ if (formLogin) {
             );
 
 
-            let formularioValido =
-                true;
+            let formularioValido = true;
 
-
-            /* VALIDAR CORREO */
 
             if (!validarCorreo(correo)) {
 
                 errorCorreo.textContent =
                     "Ingresa un correo válido.";
 
-                formularioValido =
-                    false;
+                formularioValido = false;
             }
 
-
-            /* VALIDAR CONTRASEÑA */
 
             if (password === "") {
 
                 errorPassword.textContent =
                     "Ingresa tu contraseña.";
 
-                formularioValido =
-                    false;
+                formularioValido = false;
             }
 
 
             if (!formularioValido) {
-
                 return;
             }
 
 
-            /* =====================================
-               USUARIOS
-            ====================================== */
+            try {
 
-            const usuarios =
-                JSON.parse(
-                    localStorage.getItem(
-                        "usuarios"
+                const respuesta =
+                    await fetch(
+                        API_USUARIOS
+                    );
+
+
+                if (!respuesta.ok) {
+
+                    throw new Error(
+                        "No fue posible obtener los usuarios"
+                    );
+                }
+
+
+                const usuarios =
+                    await respuesta.json();
+
+
+                const usuarioEncontrado =
+                    usuarios.find(
+                        function (usuario) {
+
+                            return (
+                                usuario.correo &&
+                                usuario.correo
+                                    .toLowerCase() ===
+                                    correo &&
+                                usuario.password ===
+                                    password
+                            );
+                        }
+                    );
+
+
+                if (!usuarioEncontrado) {
+
+                    errorGeneral.textContent =
+                        "Correo o contraseña incorrectos.";
+
+                    errorGeneral.classList.remove(
+                        "d-none"
+                    );
+
+                    return;
+                }
+
+
+                const esAdministrador =
+                    (
+                        usuarioEncontrado
+                            .tipoUsuario ||
+                        ""
                     )
-                ) || [];
+                        .toLowerCase() ===
+                    "administrador";
 
 
-            /* =====================================
-               BUSCAR USUARIO
-            ====================================== */
+                const usuarioActivo = {
 
-            const usuarioEncontrado =
-                usuarios.find(
-                    function (usuario) {
+                    id:
+                        usuarioEncontrado.id,
 
-                        return (
-                            usuario.correo &&
-                            usuario.correo.toLowerCase() ===
-                                correo &&
-                            usuario.password ===
-                                password
-                        );
-                    }
+                    nombre:
+                        usuarioEncontrado.nombre,
+
+                    apellido:
+                        usuarioEncontrado.apellidos ||
+                        "",
+
+                    correo:
+                        usuarioEncontrado.correo,
+
+                    rol:
+                        esAdministrador
+                            ? "admin"
+                            : "cliente"
+                };
+
+
+                /*
+                    Aquí sí usamos localStorage,
+                    pero solamente para recordar
+                    quién inició sesión.
+                */
+
+                localStorage.setItem(
+                    "usuarioActivo",
+                    JSON.stringify(
+                        usuarioActivo
+                    )
                 );
 
 
-            if (!usuarioEncontrado) {
+                if (
+                    usuarioActivo.rol ===
+                    "admin"
+                ) {
+
+                    alert(
+                        "Inicio de sesión correcto. Bienvenido Administrador."
+                    );
+
+
+                    window.location.href =
+                        "admin/index.html";
+
+                } else {
+
+                    alert(
+                        "Inicio de sesión correcto. Bienvenido " +
+                        usuarioEncontrado.nombre +
+                        "."
+                    );
+
+
+                    window.location.href =
+                        "index.html";
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error al iniciar sesión:",
+                    error
+                );
+
 
                 errorGeneral.textContent =
-                    "Correo o contraseña incorrectos.";
+                    "No se pudo conectar con el servidor.";
 
                 errorGeneral.classList.remove(
                     "d-none"
                 );
-
-
-                return;
-            }
-
-
-            /* =====================================
-               GUARDAR USUARIO ACTIVO
-            ====================================== */
-
-            const usuarioActivo = {
-
-                id:
-                    usuarioEncontrado.id,
-
-                nombre:
-                    usuarioEncontrado.nombre,
-
-                apellido:
-                    usuarioEncontrado.apellido ||
-                    usuarioEncontrado.apellidos ||
-                    "",
-
-                correo:
-                    usuarioEncontrado.correo,
-
-                rol:
-                    usuarioEncontrado.rol ||
-                    "cliente"
-            };
-
-
-            localStorage.setItem(
-                "usuarioActivo",
-                JSON.stringify(
-                    usuarioActivo
-                )
-            );
-
-
-            /* =====================================
-               REDIRECCIÓN SEGÚN ROL
-            ====================================== */
-
-            if (
-                usuarioActivo.rol ===
-                "admin"
-            ) {
-
-                alert(
-                    "Inicio de sesión correcto. Bienvenido Administrador."
-                );
-
-
-                window.location.href =
-                    "admin/index.html";
-
-            } else {
-
-                alert(
-                    "Inicio de sesión correcto. Bienvenido " +
-                    usuarioEncontrado.nombre +
-                    "."
-                );
-
-
-                window.location.href =
-                    "index.html";
             }
         }
     );

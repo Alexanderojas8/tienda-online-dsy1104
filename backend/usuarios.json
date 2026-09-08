@@ -22,5 +22,17 @@
         "region": "Metropolitana",
         "comuna": "La Cisterna",
         "direccion": "Dirección cliente"
+    },
+    {
+        "id": 3,
+        "run": "123456785",
+        "nombre": "Pedro",
+        "apellidos": "González",
+        "correo": "pedrobackend@gmail.com",
+        "password": "prueba123",
+        "tipoUsuario": "Cliente",
+        "region": "metropolitana",
+        "comuna": "San Joaquín",
+        "direccion": ""
     }
 ]
