@@ -7,43 +7,249 @@
 
     <title>Detalle del Producto - Tienda Online</title>
 
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- CSS propio -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
 
-    <header>
-        <h1>Tienda Online</h1>
+    <!-- =====================================
+         NAVBAR
+    ====================================== -->
 
-        <nav>
-            <a href="index.html">Inicio</a>
-            <a href="productos.html">Productos</a>
-            <a href="nosotros.html">Nosotros</a>
-            <a href="blog.html">Blog</a>
-            <a href="contacto.html">Contacto</a>
-            <a href="carrito.html">Carrito</a>
-        </nav>
-    </header>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-neon">
 
-    <main>
+        <div class="container">
+
+            <!-- LOGO -->
+            <a class="navbar-brand fw-bold" href="index.html">
+
+                <span class="logo-tienda">
+                    Tienda <span>Online</span>
+                </span>
+
+            </a>
+
+            <!-- BOTÓN MÓVIL -->
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarPrincipal"
+                aria-controls="navbarPrincipal"
+                aria-expanded="false"
+                aria-label="Abrir navegación">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <!-- MENÚ -->
+            <div
+                class="collapse navbar-collapse"
+                id="navbarPrincipal">
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="index.html">
+
+                            Inicio
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link active"
+                            href="productos.html">
+
+                            Productos
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="nosotros.html">
+
+                            Nosotros
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="blog.html">
+
+                            Blog
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="contacto.html">
+
+                            Contacto
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="carrito.html">
+
+                            Carrito
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+                <!-- CARRITO -->
+                <div class="d-flex align-items-center mt-3 mt-lg-0">
+
+                    <a
+                        href="carrito.html"
+                        class="btn carrito-navbar">
+
+                        🛒 Ver carrito
+
+                        <span
+                            id="contador-carrito"
+                            class="badge contador-navbar">
+
+                            0
+
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =====================================
+         DETALLE DEL PRODUCTO
+    ====================================== -->
+
+    <main class="container py-5">
 
         <section class="detalle-producto">
 
-            <a href="productos.html">← Volver a productos</a>
+            <a href="productos.html">
+                ← Volver a productos
+            </a>
 
             <div id="contenido-detalle">
-                <p>Cargando producto...</p>
+
+                <p>
+                    Cargando producto...
+                </p>
+
             </div>
 
         </section>
 
     </main>
 
+
+    <!-- =====================================
+         FOOTER
+    ====================================== -->
+
     <footer>
-        <p>© 2026 Tienda Online DSY1104</p>
+
+        <p>
+            © 2026 Tienda Online DSY1104
+        </p>
+
     </footer>
 
+
+    <!-- =====================================
+         BOOTSTRAP
+    ====================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+
+    <!-- =====================================
+         PRODUCTOS
+    ====================================== -->
+
     <script src="js/productos.js"></script>
+
+
+    <!-- =====================================
+         CONTADOR DEL CARRITO
+    ====================================== -->
+
+    <script>
+
+        function actualizarContadorCarritoNavbar() {
+
+            const carrito =
+                JSON.parse(
+                    localStorage.getItem("carrito")
+                ) || [];
+
+            const cantidadTotal =
+                carrito.reduce(
+                    function (total, producto) {
+
+                        return total + (producto.cantidad || 0);
+
+                    },
+                    0
+                );
+
+            const contador =
+                document.getElementById("contador-carrito");
+
+            if (contador) {
+
+                contador.textContent =
+                    cantidadTotal;
+
+            }
+
+        }
+
+        actualizarContadorCarritoNavbar();
+
+    </script>
 
 </body>
 
