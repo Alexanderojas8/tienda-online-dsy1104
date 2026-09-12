@@ -462,6 +462,10 @@ if (formNuevoUsuario) {
                 document.getElementById("direccion")
                     .value.trim();
 
+            const tipoUsuario =
+                document.getElementById("tipoUsuario")
+                    .value;
+
 
             if (
                 !run ||
@@ -471,7 +475,8 @@ if (formNuevoUsuario) {
                 !password ||
                 !region ||
                 !comuna ||
-                !direccion
+                !direccion ||
+                !tipoUsuario
             ) {
 
                 alert(
@@ -559,7 +564,7 @@ if (formNuevoUsuario) {
                     password,
 
                 tipoUsuario:
-                    "Cliente",
+                    tipoUsuario,
 
                 region:
                     region,

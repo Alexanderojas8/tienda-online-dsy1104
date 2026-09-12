@@ -166,7 +166,9 @@ app.put("/api/productos/:id", (req, res) => {
         descripcion,
         precio,
         stock,
-        categoria
+        stockCritico,
+        categoria,  
+        imagen
     } = req.body;
 
     if (codigo !== undefined) producto.codigo = codigo;
@@ -174,7 +176,9 @@ app.put("/api/productos/:id", (req, res) => {
     if (descripcion !== undefined) producto.descripcion = descripcion;
     if (precio !== undefined) producto.precio = Number(precio);
     if (stock !== undefined) producto.stock = Number(stock);
+    if (stockCritico !== undefined) producto.stockCritico = Number(stockCritico);
     if (categoria !== undefined) producto.categoria = categoria;
+    if (imagen !== undefined) producto.imagen = imagen;
 
     guardarProductos(productos);
 

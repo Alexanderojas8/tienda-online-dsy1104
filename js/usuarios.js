@@ -65,10 +65,7 @@ const comunasPorRegion = {
    ========================================================= */
 
 function validarCorreo(correo) {
-
-    const expresion =
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
+    const expresion = /^[a-zA-Z0-9._%+-]+@(duoc\.cl|profesor\.duoc\.cl|gmail\.com)$/;
     return expresion.test(correo);
 }
 
@@ -78,19 +75,7 @@ function validarCorreo(correo) {
    ========================================================= */
 
 function validarPassword(password) {
-
-    /*
-        Requisitos:
-
-        - mínimo 8 caracteres
-        - al menos una letra
-        - al menos un número
-    */
-
-    const expresion =
-        /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
-
-    return expresion.test(password);
+    return password.length >= 4 && password.length <= 10;
 }
 
 
@@ -264,7 +249,7 @@ if (
             if (
                 regionSeleccionada === "" ||
                 !comunasPorRegion[
-                    regionSeleccionada
+                regionSeleccionada
                 ]
             ) {
 
@@ -469,6 +454,10 @@ if (formRegistro) {
                     )
                     .value;
 
+            const direccion = document
+                .getElementById("registro-direccion")
+                .value.trim();
+
 
             const errorNombre =
                 document.getElementById(
@@ -517,6 +506,11 @@ if (formRegistro) {
                     "error-registro-comuna"
                 );
 
+            const errorDireccion =
+                document.getElementById(
+                    "error-registro-direccion"
+                );
+
 
             const errorGeneral =
                 document.getElementById(
@@ -538,6 +532,7 @@ if (formRegistro) {
             errorPasswordConfirmar.textContent = "";
             errorRegion.textContent = "";
             errorComuna.textContent = "";
+            errorDireccion.textContent = "";
 
             errorGeneral.classList.add(
                 "d-none"
@@ -625,6 +620,21 @@ if (formRegistro) {
                 formularioValido = false;
             }
 
+            if (direccion === "") {
+
+                errorDireccion.textContent =
+                    "Ingresa una dirección.";
+
+                formularioValido = false;
+
+            } else if (direccion.length > 300) {
+
+                errorDireccion.textContent =
+                    "La dirección no puede superar los 300 caracteres.";
+
+                formularioValido = false;
+            }
+
 
             if (!formularioValido) {
 
@@ -681,8 +691,7 @@ if (formRegistro) {
                                     comuna:
                                         comuna,
 
-                                    direccion:
-                                        ""
+                                    direccion: direccion
                                 })
                         }
                     );
@@ -901,9 +910,9 @@ if (formLogin) {
                                 usuario.correo &&
                                 usuario.correo
                                     .toLowerCase() ===
-                                    correo &&
+                                correo &&
                                 usuario.password ===
-                                    password
+                                password
                             );
                         }
                     );

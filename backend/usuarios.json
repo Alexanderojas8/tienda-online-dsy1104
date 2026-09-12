@@ -34,5 +34,17 @@
         "region": "metropolitana",
         "comuna": "San Joaquín",
         "direccion": ""
+    },
+    {
+        "id": 4,
+        "run": "111111111",
+        "nombre": "Carlos",
+        "apellidos": "Pérez Soto",
+        "correo": "carlos@gmail.com",
+        "password": "Carlos123",
+        "tipoUsuario": "Vendedor",
+        "region": "Metropolitana de Santiago",
+        "comuna": "San Joaquín",
+        "direccion": "Av. Vicuña Mackenna 1234"
     }
 ]

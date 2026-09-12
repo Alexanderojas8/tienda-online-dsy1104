@@ -4,7 +4,7 @@
         "codigo": "PROD001",
         "nombre": "Mouse Gamer Pro",
         "descripcion": "Mouse gamer de alta precisión",
-        "precio": 24990,
+        "precio": 20000,
         "stock": 25,
         "categoria": "Perifericos"
     },
@@ -23,8 +23,10 @@
         "nombre": "Audífonos Gamer",
         "descripcion": "Audífonos gamer con micrófono",
         "precio": 29990,
-        "stock": 20,
-        "categoria": "Audio"
+        "stock": 2,
+        "categoria": "Audio",
+        "stockCritico": 5,
+        "imagen": ""
     },
     {
         "id": 4,
@@ -32,7 +34,7 @@
         "nombre": "Monitor Gaming",
         "descripcion": "Monitor gaming de alta resolución",
         "precio": 149990,
-        "stock": 5,
+        "stock": 2,
         "categoria": "Monitores"
     },
     {

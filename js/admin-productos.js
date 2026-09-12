@@ -69,7 +69,7 @@ function mostrarProductos() {
 
     tablaProductos.innerHTML = "";
 
-    productosAdmin.forEach(function(producto) {
+    productosAdmin.forEach(function (producto) {
 
         const fila =
             document.createElement("tr");
@@ -85,12 +85,19 @@ function mostrarProductos() {
 
             <td>
                 $${Number(producto.precio)
-                    .toLocaleString("es-CL")}
+                .toLocaleString("es-CL")}
             </td>
 
             <td>
-                ${producto.stock}
-            </td>
+    ${producto.stock}
+
+    ${producto.stockCritico !== undefined &&
+                producto.stockCritico !== null &&
+                Number(producto.stock) <= Number(producto.stockCritico)
+                ? `<span class="badge bg-danger ms-2">Stock crítico</span>`
+                : ""
+            }
+</td>
 
             <td>
 
@@ -183,7 +190,7 @@ if (formularioProducto) {
 
     formularioProducto.addEventListener(
         "submit",
-        async function(event) {
+        async function (event) {
 
             event.preventDefault();
 
@@ -576,7 +583,7 @@ async function cargarProductoParaEditar() {
 
         formularioEditar.addEventListener(
             "submit",
-            async function(event) {
+            async function (event) {
 
                 event.preventDefault();
 
@@ -809,7 +816,7 @@ function limpiarErrores() {
         );
 
     errores.forEach(
-        function(error) {
+        function (error) {
 
             error.textContent = "";
         }
