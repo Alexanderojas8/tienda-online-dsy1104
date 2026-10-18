@@ -5,7 +5,7 @@
         "nombre": "Mouse Gamer Pro",
         "descripcion": "Mouse gamer de alta precisión",
         "precio": 20000,
-        "stock": 25,
+        "stock": 24,
         "categoria": "Perifericos"
     },
     {
@@ -45,5 +45,16 @@
         "precio": 34990,
         "stock": 8,
         "categoria": "Accesorios"
+    },
+    {
+        "id": 6,
+        "codigo": "TEST001",
+        "nombre": "Producto de Prueba",
+        "descripcion": "Producto para probar el CRUD",
+        "precio": 15000,
+        "stock": 10,
+        "stockCritico": 3,
+        "categoria": "Accesorios",
+        "imagen": ""
     }
 ]

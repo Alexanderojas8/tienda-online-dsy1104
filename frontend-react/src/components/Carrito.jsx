@@ -1,4 +1,5 @@
 
+import { Link } from 'react-router-dom'
 import { useCarrito } from '../context/CarritoContext'
 
 const formatearPrecio = (precio) =>
@@ -25,8 +26,17 @@ function Carrito() {
       </h2>
 
       {carrito.length === 0 ? (
-        <div className="alert alert-info">
-          Tu carrito está vacío. Agrega productos para comenzar.
+        <div className="text-center py-5">
+          <div className="alert alert-info">
+            Tu carrito está vacío. Agrega productos para comenzar.
+          </div>
+
+          <Link
+            to="/productos"
+            className="btn btn-primary mt-3"
+          >
+            Ver productos
+          </Link>
         </div>
       ) : (
         <>
@@ -118,13 +128,29 @@ function Carrito() {
                 Total: {formatearPrecio(precioTotal)}
               </h3>
 
-              <button
-                type="button"
-                className="btn btn-outline-danger mt-3"
-                onClick={vaciarCarrito}
-              >
-                Vaciar carrito
-              </button>
+              <div className="d-flex flex-wrap gap-2 mt-4">
+                <button
+                  type="button"
+                  className="btn btn-outline-danger"
+                  onClick={vaciarCarrito}
+                >
+                  Vaciar carrito
+                </button>
+
+                <Link
+                  to="/productos"
+                  className="btn btn-outline-primary"
+                >
+                  Seguir comprando
+                </Link>
+
+                <Link
+                  to="/checkout"
+                  className="btn btn-success"
+                >
+                  Finalizar compra
+                </Link>
+              </div>
             </div>
           </div>
         </>

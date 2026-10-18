@@ -1,15 +1,19 @@
 
+import { NavLink } from 'react-router-dom'
 import { useCarrito } from '../context/CarritoContext'
 
 function Navbar() {
   const { cantidadTotal } = useCarrito()
 
+  const claseEnlace = ({ isActive }) =>
+    `nav-link ${isActive ? 'active fw-bold' : ''}`
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
-        <a className="navbar-brand fw-bold" href="/">
+        <NavLink className="navbar-brand fw-bold" to="/">
           Tienda Online
-        </a>
+        </NavLink>
 
         <button
           className="navbar-toggler"
@@ -23,43 +27,57 @@ function Navbar() {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse" id="menuPrincipal">
-          <ul className="navbar-nav ms-auto">
+        <div
+          className="collapse navbar-collapse"
+          id="menuPrincipal"
+        >
+          <ul className="navbar-nav ms-auto align-items-lg-center">
             <li className="nav-item">
-              <a className="nav-link" href="/">
+              <NavLink className={claseEnlace} to="/" end>
                 Inicio
-              </a>
+              </NavLink>
             </li>
 
             <li className="nav-item">
-              <a className="nav-link" href="#productos">
+              <NavLink className={claseEnlace} to="/productos">
                 Productos
-              </a>
+              </NavLink>
             </li>
 
             <li className="nav-item">
-              <a className="nav-link" href="#nosotros">
+              <NavLink className={claseEnlace} to="/nosotros">
                 Nosotros
-              </a>
+              </NavLink>
             </li>
 
             <li className="nav-item">
-              <a className="nav-link" href="#contacto">
+              <NavLink className={claseEnlace} to="/blog">
+                Blog
+              </NavLink>
+            </li>
+
+            <li className="nav-item">
+              <NavLink className={claseEnlace} to="/contacto">
                 Contacto
-              </a>
+              </NavLink>
             </li>
 
             <li className="nav-item">
-              <a
+              <NavLink className={claseEnlace} to="/admin">
+                Administración
+              </NavLink>
+            </li>
+
+            <li className="nav-item mt-2 mt-lg-0">
+              <NavLink
                 className="btn btn-primary ms-lg-3"
-                href="#carrito"
+                to="/carrito"
               >
                 🛒 Carrito
-
                 <span className="badge bg-danger ms-2">
                   {cantidadTotal}
                 </span>
-              </a>
+              </NavLink>
             </li>
           </ul>
         </div>

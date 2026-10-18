@@ -1,6 +1,9 @@
 
 import { useState } from 'react'
 import { useCarrito } from '../context/CarritoContext'
+import { useNavigate } from 'react-router-dom'
+
+const API_PEDIDOS = 'http://localhost:3000/api/pedidos'
 
 const formatearPrecio = (precio) =>
   new Intl.NumberFormat('es-CL', {
@@ -41,12 +44,20 @@ const datosIniciales = {
 }
 
 function Checkout() {
-  const { carrito, cantidadTotal, precioTotal, vaciarCarrito } =
-    useCarrito()
+  const navigate = useNavigate()
+  const {
+    carrito,
+    cantidadTotal,
+    precioTotal,
+    vaciarCarrito,
+  } = useCarrito()
 
   const [datos, setDatos] = useState(datosIniciales)
   const [errores, setErrores] = useState({})
   const [compraExitosa, setCompraExitosa] = useState(false)
+  const [pedidoConfirmado, setPedidoConfirmado] = useState(null)
+  const [procesando, setProcesando] = useState(false)
+  const [errorServidor, setErrorServidor] = useState('')
 
   function actualizarCampo(evento) {
     const { name, value } = evento.target
@@ -60,7 +71,10 @@ function Checkout() {
     setErrores((anterior) => ({
       ...anterior,
       [name]: '',
+      ...(name === 'region' ? { comuna: '' } : {}),
     }))
+
+    setErrorServidor('')
   }
 
   function validarFormulario() {
@@ -95,32 +109,102 @@ function Checkout() {
     return Object.keys(nuevosErrores).length === 0
   }
 
-  function confirmarCompra(evento) {
+  async function confirmarCompra(evento) {
     evento.preventDefault()
 
-    if (carrito.length === 0) return
+    if (procesando || carrito.length === 0) return
     if (!validarFormulario()) return
 
-    setCompraExitosa(true)
-    vaciarCarrito()
-    setDatos(datosIniciales)
+    setProcesando(true)
+    setErrorServidor('')
+
+    try {
+      const respuesta = await fetch(API_PEDIDOS, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          cliente: {
+            nombre: datos.nombre.trim(),
+            correo: datos.correo.trim(),
+            telefono: datos.telefono.trim(),
+            direccion: datos.direccion.trim(),
+            region: datos.region,
+            comuna: datos.comuna,
+          },
+          productos: carrito.map((producto) => ({
+            id: producto.id,
+            cantidad: producto.cantidad,
+          })),
+        }),
+      })
+
+      const resultado = await respuesta.json()
+
+      if (!respuesta.ok) {
+        throw new Error(
+          resultado.mensaje || 'No se pudo registrar el pedido'
+        )
+      }
+
+      setPedidoConfirmado(resultado.pedido)
+      setCompraExitosa(true)
+
+      vaciarCarrito()
+      setDatos(datosIniciales)
+      setErrores({})
+    } catch (error) {
+      setErrorServidor(
+        error.message || 'Ocurrió un error al procesar la compra.'
+      )
+    } finally {
+      setProcesando(false)
+    }
   }
 
-  if (compraExitosa) {
+  function volverAComprar() {
+  setCompraExitosa(false)
+  setPedidoConfirmado(null)
+  setErrorServidor('')
+  navigate('/productos')
+}
+
+  if (compraExitosa && pedidoConfirmado) {
     return (
       <section id="checkout" className="container py-5">
         <div className="alert alert-success text-center p-5">
-          <h2 className="fw-bold">¡Compra confirmada!</h2>
-          <p>
-            Tu pedido de demostración fue procesado correctamente.
+          <h2 className="fw-bold mb-3">
+            ¡Compra confirmada!
+          </h2>
+
+          <p className="fs-5">
+            Tu pedido N° <strong>{pedidoConfirmado.id}</strong> fue
+            registrado correctamente.
           </p>
+
+          <p>
+            Fecha:{' '}
+            {new Date(pedidoConfirmado.fecha).toLocaleString('es-CL')}
+          </p>
+
+          <h4 className="fw-bold">
+            Total: {formatearPrecio(pedidoConfirmado.total)}
+          </h4>
+
+          <p className="mt-3">
+            El pedido quedó guardado en nuestro sistema.
+          </p>
+
           <p className="small">
+            Esta es una compra académica simulada.
             No se realizó ningún cobro real.
           </p>
+
           <button
             type="button"
-            className="btn btn-success"
-            onClick={() => setCompraExitosa(false)}
+            className="btn btn-success mt-3"
+            onClick={volverAComprar}
           >
             Volver a comprar
           </button>
@@ -135,6 +219,13 @@ function Checkout() {
         Finalizar compra
       </h2>
 
+      {errorServidor && (
+        <div className="alert alert-danger" role="alert">
+          <strong>No se pudo completar la compra:</strong>{' '}
+          {errorServidor}
+        </div>
+      )}
+
       {carrito.length === 0 ? (
         <div className="alert alert-info">
           Tu carrito está vacío. Agrega productos antes de comprar.
@@ -147,12 +238,15 @@ function Checkout() {
               noValidate
               className="card shadow-sm p-4"
             >
-              <h4 className="mb-4">Datos de contacto y envío</h4>
+              <h4 className="mb-4">
+                Datos de contacto y envío
+              </h4>
 
               <div className="mb-3">
                 <label htmlFor="nombre" className="form-label">
                   Nombre completo
                 </label>
+
                 <input
                   id="nombre"
                   type="text"
@@ -160,7 +254,9 @@ function Checkout() {
                   className={`form-control ${errores.nombre ? 'is-invalid' : ''}`}
                   value={datos.nombre}
                   onChange={actualizarCampo}
+                  disabled={procesando}
                 />
+
                 <div className="invalid-feedback">
                   {errores.nombre}
                 </div>
@@ -170,6 +266,7 @@ function Checkout() {
                 <label htmlFor="correo" className="form-label">
                   Correo electrónico
                 </label>
+
                 <input
                   id="correo"
                   type="email"
@@ -177,7 +274,9 @@ function Checkout() {
                   className={`form-control ${errores.correo ? 'is-invalid' : ''}`}
                   value={datos.correo}
                   onChange={actualizarCampo}
+                  disabled={procesando}
                 />
+
                 <div className="invalid-feedback">
                   {errores.correo}
                 </div>
@@ -187,6 +286,7 @@ function Checkout() {
                 <label htmlFor="telefono" className="form-label">
                   Teléfono
                 </label>
+
                 <input
                   id="telefono"
                   type="tel"
@@ -195,7 +295,9 @@ function Checkout() {
                   value={datos.telefono}
                   onChange={actualizarCampo}
                   placeholder="+56912345678"
+                  disabled={procesando}
                 />
+
                 <div className="invalid-feedback">
                   {errores.telefono}
                 </div>
@@ -205,6 +307,7 @@ function Checkout() {
                 <label htmlFor="direccion" className="form-label">
                   Dirección de envío
                 </label>
+
                 <input
                   id="direccion"
                   type="text"
@@ -212,7 +315,9 @@ function Checkout() {
                   className={`form-control ${errores.direccion ? 'is-invalid' : ''}`}
                   value={datos.direccion}
                   onChange={actualizarCampo}
+                  disabled={procesando}
                 />
+
                 <div className="invalid-feedback">
                   {errores.direccion}
                 </div>
@@ -223,20 +328,26 @@ function Checkout() {
                   <label htmlFor="region" className="form-label">
                     Región
                   </label>
+
                   <select
                     id="region"
                     name="region"
                     className={`form-select ${errores.region ? 'is-invalid' : ''}`}
                     value={datos.region}
                     onChange={actualizarCampo}
+                    disabled={procesando}
                   >
-                    <option value="">Selecciona una región</option>
+                    <option value="">
+                      Selecciona una región
+                    </option>
+
                     {Object.keys(regiones).map((region) => (
                       <option key={region} value={region}>
                         {region}
                       </option>
                     ))}
                   </select>
+
                   <div className="invalid-feedback">
                     {errores.region}
                   </div>
@@ -246,29 +357,40 @@ function Checkout() {
                   <label htmlFor="comuna" className="form-label">
                     Comuna
                   </label>
+
                   <select
                     id="comuna"
                     name="comuna"
                     className={`form-select ${errores.comuna ? 'is-invalid' : ''}`}
                     value={datos.comuna}
                     onChange={actualizarCampo}
-                    disabled={!datos.region}
+                    disabled={!datos.region || procesando}
                   >
-                    <option value="">Selecciona una comuna</option>
+                    <option value="">
+                      Selecciona una comuna
+                    </option>
+
                     {(regiones[datos.region] || []).map((comuna) => (
                       <option key={comuna} value={comuna}>
                         {comuna}
                       </option>
                     ))}
                   </select>
+
                   <div className="invalid-feedback">
                     {errores.comuna}
                   </div>
                 </div>
               </div>
 
-              <button type="submit" className="btn btn-success btn-lg">
-                Confirmar compra
+              <button
+                type="submit"
+                className="btn btn-success btn-lg"
+                disabled={procesando}
+              >
+                {procesando
+                  ? 'Procesando pedido...'
+                  : 'Confirmar compra'}
               </button>
             </form>
           </div>
@@ -281,26 +403,36 @@ function Checkout() {
               {carrito.map((producto) => (
                 <div
                   key={producto.id}
-                  className="d-flex justify-content-between mb-2"
+                  className="d-flex justify-content-between mb-2 gap-3"
                 >
                   <span>
                     {producto.nombre} × {producto.cantidad}
                   </span>
+
                   <span>
                     {formatearPrecio(
-                      producto.precio * producto.cantidad
+                      Number(producto.precio) * producto.cantidad
                     )}
                   </span>
                 </div>
               ))}
 
               <hr />
+
               <p>Unidades: {cantidadTotal}</p>
+
               <h4 className="text-primary fw-bold">
                 Total: {formatearPrecio(precioTotal)}
               </h4>
+
               <p className="text-muted small mb-0">
+                El precio y stock definitivos se validarán
+                en el servidor al confirmar el pedido.
+              </p>
+
+              <p className="text-muted small mt-2">
                 Compra simulada para fines académicos.
+                No se procesan pagos reales.
               </p>
             </div>
           </div>
