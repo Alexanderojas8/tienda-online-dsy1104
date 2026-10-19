@@ -6,6 +6,14 @@ import {
   useEffect,
 } from 'react'
 
+import {
+  agregarAlCarrito,
+  modificarCantidad,
+  quitarProducto,
+  calcularCantidadTotal,
+  calcularPrecioTotal,
+} from '../utils/carritoUtils'
+
 const CarritoContext = createContext(null)
 
 export function CarritoProvider({ children }) {
@@ -19,60 +27,27 @@ export function CarritoProvider({ children }) {
   })
 
   useEffect(() => {
-    localStorage.setItem('carrito-react', JSON.stringify(carrito))
+    localStorage.setItem(
+      'carrito-react',
+      JSON.stringify(carrito)
+    )
   }, [carrito])
 
   function agregarProducto(producto) {
-    setCarrito((anterior) => {
-      const existente = anterior.find(
-        (item) => item.id === producto.id
-      )
-
-      const cantidadActual = existente?.cantidad || 0
-
-      if (cantidadActual >= Number(producto.stock)) {
-        return anterior
-      }
-
-      if (existente) {
-        return anterior.map((item) =>
-          item.id === producto.id
-            ? { ...item, cantidad: item.cantidad + 1 }
-            : item
-        )
-      }
-
-      return [...anterior, { ...producto, cantidad: 1 }]
-    })
+    setCarrito((anterior) =>
+      agregarAlCarrito(anterior, producto)
+    )
   }
 
-  // Aumentar o disminuir la cantidad de un producto
   function cambiarCantidad(id, cambio) {
     setCarrito((anterior) =>
-      anterior
-        .map((item) => {
-          if (item.id !== id) {
-            return item
-          }
-
-          const nuevaCantidad = item.cantidad + cambio
-
-          if (nuevaCantidad > Number(item.stock)) {
-            return item
-          }
-
-          return {
-            ...item,
-            cantidad: nuevaCantidad,
-          }
-        })
-        .filter((item) => item.cantidad > 0)
+      modificarCantidad(anterior, id, cambio)
     )
   }
 
   function eliminarProducto(id) {
     setCarrito((anterior) =>
-      anterior.filter((item) => item.id !== id)
+      quitarProducto(anterior, id)
     )
   }
 
@@ -80,16 +55,8 @@ export function CarritoProvider({ children }) {
     setCarrito([])
   }
 
-  const cantidadTotal = carrito.reduce(
-    (total, item) => total + item.cantidad,
-    0
-  )
-
-  const precioTotal = carrito.reduce(
-    (total, item) =>
-      total + Number(item.precio) * item.cantidad,
-    0
-  )
+  const cantidadTotal = calcularCantidadTotal(carrito)
+  const precioTotal = calcularPrecioTotal(carrito)
 
   return (
     <CarritoContext.Provider

@@ -1,2 +1,6 @@
 backend/node_modules/
 /backend/pedidos.json
+
+# Archivos generados por pruebas Jasmine y Karma
+frontend-react/coverage/
+frontend-react/test-dist/
