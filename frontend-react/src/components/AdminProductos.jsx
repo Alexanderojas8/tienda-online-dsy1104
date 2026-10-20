@@ -1,7 +1,9 @@
-
-import { useEffect, useState } from 'react'
+﻿
+import { useEffect, useRef, useState } from 'react'
 
 const API_URL = 'http://localhost:3000/api/productos'
+const MAX_IMAGEN_MB = 2
+const MAX_IMAGEN_BYTES = MAX_IMAGEN_MB * 1024 * 1024
 
 const formularioInicial = {
   codigo: '',
@@ -27,8 +29,13 @@ function AdminProductos() {
   const [productoEditando, setProductoEditando] = useState(null)
   const [cargando, setCargando] = useState(true)
   const [guardando, setGuardando] = useState(false)
+  const [procesandoImagen, setProcesandoImagen] = useState(false)
+  const [arrastrando, setArrastrando] = useState(false)
+  const [nombreImagen, setNombreImagen] = useState('')
   const [mensaje, setMensaje] = useState('')
   const [error, setError] = useState('')
+
+  const inputImagenRef = useRef(null)
 
   async function cargarProductos() {
     try {
@@ -64,8 +71,13 @@ function AdminProductos() {
   }
 
   function limpiarFormulario() {
-    setFormulario(formularioInicial)
+    setFormulario({ ...formularioInicial })
     setProductoEditando(null)
+    setNombreImagen('')
+
+    if (inputImagenRef.current) {
+      inputImagenRef.current.value = ''
+    }
   }
 
   function editarProducto(producto) {
@@ -82,6 +94,7 @@ function AdminProductos() {
       imagen: producto.imagen || '',
     })
 
+    setNombreImagen('')
     setMensaje('')
     setError('')
 
@@ -90,11 +103,119 @@ function AdminProductos() {
     })
   }
 
+  function validarImagen(archivo) {
+    if (!archivo) {
+      throw new Error('Selecciona una imagen.')
+    }
+
+    const formatosPermitidos = [
+      'image/jpeg',
+      'image/png',
+      'image/webp',
+    ]
+
+    if (!formatosPermitidos.includes(archivo.type)) {
+      throw new Error(
+        'Formato no permitido. Usa JPG, PNG o WEBP.'
+      )
+    }
+
+    if (archivo.size > MAX_IMAGEN_BYTES) {
+      throw new Error(
+        `La imagen no puede superar ${MAX_IMAGEN_MB} MB.`
+      )
+    }
+  }
+
+  function leerImagen(archivo) {
+    return new Promise((resolve, reject) => {
+      const lector = new FileReader()
+
+      lector.onload = () => resolve(lector.result)
+
+      lector.onerror = () =>
+        reject(new Error('No se pudo leer la imagen.'))
+
+      lector.readAsDataURL(archivo)
+    })
+  }
+
+  async function procesarArchivoImagen(archivo) {
+    if (!archivo) return
+
+    setError('')
+    setMensaje('')
+
+    try {
+      setProcesandoImagen(true)
+
+      validarImagen(archivo)
+
+      const imagenBase64 = await leerImagen(archivo)
+
+      setFormulario((anterior) => ({
+        ...anterior,
+        imagen: imagenBase64,
+      }))
+
+      setNombreImagen(archivo.name)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setProcesandoImagen(false)
+    }
+  }
+
+  async function seleccionarImagen(evento) {
+    const archivo = evento.target.files?.[0]
+
+    await procesarArchivoImagen(archivo)
+
+    evento.target.value = ''
+  }
+
+  function arrastrarSobreZona(evento) {
+    evento.preventDefault()
+    evento.stopPropagation()
+    setArrastrando(true)
+  }
+
+  function salirDeZona(evento) {
+    evento.preventDefault()
+    evento.stopPropagation()
+    setArrastrando(false)
+  }
+
+  async function soltarImagen(evento) {
+    evento.preventDefault()
+    evento.stopPropagation()
+    setArrastrando(false)
+
+    const archivo = evento.dataTransfer.files?.[0]
+
+    await procesarArchivoImagen(archivo)
+  }
+
+  function quitarImagen() {
+    setFormulario((anterior) => ({
+      ...anterior,
+      imagen: '',
+    }))
+
+    setNombreImagen('')
+    setError('')
+  }
+
   async function guardarProducto(evento) {
     evento.preventDefault()
 
     setMensaje('')
     setError('')
+
+    if (procesandoImagen) {
+      setError('Espera a que termine de cargar la imagen.')
+      return
+    }
 
     if (
       !formulario.codigo.trim() ||
@@ -274,7 +395,10 @@ function AdminProductos() {
               </div>
 
               <div className="col-md-8">
-                <label htmlFor="nombre-producto" className="form-label">
+                <label
+                  htmlFor="nombre-producto"
+                  className="form-label"
+                >
                   Nombre
                 </label>
 
@@ -290,7 +414,10 @@ function AdminProductos() {
               </div>
 
               <div className="col-12">
-                <label htmlFor="descripcion" className="form-label">
+                <label
+                  htmlFor="descripcion"
+                  className="form-label"
+                >
                   Descripción
                 </label>
 
@@ -341,7 +468,10 @@ function AdminProductos() {
               </div>
 
               <div className="col-md-4">
-                <label htmlFor="stockCritico" className="form-label">
+                <label
+                  htmlFor="stockCritico"
+                  className="form-label"
+                >
                   Stock crítico
                 </label>
 
@@ -368,27 +498,116 @@ function AdminProductos() {
                   name="categoria"
                   type="text"
                   className="form-control"
-                  placeholder="Ejemplo: Perifericos"
+                  placeholder="Ejemplo: Periféricos"
                   value={formulario.categoria}
                   onChange={actualizarCampo}
                   required
                 />
               </div>
 
-              <div className="col-md-6">
-                <label htmlFor="imagen" className="form-label">
-                  Ruta de imagen
+              <div className="col-12">
+                <label className="form-label fw-semibold">
+                  Cargar imagen del producto
                 </label>
 
                 <input
-                  id="imagen"
-                  name="imagen"
-                  type="text"
-                  className="form-control"
-                  placeholder="/img/mouse.jpg.png"
-                  value={formulario.imagen}
-                  onChange={actualizarCampo}
+                  ref={inputImagenRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  className="d-none"
+                  onChange={seleccionarImagen}
+                  aria-label="Seleccionar imagen del producto"
                 />
+
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => inputImagenRef.current?.click()}
+                  onKeyDown={(evento) => {
+                    if (
+                      evento.key === 'Enter' ||
+                      evento.key === ' '
+                    ) {
+                      evento.preventDefault()
+                      inputImagenRef.current?.click()
+                    }
+                  }}
+                  onDragEnter={arrastrarSobreZona}
+                  onDragOver={arrastrarSobreZona}
+                  onDragLeave={salirDeZona}
+                  onDrop={soltarImagen}
+                  className={`border border-2 rounded-3 p-4 text-center ${
+                    arrastrando
+                      ? 'border-primary bg-light'
+                      : 'border-secondary'
+                  }`}
+                  style={{
+                    borderStyle: 'dashed',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <div
+                    className="fs-1 mb-2"
+                    aria-hidden="true"
+                  >
+                    📤
+                  </div>
+
+                  <p className="fw-semibold mb-1">
+                    Arrastra una imagen aquí
+                  </p>
+
+                  <p className="text-secondary small mb-3">
+                    O selecciona una imagen desde tu computador
+                  </p>
+
+                  <span className="btn btn-outline-primary">
+                    Seleccionar imagen
+                  </span>
+
+                  <p className="text-secondary small mt-3 mb-0">
+                    JPG, PNG o WEBP · Máximo 2 MB
+                  </p>
+                </div>
+
+                {procesandoImagen && (
+                  <p className="text-primary mt-2">
+                    Procesando imagen...
+                  </p>
+                )}
+
+                {formulario.imagen && (
+                  <div className="mt-3">
+                    <p className="fw-semibold mb-2">
+                      Vista previa
+                    </p>
+
+                    {nombreImagen && (
+                      <p className="small text-secondary">
+                        Archivo: {nombreImagen}
+                      </p>
+                    )}
+
+                    <img
+                      src={formulario.imagen}
+                      alt="Vista previa del producto"
+                      className="img-thumbnail d-block mb-3"
+                      style={{
+                        maxWidth: '240px',
+                        maxHeight: '200px',
+                        objectFit: 'contain',
+                      }}
+                    />
+
+                    <button
+                      type="button"
+                      className="btn btn-outline-danger btn-sm"
+                      onClick={quitarImagen}
+                    >
+                      Quitar imagen
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -396,7 +615,7 @@ function AdminProductos() {
               <button
                 type="submit"
                 className="btn btn-primary"
-                disabled={guardando}
+                disabled={guardando || procesandoImagen}
               >
                 {guardando
                   ? 'Guardando...'
@@ -447,10 +666,13 @@ function AdminProductos() {
             <tbody>
               {productos.map((producto) => {
                 const stock = Number(producto.stock)
-                const critico = Number(producto.stockCritico ?? 5)
+                const critico = Number(
+                  producto.stockCritico ?? 5
+                )
 
                 const sinStock = stock <= 0
-                const stockBajo = !sinStock && stock <= critico
+                const stockBajo =
+                  !sinStock && stock <= critico
 
                 return (
                   <tr key={producto.id}>
@@ -518,3 +740,4 @@ function AdminProductos() {
 }
 
 export default AdminProductos
+
