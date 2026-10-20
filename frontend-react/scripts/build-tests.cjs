@@ -17,25 +17,31 @@ async function prepararPruebas() {
       contents: `
         import '../tests/formatoPrecio.spec.js'
         import '../tests/carrito.spec.js'
+        import '../tests/Navbar.spec.jsx'
       `,
       resolveDir: carpetaTemporal,
       sourcefile: 'entrada-pruebas.js',
       loader: 'js'
     },
+
     bundle: true,
     platform: 'browser',
     format: 'iife',
     outfile: archivoSalida,
     sourcemap: 'inline',
     target: 'es2020',
+    jsx: 'automatic',
+
     plugins: [
       {
         name: 'instrumentar-codigo-fuente',
+
         setup(build) {
           build.onLoad(
             {
               filter: /[\\/]src[\\/]utils[\\/].*\.js$/
             },
+
             async (args) => {
               const codigo = fs.readFileSync(
                 args.path,
@@ -61,11 +67,19 @@ async function prepararPruebas() {
   })
 
   console.log(
-    'Pruebas preparadas con cobertura del código fuente.'
+    'Pruebas preparadas: precios, carrito y Navbar React.'
+  )
+
+  console.log(
+    'Cobertura configurada para src/utils.'
   )
 }
 
 prepararPruebas().catch((error) => {
-  console.error(error)
+  console.error(
+    'Error al preparar las pruebas:',
+    error
+  )
+
   process.exitCode = 1
 })

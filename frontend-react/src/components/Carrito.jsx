@@ -1,13 +1,8 @@
 
 import { Link } from 'react-router-dom'
 import { useCarrito } from '../context/CarritoContext'
+import { formatearPrecio } from '../utils/formatoPrecio'
 
-const formatearPrecio = (precio) =>
-  new Intl.NumberFormat('es-CL', {
-    style: 'currency',
-    currency: 'CLP',
-    maximumFractionDigits: 0,
-  }).format(Number(precio))
 
 function Carrito() {
   const {
