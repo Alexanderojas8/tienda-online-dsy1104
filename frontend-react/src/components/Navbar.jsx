@@ -1,12 +1,18 @@
 
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useCarrito } from '../context/CarritoContext'
 
-function Navbar() {
+function Navbar({ usuarioLogin, onLogout }) {
   const { cantidadTotal } = useCarrito()
+  const navigate = useNavigate()
 
   const claseEnlace = ({ isActive }) =>
     `nav-link ${isActive ? 'active fw-bold' : ''}`
+
+  function cerrarSesion() {
+    onLogout()
+    navigate('/login')
+  }
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -62,11 +68,13 @@ function Navbar() {
               </NavLink>
             </li>
 
-            <li className="nav-item">
-              <NavLink className={claseEnlace} to="/admin">
-                Administración
-              </NavLink>
-            </li>
+            {usuarioLogin && (
+              <li className="nav-item">
+                <NavLink className={claseEnlace} to="/admin">
+                  Administración
+                </NavLink>
+              </li>
+            )}
 
             <li className="nav-item mt-2 mt-lg-0">
               <NavLink
@@ -79,6 +87,35 @@ function Navbar() {
                 </span>
               </NavLink>
             </li>
+
+            {usuarioLogin ? (
+              <>
+                <li className="nav-item ms-lg-3 mt-2 mt-lg-0">
+                  <span className="navbar-text">
+                    Hola, {usuarioLogin}
+                  </span>
+                </li>
+
+                <li className="nav-item ms-lg-2 mt-2 mt-lg-0">
+                  <button
+                    type="button"
+                    className="btn btn-outline-light"
+                    onClick={cerrarSesion}
+                  >
+                    Cerrar sesión
+                  </button>
+                </li>
+              </>
+            ) : (
+              <li className="nav-item ms-lg-3 mt-2 mt-lg-0">
+                <NavLink
+                  className="btn btn-outline-light"
+                  to="/login"
+                >
+                  Iniciar sesión
+                </NavLink>
+              </li>
+            )}
           </ul>
         </div>
       </div>

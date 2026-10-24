@@ -2,33 +2,40 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, useLocation } from 'react-router-dom'
 import Navbar from './Navbar'
 
-// Simulamos el Context del carrito para probar
-// el Navbar sin depender de toda la aplicación.
+// Simulamos el contexto del carrito para probar
+// Navbar sin depender de toda la aplicación.
 vi.mock('../context/CarritoContext', () => ({
   useCarrito: () => ({
     cantidadTotal: 2,
   }),
 }))
 
+// Componente auxiliar para comprobar la ruta actual.
+function RutaActual() {
+  const location = useLocation()
+
+  return (
+    <span data-testid="ruta-actual">
+      {location.pathname}
+    </span>
+  )
+}
+
 describe('Pruebas del componente Navbar', () => {
   it('muestra los enlaces principales', () => {
-    // Arrange
     render(
       <MemoryRouter initialEntries={['/']}>
         <Navbar />
       </MemoryRouter>
     )
 
-    // Act
-    const enlaceInicio = screen.getByRole('link', {
-      name: 'Inicio',
-    })
+    expect(
+      screen.getByRole('link', { name: 'Inicio' })
+    ).toBeInTheDocument()
 
-    // Assert
-    expect(enlaceInicio).toBeInTheDocument()
     expect(
       screen.getByRole('link', { name: 'Productos' })
     ).toHaveAttribute('href', '/productos')
@@ -39,14 +46,12 @@ describe('Pruebas del componente Navbar', () => {
   })
 
   it('muestra la cantidad de productos del carrito', () => {
-    // Arrange y Act
     render(
       <MemoryRouter>
         <Navbar />
       </MemoryRouter>
     )
 
-    // Assert
     const enlaceCarrito = screen.getByRole('link', {
       name: /carrito/i,
     })
@@ -56,21 +61,18 @@ describe('Pruebas del componente Navbar', () => {
   })
 
   it('marca como activo el enlace de la página actual', () => {
-    // Arrange y Act
     render(
       <MemoryRouter initialEntries={['/productos']}>
         <Navbar />
       </MemoryRouter>
     )
 
-    // Assert
     expect(
       screen.getByRole('link', { name: 'Productos' })
     ).toHaveClass('active')
   })
 
   it('permite navegar al carrito', async () => {
-    // Arrange
     const usuario = userEvent.setup()
 
     render(
@@ -79,14 +81,87 @@ describe('Pruebas del componente Navbar', () => {
       </MemoryRouter>
     )
 
-    // Act
     await usuario.click(
       screen.getByRole('link', { name: /carrito/i })
     )
 
-    // Assert
     expect(
       screen.getByRole('link', { name: /carrito/i })
     ).toHaveClass('active')
+  })
+
+  it('muestra Iniciar sesión cuando no hay usuario', () => {
+    render(
+      <MemoryRouter>
+        <Navbar usuarioLogin="" onLogout={vi.fn()} />
+      </MemoryRouter>
+    )
+
+    expect(
+      screen.getByRole('link', { name: 'Iniciar sesión' })
+    ).toHaveAttribute('href', '/login')
+
+    expect(
+      screen.queryByRole('link', { name: 'Administración' })
+    ).not.toBeInTheDocument()
+  })
+
+  it('muestra el usuario y Administración cuando hay sesión', () => {
+    render(
+      <MemoryRouter>
+        <Navbar usuarioLogin="Admin" onLogout={vi.fn()} />
+      </MemoryRouter>
+    )
+
+    expect(
+      screen.getByText('Hola, Admin')
+    ).toBeInTheDocument()
+
+    expect(
+      screen.getByRole('link', { name: 'Administración' })
+    ).toHaveAttribute('href', '/admin')
+
+    expect(
+      screen.getByRole('button', { name: 'Cerrar sesión' })
+    ).toBeInTheDocument()
+  })
+
+  it('ejecuta onLogout al cerrar sesión', async () => {
+    const usuario = userEvent.setup()
+    const onLogout = vi.fn()
+
+    render(
+      <MemoryRouter>
+        <Navbar usuarioLogin="Admin" onLogout={onLogout} />
+      </MemoryRouter>
+    )
+
+    await usuario.click(
+      screen.getByRole('button', { name: 'Cerrar sesión' })
+    )
+
+    expect(onLogout).toHaveBeenCalledTimes(1)
+  })
+
+  it('redirige al login después de cerrar sesión', async () => {
+    const usuario = userEvent.setup()
+    const onLogout = vi.fn()
+
+    render(
+      <MemoryRouter initialEntries={['/admin']}>
+        <Navbar usuarioLogin="Admin" onLogout={onLogout} />
+        <RutaActual />
+      </MemoryRouter>
+    )
+
+    await usuario.click(
+      screen.getByRole('button', { name: 'Cerrar sesión' })
+    )
+
+    expect(onLogout).toHaveBeenCalledTimes(1)
+
+    expect(
+      screen.getByTestId('ruta-actual')
+    ).toHaveTextContent('/login')
   })
 })

@@ -1,5 +1,6 @@
 
-import { Routes, Route, Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Routes, Route, Link, Navigate } from 'react-router-dom'
 
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -11,6 +12,12 @@ import AdminProductos from './components/AdminProductos'
 import Nosotros from './components/Nosotros'
 import Contacto from './components/Contacto'
 import Blog from './components/Blog'
+import Login from './pages/Login'
+
+// Credenciales de demostración para la evaluación.
+// No utilizar autenticación local de este tipo en producción.
+const USUARIO_VALIDO = 'Admin'
+const PASSWORD_VALIDO = '123456'
 
 function Inicio() {
   return (
@@ -24,10 +31,7 @@ function Inicio() {
           Descubre nuestros productos y las mejores ofertas.
         </p>
 
-        <Link
-          to="/productos"
-          className="btn btn-primary mt-3"
-        >
+        <Link to="/productos" className="btn btn-primary mt-3">
           Ver productos
         </Link>
       </section>
@@ -51,20 +55,63 @@ function PaginaNoEncontrada() {
 }
 
 function App() {
+  const [usuarioLogin, setUsuarioLogin] = useState(
+    () => sessionStorage.getItem('usuarioLogin') || ''
+  )
+
+  function handleLogin(usuario, password) {
+    if (
+      usuario === USUARIO_VALIDO &&
+      password === PASSWORD_VALIDO
+    ) {
+      sessionStorage.setItem('usuarioLogin', usuario)
+      localStorage.setItem('ultimoUsuario', usuario)
+      setUsuarioLogin(usuario)
+      return true
+    }
+
+    return false
+  }
+
+  function handleLogout() {
+    sessionStorage.removeItem('usuarioLogin')
+    setUsuarioLogin('')
+  }
+
   return (
     <div className="d-flex flex-column min-vh-100">
-      <Navbar />
+      <Navbar usuarioLogin={usuarioLogin} onLogout={handleLogout} />
 
       <main className="flex-grow-1">
         <Routes>
           <Route path="/" element={<Inicio />} />
+
           <Route path="/productos" element={<Productos />} />
           <Route path="/carrito" element={<Carrito />} />
           <Route path="/checkout" element={<Checkout />} />
-          <Route path="/admin" element={<AdminProductos />} />
+
+          <Route
+            path="/login"
+            element={
+              usuarioLogin
+                ? <Navigate to="/" replace />
+                : <Login onLogin={handleLogin} />
+            }
+          />
+
+          <Route
+            path="/admin"
+            element={
+              usuarioLogin
+                ? <AdminProductos />
+                : <Navigate to="/login" replace />
+            }
+          />
+
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/blog" element={<Blog />} />
+
           <Route path="*" element={<PaginaNoEncontrada />} />
         </Routes>
       </main>
