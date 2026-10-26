@@ -58,7 +58,7 @@ describe('Pruebas del componente Navbar', () => {
     expect(contenedor.textContent).toContain('Inicio')
     expect(contenedor.textContent).toContain('Productos')
     expect(contenedor.textContent).toContain('Contacto')
-    expect(contenedor.textContent).toContain('Administración')
+    expect(contenedor.textContent).toContain('Iniciar sesión')
   })
 
   // PRUEBA 3: Estado inicial del carrito
